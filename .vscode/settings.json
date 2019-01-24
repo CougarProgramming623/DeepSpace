@@ -13,5 +13,8 @@
 },
   "wpilib.online": true,
   "editor.wrappingIndent": "indent",
-  "editor.rulers": [ 80 ],
+"editor.rulers": [
+	80
+],
+"C_Cpp.configurationWarnings": "Disabled",
 }
