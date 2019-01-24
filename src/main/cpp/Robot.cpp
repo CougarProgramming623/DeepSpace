@@ -7,6 +7,7 @@
 
 #include "Robot.h"
 #include <frc/DriverStation.h>
+#include <WPILib.h>
 
 std::shared_ptr<DriveTrain> Robot::driveTrain;
 std::shared_ptr<AHRS> Robot::navx;
@@ -20,6 +21,8 @@ void Robot::RobotInit() {
 		err += ex.what();
 		DriverStation::ReportError(err.c_str());
 	}
+
+	CameraServer::GetInstance()->StartAutomaticCapture();
 }
 
 void Robot::AutonomousInit() {
