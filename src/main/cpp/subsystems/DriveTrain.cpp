@@ -16,7 +16,7 @@ DriveTrain::DriveTrain() : Subsystem("DriveTrain") {
 	mMecanumDrive->SetExpiration(0.1);
 	mMecanumDrive->SetSafetyEnabled(false);
 	mMecanumDrive->SetMaxOutput(1.0);
-	DriverStation::ReportError("Creating Drive Train!");
+	
 }
 
 void DriveTrain::InitDefaultCommand() {

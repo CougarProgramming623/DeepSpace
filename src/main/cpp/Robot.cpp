@@ -17,6 +17,7 @@ void Robot::RobotInit() {
 		err += ex.what();
 		DriverStation::ReportError(err.c_str());
 	}
+	
 
 	CameraServer::GetInstance()->StartAutomaticCapture();
 }
