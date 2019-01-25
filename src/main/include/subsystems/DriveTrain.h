@@ -1,9 +1,3 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
 
 #pragma once
 
@@ -12,6 +6,8 @@
 #include "AHRS.h"
 
 #include <frc/commands/Subsystem.h>
+
+namespace frc2019 {
 
 class DriveTrain : public frc::Subsystem {
 private:
@@ -24,6 +20,9 @@ private:
 public:
 	DriveTrain();
 	void InitDefaultCommand() override;
-	void fodDrive(double, double, double, double);
+	void fodDrive(double x, double y, double rotation, double gyroAngle);
 	std::shared_ptr<AHRS> getNavx();
 };
+
+
+}//frc2019
