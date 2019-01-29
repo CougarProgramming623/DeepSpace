@@ -1,5 +1,6 @@
 
 #include "Robot.h"
+#include "COB/CougarOpticBoard.h"
 #include <frc/DriverStation.h>
 #include <WPILib.h>
 
@@ -37,6 +38,7 @@ void Robot::TeleopInit() {
 void Robot::TeleopPeriodic() {
 	DriverStation::ReportError("TeleopPeriodic");
 	frc::Scheduler::GetInstance()->Run();
+	CougarOpticBoard::PushRotation(navx->GetYaw());
 }
 
 void Robot::TestInit() {
