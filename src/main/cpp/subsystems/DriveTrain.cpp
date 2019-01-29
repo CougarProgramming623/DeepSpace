@@ -12,7 +12,7 @@ DriveTrain::DriveTrain() : Subsystem("DriveTrain") {
 	mRightFrontMC.reset(new WPI_TalonSRX(RIGHT_FRONT_ID));
 	mLeftRearMC.reset(new WPI_TalonSRX(LEFT_BACK_ID));
 	mRightRearMC.reset(new WPI_TalonSRX(RIGHT_BACK_ID));
-	mMecanumDrive.reset(new frc::MecanumDrive(*mLeftFrontMC, *mRightFrontMC,*mLeftRearMC, *mRightRearMC));
+	mMecanumDrive.reset(new frc::MecanumDrive(*mLeftFrontMC, *mRightFrontMC,*mLeftRearMC, *mRightRearMC)); 
 	mMecanumDrive->SetExpiration(0.1);
 	mMecanumDrive->SetSafetyEnabled(false);
 	mMecanumDrive->SetMaxOutput(1.0);
