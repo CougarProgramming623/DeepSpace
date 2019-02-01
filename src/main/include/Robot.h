@@ -14,6 +14,8 @@
 
 //eayfughiafewef rg eaifghwife
 
+namespace frc2019 {
+
 class Robot : public frc::TimedRobot {
 	public:
 	void RobotInit() override;
@@ -28,4 +30,7 @@ class Robot : public frc::TimedRobot {
 	void TestPeriodic() override;
 	static std::shared_ptr<DriveTrain> driveTrain;
 	static std::shared_ptr<AHRS> navx;
-	};
+};
+
+
+}//frc2019

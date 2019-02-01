@@ -1,0 +1,150 @@
+All header files should begin with the header guard #pragma once
+
+Short functions (< 5 lines) should be marked as inline whenever possible
+
+Includes should have a newline between different sets of similar files
+
+#include <iostream>
+#include <stdint.h>
+#include <vector>
+
+#include "base/basictypes.h"
+#include "base/commandlineflags.h"
+#include "foo/server/bar.h"
+
+the namespace ohs623 must  be used around any library code
+and the namespace frc19 must be used around code for this year
+
+namespace X {
+
+void foo() {  // Correct.  No extra indentation within namespace.
+  ...
+}
+
+}  // namespace
+
+
+local variables should be declared and assigned whenever possible
+ie:
+int i;
+i=5;//bad
+
+int i = 5;//good
+
+all primitive types should be passed to functions by value, everything else should be passed by reference (in general)
+
+Use a struct only for passive objects that carry data; everything else is a class. 
+
+when defining a pointer type the * will always be with the type
+ie:
+int* x;//good
+int *x, *y;//bad
+for this reason only one pointer type is allowed to be declared per line
+ie
+int* x;
+int* y;
+
+not
+int* x, *y;//bad
+
+Use 0 for integers, 0.0 for reals, nullptr for pointers, and '\0' for chars.
+
+
+lower camel case is to be used when naming variables thisIsLowerCamelCaseInAction
+upper camel case is to be used when naming classes, files, methods, and functions UpperCamelCaseLooksLikeThis
+
+Like java the class name should match with the file name
+
+macros and const variables should be uppercase with underscores LIKE_THIS
+
+use // for comments <= 2 lines in series and /* for anything longer
+
+Indentation is only to be done with tabs with the exception of lining up similar things across multiple lines.
+Ex.
+#define ROBOT_WIDTH   1.6//Usage of spaces here to line up the values
+#define ROBOT_HEIGHT 2.4
+
+Opening curly brackets must be placed on the same line.
+int foo() {
+
+}
+also put else and else if clauses on the same line as their curly brackets
+
+if(team.contains(“Ronnie Mohapatra”)) {
+	printf(“Don’t forget to set your alarm”);
+} else if (team.contains(“Ashath Burra”)) {
+	printf(“Watch out CAD team!”);
+} else {
+	printf(“We have a great software team this year!”);
+}
+
+Starting andf ending a pair of curly brackets on the same line is allowed as long as nothing is inside ex: 
+void Drive::End() {}
+Member variables in classes should include the prefix m_ and always be private. This is not necessary while using structs since the a struct should only be used when all members are public. 
+ex 
+private:
+int m_Timer;
+This is to make clear what class variables are used vs local variables in member functions. This also allows for classes to have functions that would otherwise be named the same as class members
+ex:
+if we have a member int timer;
+We can't have a method timer() because there would be a name ambiguity. But with m_… This class is totally valid in c++
+
+class X {
+private:
+int m_Timer;
+public:
+	int Timer() {
+		return m_Timer;
+}
+
+}
+in classes, a new visibility modifier is to be used to distinguish between methods and instance variables.
+ex:
+class Vector {
+private:
+	double x, y, z;
+	int temp;
+private:
+	double Reset();//Sets vector to 0
+
+
+public:
+	double Length();
+	double Add(Vector& other);
+//...
+};
+
+
+
+
+Also the order of groupings of things inside classes will go as follows:
+Static variables (should be avoided)
+Static methods
+Public instance variables (should be not used in most cases (use getters and setters))
+Public methods
+Private methods
+Private instance variables
+This is to make it as easy as possible for the caller to see what they have access to inside a class
+Ex:
+class Vector {
+public:
+	static bool isFastAddAvilable();
+
+public:
+	double Length();
+	Vector& Add(Vector& other);
+Vector& Subtract(Vector& other);
+//…
+private:
+	static bool useFastAdd = true;
+
+private:
+	double m_X, m_Y, m_Z;
+
+private:
+	double Reset();//Sets vector to all 0’s
+};
+
+
+
+Use common sense and be consistent.
