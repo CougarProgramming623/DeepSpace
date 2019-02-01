@@ -21,7 +21,7 @@
 #endif
 
 
-#include "WPILib.h"
+#include <frc/WPILib.h>
 
 namespace frc2019 {
 
@@ -33,7 +33,6 @@ class OI {
 private:
 	SliderStatus status;
 
-	std::shared_ptr<frc::Joystick> driverJoystick;
 	std::shared_ptr<frc::Joystick> buttonBoard;
 	std::shared_ptr<frc::JoystickButton> intakeButton;
 	std::shared_ptr<frc::JoystickButton> expungeButton;
@@ -51,6 +50,7 @@ public:
 	OI();
 	void Update();
 	
+	static std::shared_ptr<frc::Joystick> driverJoystick;
 	std::shared_ptr<frc::Joystick> GetDriverJoystick();
 	std::shared_ptr<frc::Joystick> GetButtonBoard();
 

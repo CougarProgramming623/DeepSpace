@@ -11,13 +11,13 @@ void Robot::RobotInit() {
 	driveTrain.reset(new DriveTrain());
 	try {
 		navx.reset(new AHRS(SPI::Port::kMXP));
-		navx->ZeroYaw();
 	} catch (std::exception &ex) {
 		std::string err = "Error instantiating navX MXP: ";
 		err += ex.what();
 		DriverStation::ReportError(err.c_str());
 	}
 	
+	navx->ZeroYaw();
 
 	CameraServer::GetInstance()->StartAutomaticCapture();
 }
@@ -27,7 +27,7 @@ void Robot::AutonomousInit() {
 }
 
 void Robot::AutonomousPeriodic() {
-
+	frc::Scheduler::GetInstance()->Run();
 }
 
 void Robot::TeleopInit() {

@@ -1,7 +1,7 @@
 
 #include "commands/Drive.h"
 #include "Robot.h"
-#include "ControlConstants.h"
+#include "OI.h"
 
 namespace frc2019 {
 
@@ -9,7 +9,6 @@ Drive::Drive() {
 	// Use Requires() here to declare subsystem dependencies
 	// eg. Requires(Robot::chassis.get());
 	Requires(Robot::driveTrain.get());
-	joystick.reset(new Joystick(DRIVER_JOYSTICK));
 }
 
 // Called just before this Command runs the first time
@@ -19,9 +18,9 @@ void Drive::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void Drive::Execute() {
-	y = -joystick->GetY();
-	x = -joystick->GetX();
-	rot = joystick->GetZ();
+	y = -OI::driverJoystick->GetY();
+	x = -OI::driverJoystick->GetX();
+	rot = OI::driverJoystick->GetZ();
 	angle = Robot::navx->GetYaw();
 	Robot::driveTrain->fodDrive(y, x, rot, angle);
 }

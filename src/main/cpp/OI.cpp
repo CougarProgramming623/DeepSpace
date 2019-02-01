@@ -3,6 +3,8 @@
 
 namespace frc2019 {
 
+std::shared_ptr<frc::Joystick> OI::driverJoystick;
+
 OI::OI() {
 	driverJoystick.reset(new frc::Joystick(0));
 	buttonBoard.reset(new frc::Joystick(1));
