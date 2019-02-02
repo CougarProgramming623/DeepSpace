@@ -16,7 +16,7 @@ DriveTrain::DriveTrain() : Subsystem("DriveTrain") {
 	mMecanumDrive->SetExpiration(0.1);
 	mMecanumDrive->SetSafetyEnabled(false);
 	mMecanumDrive->SetMaxOutput(1.0);
-	
+	mLeftRearMC->ConfigSelectedFeedbackSensor(FeedbackDevice::QuadEncoder, 1, 5);
 }
 
 void DriveTrain::InitDefaultCommand() {
@@ -24,9 +24,11 @@ void DriveTrain::InitDefaultCommand() {
 	SetDefaultCommand(new Drive());
 }
 
-void DriveTrain::fodDrive(double y, double x, double rotation, double gyroAngle) {
+void DriveTrain::FODDrive(double y, double x, double rotation, double gyroAngle) {
 	mMecanumDrive->DriveCartesian(y, x, rotation, gyroAngle);
 }
 
-
+int DriveTrain::GetTicks() {
+	return mLeftRearMC->GetSelectedSensorPosition(1);
+}
 }//frc2019
