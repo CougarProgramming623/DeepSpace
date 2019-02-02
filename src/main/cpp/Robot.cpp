@@ -1,6 +1,6 @@
 
 #include "Robot.h"
-#include "COB/CougarOpticBoard.h"
+#include "Cob.h"
 #include <frc/DriverStation.h>
 namespace frc2019 {
 
@@ -34,18 +34,10 @@ namespace frc2019 {
 
 	}
 
-<<<<<<< HEAD
 void Robot::TeleopPeriodic() {
 	DriverStation::ReportError("TeleopPeriodic");
 	frc::Scheduler::GetInstance()->Run();
-	CougarOpticBoard::PushRotation(navx->GetYaw());
 }
-=======
-	void Robot::TeleopPeriodic() {
-		DriverStation::ReportError("TeleopPeriodic");
-		frc::Scheduler::GetInstance()->Run();
-	}
->>>>>>> origin/master
 
 	void Robot::TestInit() {
 

@@ -19,10 +19,29 @@ class Cob {
   static void InitBoard();
 
   //set values
-  static void PushValue(double x);
-  
+  static void PushX(double x);
+  static void PushY(double y);
+  static void PushRotation(double rotation);
+  static void PushMainArmRotation(double rotation);
+  static void PushWristRotation(double rotation);
+  static void PushWristVacuum(bool isOn);
+  static void PushIsSandstorm(bool isSandstorm);
+  static void PushIsTeleop(bool isTeleop);
+  static void PushIsEnabled(bool isEnabled);
+  static void PushTimeLeft(double timeLeft);
+  static void PushAlianceColor(bool isRed);
 
   //entries
 
   static nt::NetworkTableEntry x;
+  static nt::NetworkTableEntry y;
+  static nt::NetworkTableEntry rotation;
+  static nt::NetworkTableEntry mainArmRotation;
+  static nt::NetworkTableEntry wristRotation;
+  static nt::NetworkTableEntry wristVacuum;
+  static nt::NetworkTableEntry isSandstorm;
+  static nt::NetworkTableEntry isTeleop;
+  static nt::NetworkTableEntry isEnabled;
+  static nt::NetworkTableEntry timeLeft;
+  static nt::NetworkTableEntry isRed;
 };
