@@ -5,6 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
+
 #include "Cob.h"
 
 std::shared_ptr<NetworkTable> Cob::table;
