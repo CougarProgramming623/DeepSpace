@@ -20,13 +20,8 @@ private:
 public:
 	DriveTrain();
 	void InitDefaultCommand() override;
-<<<<<<< HEAD
 	void FODDrive(double x, double y, double rotation, double gyroAngle);
 	//int GetTicks();
-=======
-	void fodDrive(double x, double y, double rotation, double gyroAngle);
-	int GetTicks();
->>>>>>> master
 };
 
 
