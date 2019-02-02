@@ -1,5 +1,6 @@
 
 #include "Robot.h"
+#include "Cob.h"
 #include <frc/DriverStation.h>
 namespace frc2019 {
 
@@ -35,10 +36,10 @@ namespace frc2019 {
 
 	}
 
-	void Robot::TeleopPeriodic() {
-		DriverStation::ReportError("TeleopPeriodic");
-		frc::Scheduler::GetInstance()->Run();
-	}
+void Robot::TeleopPeriodic() {
+	DriverStation::ReportError("TeleopPeriodic");
+	frc::Scheduler::GetInstance()->Run();
+}
 
 	void Robot::TestInit() {
 
