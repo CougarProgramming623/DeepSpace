@@ -52,8 +52,10 @@ void Robot::TeleopPeriodic() {
 
 #ifndef RUNNING_FRC_TESTS
 int main() {
-	using namespace frc2019; //since main method must be within a global scope, this line allows to use whatever it needs from frc2019 namespace
+	using namespace frc2019;
 	return frc::StartRobot<Robot>();
 }
 #endif
+
+
 
