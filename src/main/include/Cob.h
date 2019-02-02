@@ -20,7 +20,7 @@ class Cob {
 
   //set values
   static void PushValue(double x);
-
+  
 
   //entries
 
