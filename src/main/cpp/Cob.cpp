@@ -4,7 +4,7 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-#pragma once
+
 
 #include "Cob.h"
 
@@ -30,48 +30,48 @@ void Cob::InitBoard(){
     auto inst = nt::NetworkTableInstance::GetDefault();
     table = inst.GetTable("cob");
     x = table->GetEntry("location/x");
-    y = table->GetEntry("location/y")
-    rotation = table->GetEntry("location/rotation")
-    mainArmRotation = table->GetEntry("arm/main-arm/rotation")
-    wristRotation = table->GetEntry("arm/wrist/rotation")
-    wristVacuum = table->GetEntry("arm/wrist/vacuum")
-    isSandstorm = table->GetEntry("robot/is-sandstorm")
-    isTeleop = table->GetEntry("robot/is-teleop")
-    isEnabled = table->GetEntry("robot/is-enabled")
-    timeLeft = table->GetEntry("fms/time-left")
-    isRed = table->GetEntry("fms/is-red")
+    y = table->GetEntry("location/y");
+    rotation = table->GetEntry("location/rotation");
+    mainArmRotation = table->GetEntry("arm/main-arm/rotation");
+    wristRotation = table->GetEntry("arm/wrist/rotation");
+    wristVacuum = table->GetEntry("arm/wrist/vacuum");
+    isSandstorm = table->GetEntry("robot/is-sandstorm");
+    isTeleop = table->GetEntry("robot/is-teleop");
+    isEnabled = table->GetEntry("robot/is-enabled");
+    timeLeft = table->GetEntry("fms/time-left");
+    isRed = table->GetEntry("fms/is-red");
 }
 
 void Cob::PushX(double x){
-    this.x.SetDouble(x);
+    Cob::x.SetDouble(x);
 }
 void Cob::PushY(double y){
-    this.y.SetDouble(y);
+    Cob::y.SetDouble(y);
 }
 void Cob::PushRotation(double rotation){
-    this.rotation.SetDouble(rotation);    
+    Cob::rotation.SetDouble(rotation);    
 }
 void Cob::PushMainArmRotation(double rotation){
-    this.mainArmRotation.SetDouble(rotation);
+    Cob::mainArmRotation.SetDouble(rotation);
 }
 void Cob::PushWristRotation(double rotation){
-    this.wristRotation.SetDouble(rotation);
+    Cob::wristRotation.SetDouble(rotation);
 }
 void Cob::PushWristVacuum(bool vacuum){
-    this.wristVacuum.SetBool(vacuum);
+    Cob::wristVacuum.SetBoolean(vacuum);
 }
 void Cob::PushIsSandstorm(bool isSandstorm){
-    this.isSandstorm.SetBool(isSandstorm);
+    Cob::isSandstorm.SetBoolean(isSandstorm);
 }
 void Cob::PushIsTeleop(bool isTeleop){
-    this.isTeleop.SetBool(isTeleop);
+    Cob::isTeleop.SetBoolean(isTeleop);
 }
 void Cob::PushIsEnabled(bool isEnabled){
-    this.isEnabled.SetBool(isEnabled);
+    Cob::isEnabled.SetBoolean(isEnabled);
 }
 void Cob::PushTimeLeft(double timeLeft){
-    this.timeLeft.SetDouble(timeLeft);
+    Cob::timeLeft.SetDouble(timeLeft);
 }
 void Cob::PushAlianceColor(bool isRed){
-    this.isRed.setDouble(isRed);
+    Cob::isRed.SetDouble(isRed);
 }

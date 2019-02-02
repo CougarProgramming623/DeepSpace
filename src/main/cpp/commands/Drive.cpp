@@ -22,8 +22,8 @@ void Drive::Execute() {
 	x = -Robot::oi->GetDriverJoystick()->GetX();
 	rot = Robot::oi->GetDriverJoystick()->GetZ();
 	angle = Robot::navx->GetYaw();
-	Robot::driveTrain->fodDrive(y, x, rot, angle);
-	frc::DriverStation::ReportError("Ticks: " + std::to_string(Robot::driveTrain->GetTicks()));
+	Robot::driveTrain->FODDrive(y, x, rot, angle);
+	//frc::DriverStation::ReportError("Ticks: " + std::to_string(Robot::driveTrain->GetTicks()));
 }
 
 // Make this return true when this Command no longer needs to run execute()

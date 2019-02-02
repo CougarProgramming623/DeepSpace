@@ -9,6 +9,7 @@ namespace frc2019 {
 	std::shared_ptr<OI> Robot::oi;
 	
 	void Robot::RobotInit() {
+		Cob::InitBoard();
 		driveTrain.reset(new DriveTrain());
 		oi.reset(new OI());
 		try {
@@ -21,7 +22,7 @@ namespace frc2019 {
 		
 		navx->ZeroYaw();
 
-		CameraServer::GetInstance()->StartAutomaticCapture();
+		//CameraServer::GetInstance()->StartAutomaticCapture();
 	}
 		
 	void Robot::AutonomousInit() {
@@ -39,6 +40,7 @@ namespace frc2019 {
 void Robot::TeleopPeriodic() {
 	DriverStation::ReportError("TeleopPeriodic");
 	frc::Scheduler::GetInstance()->Run();
+	Cob::PushRotation(navx->GetYaw());
 }
 
 	void Robot::TestInit() {
