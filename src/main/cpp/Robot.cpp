@@ -8,6 +8,7 @@ namespace frc2019 {
 	std::shared_ptr<AHRS> Robot::navx;
 
 	void Robot::RobotInit() {
+		Cob::InitBoard();
 		driveTrain.reset(new DriveTrain());
 		try {
 			navx.reset(new AHRS(SPI::Port::kMXP));
@@ -19,7 +20,7 @@ namespace frc2019 {
 		
 		navx->ZeroYaw();
 
-		CameraServer::GetInstance()->StartAutomaticCapture();
+		//CameraServer::GetInstance()->StartAutomaticCapture();
 	}
 		
 	void Robot::AutonomousInit() {
@@ -37,6 +38,7 @@ namespace frc2019 {
 void Robot::TeleopPeriodic() {
 	DriverStation::ReportError("TeleopPeriodic");
 	frc::Scheduler::GetInstance()->Run();
+	Cob::PushMainArmRotation(navx->GetYaw());
 }
 
 	void Robot::TestInit() {
