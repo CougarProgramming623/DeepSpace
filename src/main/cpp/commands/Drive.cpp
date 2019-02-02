@@ -1,7 +1,7 @@
 
 #include "commands/Drive.h"
 #include "Robot.h"
-#include "OI.h"
+
 
 namespace frc2019 {
 
@@ -18,11 +18,11 @@ void Drive::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void Drive::Execute() {
-	y = -OI::driverJoystick->GetY();
-	x = -OI::driverJoystick->GetX();
-	rot = OI::driverJoystick->GetZ();
+	//y = -OI::driverJoystick->GetY();
+	/////x = -OI::driverJoystick->GetX();
+	//rot = OI::driverJoystick->GetZ();
 	angle = Robot::navx->GetYaw();
-	Robot::driveTrain->FODDrive(y, x, rot, angle);
+	Robot::driveTrain->fodDrive(y, x, rot, angle);
 	frc::DriverStation::ReportError("Ticks: " + std::to_string(Robot::driveTrain->GetTicks()));
 }
 
