@@ -5,9 +5,11 @@ namespace frc2019 {
 
 	std::shared_ptr<DriveTrain> Robot::driveTrain;
 	std::shared_ptr<AHRS> Robot::navx;
-
+	std::shared_ptr<OI> Robot::oi;
+	
 	void Robot::RobotInit() {
 		driveTrain.reset(new DriveTrain());
+		oi.reset(new OI());
 		try {
 			navx.reset(new AHRS(SPI::Port::kMXP));
 		} catch (std::exception &ex) {
