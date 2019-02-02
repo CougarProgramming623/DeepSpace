@@ -5,9 +5,6 @@
 
 namespace frc2019 {
 
-
-namespace frc2019 {
-
 Drive::Drive() {
 	// Use Requires() here to declare subsystem dependencies
 	// eg. Requires(Robot::chassis.get());
