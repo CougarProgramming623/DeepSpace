@@ -11,6 +11,7 @@
 #include <frc/WPILib.h>
 #include <subsystems/DriveTrain.h>
 #include "AHRS.h"
+#include "OI.h"
 
 //eayfughiafewef rg eaifghwife
 
@@ -30,6 +31,7 @@ class Robot : public frc::TimedRobot {
 	void TestPeriodic() override;
 	static std::shared_ptr<DriveTrain> driveTrain;
 	static std::shared_ptr<AHRS> navx;
+	static std::shared_ptr<OI> Robot::oi;
 };
 
 
