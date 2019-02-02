@@ -20,8 +20,8 @@ private:
 public:
 	DriveTrain();
 	void InitDefaultCommand() override;
-	void fodDrive(double x, double y, double rotation, double gyroAngle);
-	std::shared_ptr<AHRS> getNavx();
+	void FODDrive(double x, double y, double rotation, double gyroAngle);
+	int GetTicks();
 };
 
 

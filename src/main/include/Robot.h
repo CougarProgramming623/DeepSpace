@@ -28,6 +28,7 @@ class Robot : public frc::TimedRobot {
 
 	void TestInit() override;
 	void TestPeriodic() override;
+	std::unique_ptr<Command> autonomousCommand;
 	static std::shared_ptr<DriveTrain> driveTrain;
 	static std::shared_ptr<AHRS> navx;
 };
