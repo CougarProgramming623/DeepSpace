@@ -47,11 +47,12 @@ void Robot::TestPeriodic() {
 
 }
 
-#ifndef RUNNING_FRC_TESTS
-int main() {
-	return frc::StartRobot<Robot>();
-}
-#endif
 
 
 }//frc2019
+#ifndef RUNNING_FRC_TESTS
+int main() {
+	using namespace frc2019;
+	return frc::StartRobot<Robot>();
+}
+#endif
