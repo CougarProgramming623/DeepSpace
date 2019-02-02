@@ -15,9 +15,8 @@ public:
 	bool IsFinished() override;
 	void End() override;
 	void Interrupted() override;
-	private:
+private:
 	double y, x, rot, angle;
-	std::shared_ptr<Joystick> joystick;
 };
 
 
