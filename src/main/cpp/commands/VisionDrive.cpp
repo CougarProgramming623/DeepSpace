@@ -28,36 +28,34 @@ void VisionDrive::Initialize() {
 //get values
 void VisionDrive::Execute() {
   nt::NetworkTableEntry centerX = visionTable->GetEntry("centerX");
-	centerX.SetDoubleArray();
-
-  if(arr.size() == 2){
-    if(centerStraife(arr[0],arr[1]) > 10){
-      Robot::driveTrain->fodDrive(-1,0,0,0);
+  double arr[2];
+  centerX.SetDoubleArray(arr);
+    if(centerStrafe(arr[0],arr[1]) > 10){
+      Robot::driveTrain->FODDrive(0,-1,0,0);
     }
-    else if (centerStraife(arr[0],arr[1]) < -10){
-      Robot::driveTrain->fodDrive(1,0,0,0);
+    else if (centerStrafe(arr[0],arr[1]) < -10){
+      Robot::driveTrain->FODDrive(0,1,0,0);
     }
-  }
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool VisionDrive::IsFinished() {
   nt::NetworkTableEntry centerX = visionTable->GetEntry("centerX");
-  centerX.SetDoubleArray();
-  if(abs(centerStraife(arr[0],arr[1])) < 5) return true;
-
+  double arr[2];
+  centerX.SetDoubleArray(arr);
+    if(abs(centerStrafe(arr[0],arr[1])) < 5) return true;
   return false; 
   }
 
 // Called once after isFinished returns true
 void VisionDrive::End() {
-  Robot::driveTrain->fodDrive(0,0,0,0);
+  Robot::driveTrain->FODDrive(0,0,0,0);
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
 void VisionDrive::Interrupted() {}
-double centerStraife(double leftContourCenterX, double rightContourCenterX){
+double VisionDrive::centerStrafe(double leftContourCenterX, double rightContourCenterX){
   return (leftContourCenterX - mid) - (mid - rightContourCenterX);
 }
 }

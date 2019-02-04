@@ -13,14 +13,14 @@
 namespace frc2019 {
 class VisionDrive : public frc::Command {
  public:
+  std::shared_ptr<NetworkTable> visionTable;
   VisionDrive();
   void Initialize() override;
   void Execute() override;
   bool IsFinished() override;
   void End() override;
   void Interrupted() override;
-private:
-  double centerStraife(double, double)
+  double centerStrafe(double, double);
 
 };
 }
