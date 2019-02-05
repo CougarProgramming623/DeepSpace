@@ -24,7 +24,7 @@ namespace frc2019 {
 
 		//CameraServer::GetInstance()->StartAutomaticCapture();
 	}
-		
+	
 	void Robot::AutonomousInit() {
 
 	}
