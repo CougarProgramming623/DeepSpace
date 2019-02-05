@@ -21,7 +21,7 @@ public:
 	DriveTrain();
 	void InitDefaultCommand() override;
 	void FODDrive(double x, double y, double rotation, double gyroAngle);
-	//int GetTicks();
+	int GetTicks();
 };
 
 

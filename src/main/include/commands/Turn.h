@@ -11,6 +11,7 @@
 #include <frc/WPILib.h>
 #include "AHRS.h"
 
+namespace frc2019 {
 class Turn : public frc::Command, public frc::PIDOutput {
  public:
     Turn(double);
@@ -28,3 +29,4 @@ class Turn : public frc::Command, public frc::PIDOutput {
 
 
 };
+}
