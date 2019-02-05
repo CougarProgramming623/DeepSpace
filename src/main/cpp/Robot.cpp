@@ -2,10 +2,11 @@
 #include "Robot.h"
 #include "Cob.h"
 #include <frc/DriverStation.h>
+#include "commands/VisionDrive.h"
 namespace frc2019 {
 
 	std::shared_ptr<DriveTrain> Robot::driveTrain;
-	std::shared_ptr<AHRS> Robot::navx;
+	AHRS* Robot::navx;
 	std::shared_ptr<OI> Robot::oi;
 	
 	void Robot::RobotInit() {
@@ -13,7 +14,7 @@ namespace frc2019 {
 		driveTrain.reset(new DriveTrain());
 		oi.reset(new OI());
 		try {
-			navx.reset(new AHRS(SPI::Port::kMXP));
+			navx = new AHRS(SPI::Port::kMXP);
 		} catch (std::exception &ex) {
 			std::string err = "Error instantiating navX MXP: ";
 			err += ex.what();
@@ -26,7 +27,10 @@ namespace frc2019 {
 	}
 		
 	void Robot::AutonomousInit() {
-
+		//navx->ZeroYaw();
+		//autonomousCommand.reset(new VisionDrive());
+		//if(autonomousCommand)
+		//	autonomousCommand->Start();
 	}
 
 	void Robot::AutonomousPeriodic() {
@@ -34,7 +38,7 @@ namespace frc2019 {
 	}
 
 	void Robot::TeleopInit() {
-
+		Robot::navx->ZeroYaw();
 	}
 
 void Robot::TeleopPeriodic() {

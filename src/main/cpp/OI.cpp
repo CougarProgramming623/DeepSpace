@@ -1,4 +1,5 @@
 #include "OI.h"
+#include "commands/VisionDrive.h"
 	
 	namespace frc2019 {
 	
@@ -16,6 +17,8 @@
 		endgameOverride.reset(new frc::JoystickButton(buttonBoard.get(), ENDGAME_OVERRIDE_BUTTON));
 		climb.reset(new frc::JoystickButton(buttonBoard.get(), CLIMB_BUTTON));
 		potRezeroLift.reset(new frc::JoystickButton(buttonBoard.get(), POT_REZERO_BUTTON));
+
+		releaseRampButton.get()->WhenPressed(new VisionDrive());
 	}
 	
 	
