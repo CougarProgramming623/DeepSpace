@@ -9,6 +9,7 @@
 
 #include <frc/commands/Command.h>
 
+namespace frc2019 {
 class AutoDrive : public frc::Command {
  public:
   AutoDrive(double, bool);
@@ -22,3 +23,4 @@ class AutoDrive : public frc::Command {
   double m_distance;
   bool isStraffing;
 };
+}
