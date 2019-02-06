@@ -7,6 +7,7 @@
 
 #include "commands/VisionDrive.h"
 #include "Robot.h"
+#include "math.h"
 
 namespace frc2019 {
 VisionDrive::VisionDrive() : frc::Command(), frc::PIDOutput() {
@@ -23,7 +24,7 @@ VisionDrive::VisionDrive() : frc::Command(), frc::PIDOutput() {
   turnController->SetContinuous(true);
   turnController->Enable();
   DriverStation::ReportError("Enabled");
-
+  xPower = zPower = 0;
 }
 
 // Called just before this Command runs the first time
@@ -33,14 +34,17 @@ void VisionDrive::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void VisionDrive::Execute() {
-  Robot::driveTrain->FODDrive(0, getXPower(), getZPower(), 0);
+  getXPower();
+  getZPower();
+  Robot::driveTrain->FODDrive(0, xPower/2, zPower/2, 0);
+
   //Robot::driveTrain->FODDrive(0,0,rotationRate, Robot::navx->GetYaw());
   DriverStation::ReportError("Rotation Rate: " + std::to_string(rotationRate));
   DriverStation::ReportError("Current Angle: " + std::to_string(Robot::navx->GetYaw()));
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool VisionDrive::IsFinished() { return false; }
+bool VisionDrive::IsFinished() { return xPower == 0 && zPower == 0; }
 
 // Called once after isFinished returns true
 void VisionDrive::End() {}
@@ -54,7 +58,7 @@ std::shared_ptr<nt::NetworkTable> VisionDrive::start_networkTable(){
   return inst.GetTable("vision");
 }
 
-double VisionDrive::getXPower() {
+void VisionDrive::getXPower() {
 	//nt::NetworkTableEntry centerX = visionTable->GetEntry("centerX");
   //nt::NetworkTableEntry angle = visionTable->GetEntry("angle");
   std::vector<double> defaultVal{0};
@@ -67,12 +71,24 @@ double VisionDrive::getXPower() {
   }
 	DriverStation::ReportError("First CenterX is :" + std::to_string(arrX[0]) + " Second CenterX is :" + std::to_string(arrX[1]));
   DriverStation::ReportError("Located Left Center is" + std::to_string(arrX[i]));
-	return double(leftCenter - 960/2)/(960/2);
+  xPower = double(leftCenter - 960/2)/(960/2);
+	if(abs(xPower) < 0.05)
+    xPower = 0;
+  else if (xPower > 0)
+    xPower += .1;
+  else
+    xPower -= .1;
 }
 
-double VisionDrive::getZPower(){
+void VisionDrive::getZPower(){
   float angle = Robot::navx->GetYaw();
-  return (-angle)/90;
+  zPower = (-angle)/90;
+  if(abs(zPower) < 0.05)
+    zPower = 0;
+  else if (zPower > 0)
+    zPower += .1;
+  else
+    zPower -= .1;
 }
 
 void VisionDrive::PIDWrite(double output) {

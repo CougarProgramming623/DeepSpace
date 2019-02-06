@@ -24,10 +24,10 @@ class VisionDrive : public frc::Command, frc::PIDOutput {
   std::shared_ptr<nt::NetworkTable> start_networkTable();
 private:
   std::shared_ptr<nt::NetworkTable> visionTable;
-  double getXPower();
-	double getZPower(); 
+  void getXPower();
+	void getZPower(); 
   frc::PIDController* turnController;
-  double rotationRate;
+  double rotationRate, xPower, zPower;
   
 };
 }
