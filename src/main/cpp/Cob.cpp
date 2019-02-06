@@ -8,6 +8,8 @@
 
 #include "Cob.h"
 
+namespace frc2019 {
+
 std::shared_ptr<NetworkTable> Cob::table;
 
 nt::NetworkTableEntry Cob::x;
@@ -75,3 +77,5 @@ void Cob::PushTimeLeft(double timeLeft){
 void Cob::PushAlianceColor(bool isRed){
     Cob::isRed.SetDouble(isRed);
 }
+
+}//namespace
