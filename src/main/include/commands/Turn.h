@@ -10,7 +10,7 @@
 #include <frc/commands/Command.h>
 #include <frc/WPILib.h>
 #include "AHRS.h"
-
+namespace frc2019 {
 class Turn : public frc::Command, public frc::PIDOutput {
  public:
     Turn(double);
@@ -21,10 +21,11 @@ class Turn : public frc::Command, public frc::PIDOutput {
     void Interrupted() override;
     void PIDWrite(double) override;
   private:
-    PIDController *turnController;
+    frc::PIDController *turnController;
     double m_angle;
     double rotateToAngleRate;
     AHRS *gyro;
 
 
 };
+}//frc2019

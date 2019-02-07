@@ -7,20 +7,20 @@
 
 #pragma once
 
-#include <frc/commands/Command.h>
+#include <frc/commands/Subsystem.h>
+#include <frc/WPILib.h>
+#include <ctre/Phoenix.h>
 
 namespace frc2019 {
-class AutoDrive : public frc::Command {
+class Arm : public frc::Subsystem {
+ private:
+  // It's desirable that everything possible under private except
+  // for methods that implement subsystem capabilities
+  std::shared_ptr<TalonSRX> wristTalon;
  public:
-  AutoDrive(double, bool);
-  void Initialize() override;
-  void Execute() override;
-  bool IsFinished() override;
-  void End() override;
-  void Interrupted() override;
-  private:
-  int currentTicks;
-  double m_distance;
-  bool isStraffing;
+  Arm();
+  void InitDefaultCommand() override;
+  int GetPotData();
+
 };
-}//frc2019
+} //frc2019

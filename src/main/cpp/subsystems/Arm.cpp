@@ -5,22 +5,22 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#pragma once
-
-#include <frc/commands/Command.h>
+#include "subsystems/Arm.h"
 
 namespace frc2019 {
-class AutoDrive : public frc::Command {
- public:
-  AutoDrive(double, bool);
-  void Initialize() override;
-  void Execute() override;
-  bool IsFinished() override;
-  void End() override;
-  void Interrupted() override;
-  private:
-  int currentTicks;
-  double m_distance;
-  bool isStraffing;
-};
-}//frc2019
+Arm::Arm() : Subsystem("ExampleSubsystem") {
+  wristTalon.reset(new TalonSRX(17));
+  wristTalon->ConfigSelectedFeedbackSensor(FeedbackDevice::Analog);
+}
+
+void Arm::InitDefaultCommand() {
+  // Set the default command for a subsystem here.
+  // SetDefaultCommand(new MySpecialCommand());
+}
+
+int Arm::GetPotData() {
+  return wristTalon->GetSensorCollection().GetAnalogIn();
+}
+// Put methods for controlling this subsystem
+// here. Call these from Commands.
+} //frc2019

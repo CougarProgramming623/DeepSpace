@@ -10,12 +10,12 @@
 #define TICKS_PER_INCH 19.33570146
 #define S_TICKS_PER_INCH 27.83584539
 
-
+namespace frc2019 {
 AutoDrive::AutoDrive(double distance, bool strafe) {
   // Use Requires() here to declare subsystem dependencies
   // eg. Requires(Robot::chassis.get());
   Requires(Robot::driveTrain.get());
-  currentTicks = abs(Robot::driveTrain->getTicks());
+  currentTicks = abs(Robot::driveTrain->GetTicks());
   m_distance = distance;
   isStraffing = strafe;
 }
@@ -28,12 +28,12 @@ void AutoDrive::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void AutoDrive::Execute() {
   if (isStraffing){
-    Robot::driveTrain->fodDrive(0.0, 0.5, 0.0, Robot::navx->GetYaw());
-    DriverStation::ReportError("Ticks Driven: " + std::to_string(Robot::driveTrain->getTicks()-currentTicks));
+    Robot::driveTrain->FODDrive(0.0, 0.5, 0.0, Robot::navx->GetYaw());
+    DriverStation::ReportError("Ticks Driven: " + std::to_string(Robot::driveTrain->GetTicks()-currentTicks));
   }
   else {
-    Robot::driveTrain->fodDrive(0.5, 0.0, 0.0, Robot::navx->GetYaw());
-    DriverStation::ReportError("Ticks Driven: " + std::to_string(Robot::driveTrain->getTicks()-currentTicks));
+    Robot::driveTrain->FODDrive(0.5, 0.0, 0.0, Robot::navx->GetYaw());
+    DriverStation::ReportError("Ticks Driven: " + std::to_string(Robot::driveTrain->GetTicks()-currentTicks));
   }
 }
 
@@ -46,17 +46,17 @@ bool AutoDrive::IsFinished() {
   else {
     maxTicks = m_distance * TICKS_PER_INCH;
   }
-  int ticks = abs(Robot::driveTrain->getTicks() - currentTicks);
+  int ticks = abs(Robot::driveTrain->GetTicks() - currentTicks);
   return maxTicks <= ticks;
  }
 
 // Called once after isFinished returns true
 void AutoDrive::End() {
-  //Robot::driveTrain->fodDrive(0.0, 0.0, 0.0, Robot::navx->GetYaw());
-  int ticksDriven = Robot::driveTrain->getTicks() - currentTicks;
+  int ticksDriven = Robot::driveTrain->GetTicks() - currentTicks;
   DriverStation::ReportError("Ticks Driven: " + std::to_string(ticksDriven));
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
 void AutoDrive::Interrupted() {}
+}//frc2019

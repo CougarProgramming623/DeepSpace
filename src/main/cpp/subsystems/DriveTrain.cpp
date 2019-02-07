@@ -17,7 +17,7 @@ DriveTrain::DriveTrain() : Subsystem("DriveTrain"),
 		m_MecanumDrive.SetExpiration(0.1);
 		m_MecanumDrive.SetSafetyEnabled(false);
 		m_MecanumDrive.SetMaxOutput(1.0);
-		//mLeftRearMC->ConfigSelectedFeedbackSensor(FeedbackDevice::QuadEncoder, 1, 5);
+		m_LeftRearMC.ConfigSelectedFeedbackSensor(FeedbackDevice::QuadEncoder, 1, 5);
 	}
 
 void DriveTrain::InitDefaultCommand() {
@@ -28,10 +28,9 @@ void DriveTrain::InitDefaultCommand() {
 void DriveTrain::FODDrive(double y, double x, double rotation, double gyroAngle) {
 	m_MecanumDrive.DriveCartesian(y, x, rotation, gyroAngle);
 }
-/*
+
 int DriveTrain::GetTicks() {
-	return mLeftRearMC->GetSelectedSensorPosition(1);
+	return m_LeftRearMC.GetSelectedSensorPosition(1);
 }
-*/
 }//frc2019
 

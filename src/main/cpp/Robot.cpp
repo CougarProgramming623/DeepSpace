@@ -7,10 +7,12 @@ namespace frc2019 {
 	std::shared_ptr<DriveTrain> Robot::driveTrain;
 	std::shared_ptr<AHRS> Robot::navx;
 	std::shared_ptr<OI> Robot::oi;
+	std::shared_ptr<Arm> Robot::arm;
 	
 	void Robot::RobotInit() {
 		Cob::InitBoard();
 		driveTrain.reset(new DriveTrain());
+		arm.reset(new Arm());
 		oi.reset(new OI());
 		try {
 			navx.reset(new AHRS(SPI::Port::kMXP));
@@ -43,13 +45,13 @@ void Robot::TeleopPeriodic() {
 	Cob::PushRotation(navx->GetYaw());
 }
 
-	void Robot::TestInit() {
+void Robot::TestInit() {
 
-	}
+}
 
-	void Robot::TestPeriodic() {
-
-	}
+void Robot::TestPeriodic() {
+	DriverStation::ReportError("Potentiometer Data: " + std::to_string(arm->GetPotData()));
+}
 } //frc2019
 
 #ifndef RUNNING_FRC_TESTS

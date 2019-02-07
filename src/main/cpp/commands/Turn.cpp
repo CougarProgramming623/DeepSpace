@@ -9,11 +9,12 @@
 #include "Robot.h"
 #include "AHRS.h"
 
+namespace frc2019 {
 Turn::Turn(double angle) : frc::Command("Turn") , frc::PIDOutput() {
   // Use Requires() here to declare subsystem dependencies
   // eg. Requires(Robot::chassis.get());
   Requires(Robot::driveTrain.get());
-  turnController = new PIDController(0.05f, 0.0f, 0.045f, Robot::navx, this);
+  turnController = new frc::PIDController(0.05f, 0.0f, 0.045f, Robot::navx.get(), this);
   rotateToAngleRate = 0.0;
   m_angle = angle;
   SetTimeout(2);
@@ -34,7 +35,7 @@ void Turn::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void Turn::Execute() {
   frc::DriverStation::ReportError("Executing turn");
-  Robot::driveTrain->fodDrive(0, 0, rotateToAngleRate / 2, Robot::navx->GetYaw());
+  Robot::driveTrain->FODDrive(0, 0, rotateToAngleRate / 2, Robot::navx->GetYaw());
   //if(Robot::navx->GetYaw() >= 90)
     SmartDashboard::PutNumber("Error", m_angle - Robot::navx->GetYaw());
 }
@@ -46,7 +47,7 @@ bool Turn::IsFinished() {
 
 // Called once after isFinished returns true
 void Turn::End() {
-  Robot::driveTrain->fodDrive(0,0,0,0);
+  Robot::driveTrain->FODDrive(0,0,0,0);
   DriverStation::ReportError("Finished turn");
 }
 
@@ -58,3 +59,4 @@ void Turn::PIDWrite(double output)
 {
   rotateToAngleRate = output;
 }
+} //frc2019
