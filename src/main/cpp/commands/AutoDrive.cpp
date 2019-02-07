@@ -7,9 +7,7 @@
 
 #include "commands/AutoDrive.h"
 #include "Robot.h"
-#define TICKS_PER_INCH 19.33570146
-#define S_TICKS_PER_INCH 27.83584539
-
+#include "RobotConstants.h"
 namespace frc2019 {
 AutoDrive::AutoDrive(double distance, bool strafe) {
   // Use Requires() here to declare subsystem dependencies
