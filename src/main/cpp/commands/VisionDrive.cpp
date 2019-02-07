@@ -9,11 +9,34 @@
 #include "Robot.h"
 #include "math.h"
 
+#include "AnalogGyro.h"
+
 namespace frc2019 {
 VisionDrive::VisionDrive() : frc::Command(), frc::PIDOutput() {
   // Use Requires() here to declare subsystem dependencies
   Requires(Robot::driveTrain.get());
   visionTable = start_networkTable();
+  
+  DriverStation::ReportError("Enabled");
+  xPower = zPower = yPower = 0;
+  correctIndex = 0;
+}
+
+class VisionDrive::geoffrey {
+  double PIDGet(){
+    return arrCenterX[correctIndex];
+  }
+  
+};
+// Called just before this Command runs the first time
+void VisionDrive::Initialize() {
+  std::vector<double> defaultVal{0};
+  arrCenterX = visionTable->GetNumberArray("centerX", defaultVal); 
+  arrAngle = visionTable->GetNumberArray("angle", defaultVal); 
+  arrWidth = visionTable->GetNumberArray("width", defaultVal);
+  arrHeight = visionTable->GetNumberArray("height", defaultVal);
+  geoffrey geoff;
+  geoff.PIDGet();
   turnController = new frc::PIDController(0.05f, 0.0f, 0.045f, Robot::navx, this);
   rotationRate = 0.0;
   SetTimeout(2);
@@ -23,20 +46,17 @@ VisionDrive::VisionDrive() : frc::Command(), frc::PIDOutput() {
   turnController->SetSetpoint(90.0f);
   turnController->SetContinuous(true);
   turnController->Enable();
-  DriverStation::ReportError("Enabled");
-  xPower = zPower = 0;
 }
 
-// Called just before this Command runs the first time
-void VisionDrive::Initialize() {
-    //Robot::navx->ZeroYaw();
-}
+
 
 // Called repeatedly when this Command is scheduled to run
 void VisionDrive::Execute() {
+  somethingWrong();
   getXPower();
   getZPower();
-  Robot::driveTrain->FODDrive(0, xPower/2, zPower/2, 0);
+  getYPower();
+  Robot::driveTrain->FODDrive(0, xPower/1.5, zPower/1.5, 0);
 
   //Robot::driveTrain->FODDrive(0,0,rotationRate, Robot::navx->GetYaw());
   DriverStation::ReportError("Rotation Rate: " + std::to_string(rotationRate));
@@ -44,7 +64,7 @@ void VisionDrive::Execute() {
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool VisionDrive::IsFinished() { return xPower == 0 && zPower == 0; }
+bool VisionDrive::IsFinished() { return xPower == 0 && zPower == 0 && !somethingWrong(); }
 
 // Called once after isFinished returns true
 void VisionDrive::End() {}
@@ -58,26 +78,33 @@ std::shared_ptr<nt::NetworkTable> VisionDrive::start_networkTable(){
   return inst.GetTable("vision");
 }
 
-void VisionDrive::getXPower() {
-	//nt::NetworkTableEntry centerX = visionTable->GetEntry("centerX");
-  //nt::NetworkTableEntry angle = visionTable->GetEntry("angle");
-  std::vector<double> defaultVal{0};
-  std::vector<double> arrX = visionTable->GetNumberArray("centerX", defaultVal); 
-  std::vector<double> arrA = visionTable->GetNumberArray("angle", defaultVal); 
-  int i = 0, leftCenter = 0;
-  for(; i < arrX.size(); i++){
-    if(arrA[i] > -100 && arrA[i] < -50)
-      leftCenter = arrX[i];
+bool VisionDrive::somethingWrong(){
+  while(!arrAngle[correctIndex] > -100 && !arrAngle[correctIndex] < -50){
+    correctIndex++;
+    if(correctIndex > arrAngle.size()){
+      DriverStation::ReportError("no left targets found");
+      return true;
+      correctIndex--;
+    }
   }
-	DriverStation::ReportError("First CenterX is :" + std::to_string(arrX[0]) + " Second CenterX is :" + std::to_string(arrX[1]));
-  DriverStation::ReportError("Located Left Center is" + std::to_string(arrX[i]));
+  return false;
+}
+
+void VisionDrive::getXPower() {
+  double leftCenter = arrCenterX[correctIndex];
+  
+	DriverStation::ReportError("CenterX is :" + std::to_string(arrCenterX[correctIndex]));
   xPower = double(leftCenter - 960/2)/(960/2);
-	if(abs(xPower) < 0.05)
+	if(abs(xPower) < 0.03)
     xPower = 0;
   else if (xPower > 0)
-    xPower += .1;
+    xPower += .3;
   else
-    xPower -= .1;
+    xPower -= .3;
+}
+
+void VisionDrive::getYPower(){
+  
 }
 
 void VisionDrive::getZPower(){
@@ -86,9 +113,9 @@ void VisionDrive::getZPower(){
   if(abs(zPower) < 0.05)
     zPower = 0;
   else if (zPower > 0)
-    zPower += .1;
+    zPower += .25;
   else
-    zPower -= .1;
+    zPower -= .25;
 }
 
 void VisionDrive::PIDWrite(double output) {

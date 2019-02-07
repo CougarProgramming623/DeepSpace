@@ -10,6 +10,8 @@
 #include <frc/commands/Command.h>
 #include <frc/WPILib.h>
 #include "networktables/NetworkTableInstance.h"
+#include "frc/PIDSource.h"
+
 
 namespace frc2019 {
 class VisionDrive : public frc::Command, frc::PIDOutput {
@@ -24,10 +26,17 @@ class VisionDrive : public frc::Command, frc::PIDOutput {
   std::shared_ptr<nt::NetworkTable> start_networkTable();
 private:
   std::shared_ptr<nt::NetworkTable> visionTable;
+  static std::vector<double> arrCenterX, arrAngle, arrHeight, arrWidth;
+  static int correctIndex;
   void getXPower();
 	void getZPower(); 
+  void getYPower();
+  bool somethingWrong();
   frc::PIDController* turnController;
-  double rotationRate, xPower, zPower;
-  
+  double rotationRate, xPower, zPower, yPower;
+  class geoffrey : public PIDSource{
+    public:
+      double PIDGet();
+  };
 };
 }
