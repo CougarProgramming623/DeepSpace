@@ -28,8 +28,13 @@ void DriveTrain::InitDefaultCommand() {
 void DriveTrain::FODDrive(double y, double x, double rotation, double gyroAngle) {
 	m_MecanumDrive.DriveCartesian(y, x, rotation, gyroAngle);
 }
-
+/*
 int DriveTrain::GetTicks() {
+<<<<<<< HEAD
 	return abs(m_LeftRearMC.GetSelectedSensorPosition(1));
+=======
+	return mLeftRearMC->GetSelectedSensorPosition(1);
+>>>>>>> parent of eb7e6d2... Fixed all compilation errors and added test code for getting data from potentiometer
 }
+*/
 }//frc2019

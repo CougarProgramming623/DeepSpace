@@ -9,7 +9,6 @@
 
 #include <frc/commands/Command.h>
 
-namespace frc2019 {
 class AutoDrive : public frc::Command {
  public:
   AutoDrive(double, bool);
@@ -23,4 +22,7 @@ class AutoDrive : public frc::Command {
   double m_distance;
   bool isStraffing;
 };
+<<<<<<< HEAD
 }
+=======
+>>>>>>> parent of eb7e6d2... Fixed all compilation errors and added test code for getting data from potentiometer

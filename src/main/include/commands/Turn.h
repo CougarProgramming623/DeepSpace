@@ -11,7 +11,10 @@
 #include <frc/WPILib.h>
 #include "AHRS.h"
 
+<<<<<<< HEAD
 namespace frc2019 {
+=======
+>>>>>>> parent of eb7e6d2... Fixed all compilation errors and added test code for getting data from potentiometer
 class Turn : public frc::Command, public frc::PIDOutput {
  public:
     Turn(double);
@@ -29,4 +32,7 @@ class Turn : public frc::Command, public frc::PIDOutput {
 
 
 };
+<<<<<<< HEAD
 }
+=======
+>>>>>>> parent of eb7e6d2... Fixed all compilation errors and added test code for getting data from potentiometer

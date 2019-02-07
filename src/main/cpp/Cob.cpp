@@ -8,8 +8,11 @@
 
 #include "Cob.h"
 
+<<<<<<< HEAD
 namespace frc2019 {
 
+=======
+>>>>>>> parent of eb7e6d2... Fixed all compilation errors and added test code for getting data from potentiometer
 std::shared_ptr<NetworkTable> Cob::table;
 
 nt::NetworkTableEntry Cob::x;
@@ -77,5 +80,8 @@ void Cob::PushTimeLeft(double timeLeft){
 void Cob::PushAlianceColor(bool isRed){
     Cob::isRed.SetDouble(isRed);
 }
+<<<<<<< HEAD
 
 }//namespace
+=======
+>>>>>>> parent of eb7e6d2... Fixed all compilation errors and added test code for getting data from potentiometer
