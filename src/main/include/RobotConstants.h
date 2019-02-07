@@ -21,6 +21,17 @@
 #define RAFIKI_RIGHT_BACK_ID  -1
 #define RAFIKI_BOT_NAME "Rafiki"
 
+//TICK_PER_INCH Values
+#ifdef BOT_SAMUS
+
+#define TICKS_PER_INCH 19.33570146
+#define S_TICKS_PER_INCH 27.83584539
+
+#else
+#define TICKS_PER_INCH 0.0000
+#define S_TICKS_PER_INCH 0.0000
+
+#endif
 
 //Actual definitions of general ID's and names
 #ifdef BOT_SAMUS

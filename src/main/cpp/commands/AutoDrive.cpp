@@ -7,10 +7,8 @@
 
 #include "commands/AutoDrive.h"
 #include "Robot.h"
-#define TICKS_PER_INCH 19.33570146
-#define S_TICKS_PER_INCH 27.83584539
-
-
+#include "RobotConstants.h"
+namespace frc2019 {
 AutoDrive::AutoDrive(double distance, bool strafe) {
   // Use Requires() here to declare subsystem dependencies
   // eg. Requires(Robot::chassis.get());
@@ -53,18 +51,10 @@ bool AutoDrive::IsFinished() {
 // Called once after isFinished returns true
 void AutoDrive::End() {
   //Robot::driveTrain->fodDrive(0.0, 0.0, 0.0, Robot::navx->GetYaw());
-<<<<<<< HEAD
-  int ticksDriven = Robot::driveTrain->GetTicks() - currentTicks;
-=======
   int ticksDriven = Robot::driveTrain->getTicks() - currentTicks;
->>>>>>> parent of eb7e6d2... Fixed all compilation errors and added test code for getting data from potentiometer
   DriverStation::ReportError("Ticks Driven: " + std::to_string(ticksDriven));
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
 void AutoDrive::Interrupted() {}
-<<<<<<< HEAD
-}
-=======
->>>>>>> parent of eb7e6d2... Fixed all compilation errors and added test code for getting data from potentiometer
