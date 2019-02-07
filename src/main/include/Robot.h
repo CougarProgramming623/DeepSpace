@@ -9,6 +9,7 @@
 
 #include <frc/TimedRobot.h>
 #include <frc/WPILib.h>
+#include <ctre/Phoenix.h>
 #include "subsystems/DriveTrain.h"
 #include "subsystems/Arm.h"
 #include "AHRS.h"
@@ -35,6 +36,9 @@ class Robot : public frc::TimedRobot {
 	static std::shared_ptr<Arm> arm;
 	static std::shared_ptr<AHRS> navx;
 	static std::shared_ptr<OI> oi;
+	private:
+	//TalonSRX* armMC;
+	
 };
 
 

@@ -9,9 +9,12 @@
 
 namespace frc2019 {
 Arm::Arm() : Subsystem("ExampleSubsystem") {
-  armTalon.reset(new TalonSRX(17));
-  armTalon->ConfigSelectedFeedbackSensor(FeedbackDevice::Analog);
+  armMC = new TalonSRX(17);
+  armMC->ConfigSelectedFeedbackSensor(FeedbackDevice::Analog, 0, 10);
+  potData = 0;
 }
+
+
 
 void Arm::InitDefaultCommand() {
   // Set the default command for a subsystem here.
@@ -19,9 +22,6 @@ void Arm::InitDefaultCommand() {
 }
 
 int Arm::GetPotData() {
-// Put methods for controlling this subsystem
-// here. Call these from Commands.
-  return armTalon->GetSensorCollection().GetAnalogIn();
+  return armMC->GetSensorCollection().GetAnalogIn();
 }
-
 }

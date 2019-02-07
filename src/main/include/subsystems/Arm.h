@@ -16,11 +16,12 @@ class Arm : public frc::Subsystem {
  private:
   // It's desirable that everything possible under private except
   // for methods that implement subsystem capabilities
-  std::shared_ptr<TalonSRX> armTalon;
-
+  TalonSRX* armMC;
+  int potData;
  public:
   Arm();
   void InitDefaultCommand() override;
+  TalonSRX* GetArmMC();
   int GetPotData();
 };
 }

@@ -12,6 +12,7 @@ namespace frc2019 {
 	void Robot::RobotInit() {
 		Cob::InitBoard();
 		driveTrain.reset(new DriveTrain());
+		arm.reset(new Arm());
 		oi.reset(new OI());
 		try {
 			navx.reset(new AHRS(SPI::Port::kMXP));
@@ -39,22 +40,21 @@ namespace frc2019 {
 	}
 
 void Robot::TeleopPeriodic() {
-	DriverStation::ReportError("TeleopPeriodic");
+	//DriverStation::ReportError("TeleopPeriodic");
+	DriverStation::ReportError(std::to_string(arm->GetPotData()));
 	frc::Scheduler::GetInstance()->Run();
 	Cob::PushRotation(navx->GetYaw());
 }
 
-	void Robot::TestInit() {
+void Robot::TestInit() {
+}
 
-	}
-
-	void Robot::TestPeriodic() {
-		DriverStation::ReportError("Potentiometer Reading: " + std::to_string(arm->GetPotData()));
-	}
+void Robot::TestPeriodic() {
+}
 } //frc2019
 
 #ifndef RUNNING_FRC_TESTS
-int main() {
+int main() { 
 	using namespace frc2019;
 	return frc::StartRobot<Robot>();
 }
