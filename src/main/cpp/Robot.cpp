@@ -7,6 +7,7 @@ namespace frc2019 {
 	std::shared_ptr<DriveTrain> Robot::driveTrain;
 	std::shared_ptr<AHRS> Robot::navx;
 	std::shared_ptr<OI> Robot::oi;
+	std::shared_ptr<Arm> Robot::arm;
 	
 	void Robot::RobotInit() {
 		Cob::InitBoard();
@@ -48,7 +49,7 @@ void Robot::TeleopPeriodic() {
 	}
 
 	void Robot::TestPeriodic() {
-
+		DriverStation::ReportError("Potentiometer Reading: " + std::to_string(arm->GetPotData()));
 	}
 } //frc2019
 
