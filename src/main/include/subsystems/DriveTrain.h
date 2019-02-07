@@ -1,8 +1,8 @@
 
 #pragma once
 
-#include "frc/WPILib.h"
-#include "ctre/Phoenix.h"
+#include <frc/WPILib.h>
+#include <ctre/Phoenix.h>
 #include "AHRS.h"
 
 #include <frc/commands/Subsystem.h>
