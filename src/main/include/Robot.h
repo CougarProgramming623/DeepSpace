@@ -36,9 +36,10 @@ class Robot : public frc::TimedRobot {
 	static std::shared_ptr<Arm> arm;
 	static std::shared_ptr<AHRS> navx;
 	static std::shared_ptr<OI> oi;
+	static Joystick* joystick;
+	static Joystick* buttonboard;
 	private:
 	//TalonSRX* armMC;
-	
 };
 
 

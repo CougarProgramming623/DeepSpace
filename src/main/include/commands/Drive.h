@@ -15,6 +15,8 @@ public:
 	bool IsFinished() override;
 	void End() override;
 	void Interrupted() override;
+	void SetAlignDriver();
+	void SetFODDriver();
 private:
 	double y, x, rot, angle;
 };
