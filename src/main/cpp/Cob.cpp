@@ -9,12 +9,13 @@
 #include "Cob.h"
 
 namespace frc2019 {
-
-std::shared_ptr<NetworkTable> Cob::table;
+std::shared_ptr<nt::NetworkTable> Cob::table;
 
 nt::NetworkTableEntry Cob::x;
 nt::NetworkTableEntry Cob::y;
 nt::NetworkTableEntry Cob::rotation;
+nt::NetworkTableEntry Cob::xVelocity;
+nt::NetworkTableEntry Cob::yVelocity;
 nt::NetworkTableEntry Cob::mainArmRotation;
 nt::NetworkTableEntry Cob::wristRotation;
 nt::NetworkTableEntry Cob::wristVacuum;
@@ -33,6 +34,8 @@ void Cob::InitBoard(){
     table = inst.GetTable("cob");
     x = table->GetEntry("location/x");
     y = table->GetEntry("location/y");
+    xVelocity = table->GetEntry("location/xVelocity");
+    yVelocity = table->GetEntry("location/yVelocity");
     rotation = table->GetEntry("location/rotation");
     mainArmRotation = table->GetEntry("arm/main-arm/rotation");
     wristRotation = table->GetEntry("arm/wrist/rotation");
@@ -52,6 +55,12 @@ void Cob::PushY(double y){
 }
 void Cob::PushRotation(double rotation){
     Cob::rotation.SetDouble(rotation);    
+}
+void Cob::PushXVelocity(double xVelocity) {
+    Cob::xVelocity.SetDouble(xVelocity);
+}
+void Cob::PushYVelocity(double yVelocity) {
+    Cob::yVelocity.SetDouble(yVelocity);
 }
 void Cob::PushMainArmRotation(double rotation){
     Cob::mainArmRotation.SetDouble(rotation);
