@@ -21,6 +21,8 @@ void Robot::RobotInit() {
 		err += ex.what();
 		DriverStation::ReportError(err.c_str());
 	}
+	std::string color = frc::DriverStation::GetInstance().GetAlliance() == frc::DriverStation::Alliance::kRed ? "red" : "blue";
+	Cob::PushValue(COB_ALLIANCE_COLOR, color);
 }
 
 void Robot::RobotPeriodic() {

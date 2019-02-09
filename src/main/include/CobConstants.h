@@ -12,6 +12,7 @@
 #define COB_SANDSTORM "robot/is-sandstorm"
 #define COB_TELEOP "robot/is-teleop"
 #define COB_ENABLED "robot/is-enabled"
+#define COB_ALLIANCE_COLOR "robot/alliance-color"
 #define COB_FIELD_ORIENTED "robot/is-field-oriented"
 #define COB_TIME "fms/time-left"
 #define COB_RED "fms/is-red" 
