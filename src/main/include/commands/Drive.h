@@ -4,6 +4,9 @@
 #include <frc/commands/Command.h>
 #include <frc/WPILib.h>
 #include "AHRS.h"
+#include "OI.h"
+
+namespace frc2019 {
 
 namespace frc2019 {
 
@@ -15,9 +18,9 @@ public:
 	bool IsFinished() override;
 	void End() override;
 	void Interrupted() override;
-	private:
-	double y, x, rot, angle;
-	std::shared_ptr<Joystick> joystick;
+	void SetAlignDriver();
+	void SetFODDriver();
+	
 };
 
 

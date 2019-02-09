@@ -11,6 +11,11 @@
 		"editor.insertSpaces": false,
 		"editor.detectIndentation": false,
 		"editor.rulers": [],
+		"files.associations": {
+			"memory": "cpp",
+			"cstdlib": "cpp",
+			"xstring": "cpp"
+		},
 	}
 	
 	
