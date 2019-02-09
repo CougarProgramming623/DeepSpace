@@ -14,6 +14,11 @@
 
 
 namespace frc2019 {
+class geoffrey : public frc::PIDSource {
+  public:
+    double PIDGet();
+};
+
 class VisionDrive : public frc::Command, frc::PIDOutput {
  public:
   VisionDrive();
@@ -24,19 +29,19 @@ class VisionDrive : public frc::Command, frc::PIDOutput {
   void Interrupted() override;
   void PIDWrite(double output) override;
   std::shared_ptr<nt::NetworkTable> start_networkTable();
-private:
-  std::shared_ptr<nt::NetworkTable> visionTable;
   static std::vector<double> arrCenterX, arrAngle, arrHeight, arrWidth;
   static int correctIndex;
-  void getXPower();
+  volatile static double xPower, zPower, yPower;
+  static double getPower();
+  static void getXPower();
+private:
+  static geoffrey geoff;
+  static std::shared_ptr<nt::NetworkTable> visionTable;
+
 	void getZPower(); 
   void getYPower();
   bool somethingWrong();
-  frc::PIDController* turnController;
-  double rotationRate, xPower, zPower, yPower;
-  class geoffrey : public PIDSource{
-    public:
-      double PIDGet();
-  };
+  static frc::PIDController* turnController;
+  double rotationRate;
 };
 }
