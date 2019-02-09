@@ -1,7 +1,7 @@
-
 #include "Robot.h"
 #include "Cob.h"
 #include <frc/DriverStation.h>
+
 namespace frc2019 {
 
 std::shared_ptr<DriveTrain> Robot::driveTrain;
@@ -21,22 +21,18 @@ void Robot::RobotInit() {
 		err += ex.what();
 		DriverStation::ReportError(err.c_str());
 	}
-	void Robot::RobotPeriodic() {
-		Cob::PushValue(COB_X_VEL,Robot::navx->GetVelocityX());
-		Cob::PushValue(COB_Y_VEL,Robot::navx->GetVelocityY());
-		Cob::PushValue(COB_ROTATION,Robot::navx->GetYaw());
-		Cob::PushValue(COB_MAIN_ARM_ROTATION,Robot::arm->GetPotData());
-	}
-		
-	void Robot::AutonomousInit() {
-
-	navx->ZeroYaw();
-
-	//CameraServer::GetInstance()->StartAutomaticCapture();
 }
 
+void Robot::RobotPeriodic() {
+	Cob::PushValue(COB_X_VEL,Robot::navx->GetVelocityX());
+	Cob::PushValue(COB_Y_VEL,Robot::navx->GetVelocityY());
+	Cob::PushValue(COB_ROTATION,Robot::navx->GetYaw());
+	Cob::PushValue(COB_MAIN_ARM_ROTATION,Robot::arm->GetPotData());
+}
+		
 void Robot::AutonomousInit() {
-	
+	navx->ZeroYaw();
+	//CameraServer::GetInstance()->StartAutomaticCapture();
 }
 
 void Robot::AutonomousPeriodic() {
