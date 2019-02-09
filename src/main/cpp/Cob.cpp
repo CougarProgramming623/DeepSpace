@@ -9,20 +9,8 @@
 #include "Cob.h"
 
 namespace frc2019 {
-
-std::shared_ptr<NetworkTable> Cob::table;
-
-nt::NetworkTableEntry Cob::x;
-nt::NetworkTableEntry Cob::y;
-nt::NetworkTableEntry Cob::rotation;
-nt::NetworkTableEntry Cob::mainArmRotation;
-nt::NetworkTableEntry Cob::wristRotation;
-nt::NetworkTableEntry Cob::wristVacuum;
-nt::NetworkTableEntry Cob::isSandstorm;
-nt::NetworkTableEntry Cob::isTeleop;
-nt::NetworkTableEntry Cob::isEnabled;
-nt::NetworkTableEntry Cob::timeLeft;
-nt::NetworkTableEntry Cob::isRed;
+std::shared_ptr<nt::NetworkTable> Cob::table;
+std::map<std::string,nt::NetworkTableEntry> Cob::map;
 
 Cob::Cob() {
    //never contruct
@@ -31,51 +19,14 @@ Cob::Cob() {
 void Cob::InitBoard(){
     auto inst = nt::NetworkTableInstance::GetDefault();
     table = inst.GetTable("cob");
-    x = table->GetEntry("location/x");
-    y = table->GetEntry("location/y");
-    rotation = table->GetEntry("location/rotation");
-    mainArmRotation = table->GetEntry("arm/main-arm/rotation");
-    wristRotation = table->GetEntry("arm/wrist/rotation");
-    wristVacuum = table->GetEntry("arm/wrist/vacuum");
-    isSandstorm = table->GetEntry("robot/is-sandstorm");
-    isTeleop = table->GetEntry("robot/is-teleop");
-    isEnabled = table->GetEntry("robot/is-enabled");
-    timeLeft = table->GetEntry("fms/time-left");
-    isRed = table->GetEntry("fms/is-red");
+ }
+
+
+void Cob::InitValue(std::string str){
+  if(map.count(str)==0){
+    map[str] = table->GetEntry(str);
+  }
 }
 
-void Cob::PushX(double x){
-    Cob::x.SetDouble(x);
-}
-void Cob::PushY(double y){
-    Cob::y.SetDouble(y);
-}
-void Cob::PushRotation(double rotation){
-    Cob::rotation.SetDouble(rotation);    
-}
-void Cob::PushMainArmRotation(double rotation){
-    Cob::mainArmRotation.SetDouble(rotation);
-}
-void Cob::PushWristRotation(double rotation){
-    Cob::wristRotation.SetDouble(rotation);
-}
-void Cob::PushWristVacuum(bool vacuum){
-    Cob::wristVacuum.SetBoolean(vacuum);
-}
-void Cob::PushIsSandstorm(bool isSandstorm){
-    Cob::isSandstorm.SetBoolean(isSandstorm);
-}
-void Cob::PushIsTeleop(bool isTeleop){
-    Cob::isTeleop.SetBoolean(isTeleop);
-}
-void Cob::PushIsEnabled(bool isEnabled){
-    Cob::isEnabled.SetBoolean(isEnabled);
-}
-void Cob::PushTimeLeft(double timeLeft){
-    Cob::timeLeft.SetDouble(timeLeft);
-}
-void Cob::PushAlianceColor(bool isRed){
-    Cob::isRed.SetDouble(isRed);
-}
 
 }//namespace

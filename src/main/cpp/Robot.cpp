@@ -21,14 +21,14 @@ void Robot::RobotInit() {
 		err += ex.what();
 		DriverStation::ReportError(err.c_str());
 	}
-	
-	
-	/*
-	fodToggle = new JoystickButton(Robot::buttonboard, 1);
-	fodToggle->WhenPressed(new Drive());
-	alignToggle = new JoystickButton(Robot::buttonboard, 2);
-	alignToggle->WhenPressed();
-	*/
+	void Robot::RobotPeriodic() {
+		Cob::PushValue(COB_X_VEL,Robot::navx->GetVelocityX());
+		Cob::PushValue(COB_Y_VEL,Robot::navx->GetVelocityY());
+		Cob::PushValue(COB_ROTATION,Robot::navx->GetYaw());
+		Cob::PushValue(COB_MAIN_ARM_ROTATION,Robot::arm->GetPotData());
+	}
+		
+	void Robot::AutonomousInit() {
 
 	navx->ZeroYaw();
 
@@ -51,7 +51,6 @@ void Robot::TeleopPeriodic() {
 	//DriverStation::ReportError("TeleopPeriodic");
 	DriverStation::ReportError(std::to_string(arm->GetPotData()));
 	frc::Scheduler::GetInstance()->Run();
-	Cob::PushRotation(navx->GetYaw());
 }
 
 void Robot::TestInit() {

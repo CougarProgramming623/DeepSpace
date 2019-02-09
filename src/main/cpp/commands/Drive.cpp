@@ -24,6 +24,7 @@ void Drive::Execute() {
 	double y = -OI::driverJoystick.GetY();
 	double x = OI::driverJoystick.GetX();
 	double rot = OI::driverJoystick.GetZ();
+
 	double gyro = Robot::navx->GetYaw();
 	if (Robot::oi->IsFOD()) {
 		Robot::driveTrain->FODDrive(y, x, rot, gyro);
