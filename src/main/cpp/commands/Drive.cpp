@@ -22,7 +22,7 @@ void Drive::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void Drive::Execute() {
 	double y = -Robot::oi->GetDriverJoystick()->GetY();
-	double x = -Robot::oi->GetDriverJoystick()->GetX();
+	double x = Robot::oi->GetDriverJoystick()->GetX();
 	double rot = Robot::oi->GetDriverJoystick()->GetZ();
 	double gyro = Robot::navx->GetYaw();
 	if (Robot::oi->IsFOD()) {
