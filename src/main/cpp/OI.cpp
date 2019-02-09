@@ -14,7 +14,7 @@ OI::OI() :
 	cargoGround(buttonBoard.get(), OI_ARM_POSITION_CARGO_GROUND),
 	manualControlOverride(buttonBoard.get(), OI_ARM_MANUAL_MODE), 
 	vMode(buttonBoard.get(), OI_ARM_V_MODE), 
-	fodToggle(buttonBoard.get(), OI_DRIVE_FOD_TOGGLE)
+	fodToggle(driverJoystick.get(), OI_DRIVE_FOD_TOGGLE)
 	{
 		fodToggle.WhenPressed(new BooleanToggle(&fod));
 	}
