@@ -36,10 +36,10 @@ namespace frc2019 {
 	}
 
 	void Robot::RobotPeriodic() {
-		Cob::PushXVelocity(Robot::navx->GetVelocityX());
-		Cob::PushYVelocity(Robot::navx->GetVelocityY());
-		Cob::PushRotation(Robot::navx->GetYaw());
-		Cob::PushMainArmRotation(Robot::arm->GetPotData());
+		Cob::PushValue(COB_X_VEL,Robot::navx->GetVelocityX());
+		Cob::PushValue(COB_Y_VEL,Robot::navx->GetVelocityY());
+		Cob::PushValue(COB_ROTATION,Robot::navx->GetYaw());
+		Cob::PushValue(COB_MAIN_ARM_ROTATION,Robot::arm->GetPotData());
 	}
 		
 	void Robot::AutonomousInit() {

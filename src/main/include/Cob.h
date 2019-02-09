@@ -11,6 +11,10 @@
 #include "networktables/NetworkTableEntry.h"
 #include "networktables/NetworkTableInstance.h"
 #include "Robot.h"
+#include "CobConstants.h"
+
+#include <string>
+#include <map>
 
 namespace frc2019 {
 class Cob {
@@ -19,35 +23,38 @@ class Cob {
   Cob();
   static void InitBoard();
 
-  //set values
-  static void PushX(double x);
-  static void PushY(double y);
-  static void PushRotation(double rotation);
-  static void PushXVelocity(double xVelocity);
-  static void PushYVelocity(double yVelocity);
-  static void PushMainArmRotation(double rotation);
-  static void PushWristRotation(double rotation);
-  static void PushWristVacuum(bool isOn);
-  static void PushIsSandstorm(bool isSandstorm);
-  static void PushIsTeleop(bool isTeleop);
-  static void PushIsEnabled(bool isEnabled);
-  static void PushTimeLeft(double timeLeft);
-  static void PushAlianceColor(bool isRed);
+  template<typename T>
+  static void PushValue(std::string str,T t);
 
-  //entries
-
-  static nt::NetworkTableEntry x;
-  static nt::NetworkTableEntry y;
-  static nt::NetworkTableEntry rotation;
-  static nt::NetworkTableEntry xVelocity;
-  static nt::NetworkTableEntry yVelocity;
-  static nt::NetworkTableEntry mainArmRotation;
-  static nt::NetworkTableEntry wristRotation;
-  static nt::NetworkTableEntry wristVacuum;
-  static nt::NetworkTableEntry isSandstorm;
-  static nt::NetworkTableEntry isTeleop;
-  static nt::NetworkTableEntry isEnabled;
-  static nt::NetworkTableEntry timeLeft;
-  static nt::NetworkTableEntry isRed;
+// private:
+  static std::map<std::string,nt::NetworkTableEntry> map;
+  private:
+    static void InitValue(std::string str);
 };
+
+
+template<>
+inline void Cob::PushValue<double>(std::string str, double t){
+  InitValue(str);
+  map.at(str).SetDouble(t);
 }
+
+template<>
+inline void Cob::PushValue<float>(std::string str, float t){
+  Cob::PushValue(str,(double)t);
+}
+
+template<>
+inline void Cob::PushValue<bool>(std::string str, bool t){
+  InitValue(str);
+  map.at(str).SetBoolean(t);
+}
+
+template<>
+inline void Cob::PushValue<int>(std::string str, int t){
+  Cob::PushValue(str,(double)t);
+}
+
+}
+
+
