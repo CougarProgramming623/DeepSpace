@@ -35,8 +35,8 @@ VisionDrive::VisionDrive() : frc::Command(), frc::PIDOutput() {
 
 double geoffrey::PIDGet(){
   VisionDrive::getXPower();
-  DriverStation::ReportError("val:" + std::to_string(VisionDrive::getPower()));
-  return VisionDrive::getPower();
+  //DriverStation::ReportError("val:" + std::to_string(VisionDrive::getPower()));
+  return -(VisionDrive::getPower() - 960/2) / (960 / 2);
 }
 
 double VisionDrive::getPower(){
@@ -50,14 +50,14 @@ void VisionDrive::Initialize() {
   arrAngle = visionTable->GetNumberArray("angle", defaultVal); 
   arrWidth = visionTable->GetNumberArray("width", defaultVal);
   arrHeight = visionTable->GetNumberArray("height", defaultVal);
-  turnController = new frc::PIDController(0.05f, 0.0f, 0.045f, &geoff, this);
+  turnController = new frc::PIDController(.7f, 0.05f, 0.1f, &geoff, this);
   rotationRate = 0.0;
-  SetTimeout(5);
-  turnController->SetInputRange(0.0f, 960.0f);
+  SetTimeout(5); 
+  turnController->SetInputRange(-1.0f, 1.0f);
   turnController->SetOutputRange(-1.0, 1.0);
-  turnController->SetAbsoluteTolerance(1.0f);
+  turnController->SetPercentTolerance(1.0f);
   turnController->SetPIDSourceType(frc::PIDSourceType::kDisplacement);
-  turnController->SetSetpoint(960.0/2);
+  turnController->SetSetpoint(0.0f);
   turnController->SetContinuous(false);
   turnController->Enable();
 }
@@ -70,8 +70,8 @@ void VisionDrive::Execute() {
  // Robot::driveTrain->FODDrive(0, 0, rotationRate, 0);
   getXPower();
 
-  //Robot::driveTrain->FODDrive(0,0,rotationRate, Robot::navx->GetYaw());
-  DriverStation::ReportError("Rotation Rate: " + std::to_string(rotationRate));
+  Robot::driveTrain->FODDrive(0,rotationRate,0, Robot::navx->GetYaw());
+  //DriverStation::ReportError("Rotation Rate: " + std::to_string(rotationRate));
   //DriverStation::ReportError("Current Angle: " + std::to_string(Robot::navx->GetYaw()));
 }
 
