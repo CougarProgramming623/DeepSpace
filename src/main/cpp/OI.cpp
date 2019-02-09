@@ -1,6 +1,8 @@
 
 #include "OI.h"
 #include <frc/DriverStation.h>
+#include "commands/PositveAngleTurnTest.h"
+
 
 namespace frc2019 {
 
@@ -21,6 +23,8 @@ OI::OI() :
 		fodToggle.WhenPressed(new BooleanToggle(&fod, [](bool newValue) {
 			frc::DriverStation::ReportError(std::string("LAMBDA TEST FOD: ") + (newValue ? "true" : "false"));
 		}));
+
+		vMode.WhenPressed(new PositveAngleTurnTest());
 	}
 
 

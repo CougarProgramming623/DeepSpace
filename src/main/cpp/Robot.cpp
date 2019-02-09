@@ -1,6 +1,7 @@
 #include "Robot.h"
 #include "Cob.h"
 #include <frc/DriverStation.h>
+#include "commands/PositveAngleTurnTest.h"
 
 namespace frc2019 {
 
@@ -12,15 +13,21 @@ std::shared_ptr<Arm> Robot::arm;
 void Robot::RobotInit() {
 	Cob::InitBoard();
 	driveTrain.reset(new DriveTrain());
+	DriverStation::ReportError("constructed drivetrain");
 	arm.reset(new Arm());
+	DriverStation::ReportError("constructed arm");
 	oi.reset(new OI());
+	DriverStation::ReportError("constructed oi");
 	try {
 		navx.reset(new AHRS(SPI::Port::kMXP));
+		DriverStation::ReportError("constructed navx");
 	} catch (std::exception &ex) {
 		std::string err = "Error instantiating navX MXP: ";
 		err += ex.what();
 		DriverStation::ReportError(err.c_str());
 	}
+  
+	Robot::navx.get()->ZeroYaw();
 	std::string color = frc::DriverStation::GetInstance().GetAlliance() == frc::DriverStation::Alliance::kRed ? "red" : "blue";
 	Cob::PushValue(COB_ALLIANCE_COLOR, color);
 }
@@ -34,6 +41,9 @@ void Robot::RobotPeriodic() {
 		
 void Robot::AutonomousInit() {
 	navx->ZeroYaw();
+	autonomousCommand.reset(new PositveAngleTurnTest());
+	if(autonomousCommand)
+		autonomousCommand->Start();
 	//CameraServer::GetInstance()->StartAutomaticCapture();
 }
 
@@ -42,7 +52,6 @@ void Robot::AutonomousPeriodic() {
 }
 
 void Robot::TeleopInit() {
-
 }
 
 void Robot::TeleopPeriodic() {
