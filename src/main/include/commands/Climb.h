@@ -7,23 +7,19 @@
 
 #pragma once
 
-#include <frc/commands/Command.h>
-#include <frc/DriverStation.h>
-#include <functional>
+#include <frc/commands/CommandGroup.h>
+
+#include "GameEnums.h"
+
 
 namespace frc2019 {
 
-class BooleanToggle : public frc::Command {
+class Climb : public frc::CommandGroup {
 public:
-	BooleanToggle(bool* boolean, std::function<void(bool newValue)> onFlip);
-	void Initialize() override;
-	void Execute() override;
-	bool IsFinished() override;
-	void End() override;
-	void Interrupted() override;
- private:
-	bool* boolean;
-	std::function<void(bool newValue)> onFlip;
+	Climb(ClimbHeight height);
+private:
+	ClimbHeight m_Height;
 };
+
 
 }//namespace

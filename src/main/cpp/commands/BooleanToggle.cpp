@@ -8,20 +8,17 @@
 #include "commands/BooleanToggle.h"
 
 namespace frc2019 {
-BooleanToggle::BooleanToggle(bool* ptr) : boolean(ptr) {
-	// Use Requires() here to declare subsystem dependencies
-	// eg. Requires(Robot::chassis.get());
-}
+BooleanToggle::BooleanToggle(bool* ptr, std::function<void(bool newValue)> onFlip) : boolean(ptr), onFlip(onFlip) 
+	{}
 
 // Called just before this Command runs the first time
 void BooleanToggle::Initialize() {
-	frc::DriverStation::ReportError(std::string("Before: ") + (*boolean ? "True" : "False"));
 	if(*boolean) {
 		*boolean = false;
 	} else {
 		*boolean = true;
 	}
-	frc::DriverStation::ReportError(std::string("After: ") + (*boolean ? "True" : "False"));
+	onFlip(*boolean);
 }
 
 // Called repeatedly when this Command is scheduled to run

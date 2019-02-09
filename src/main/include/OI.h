@@ -1,12 +1,9 @@
 #pragma once
 #include <frc/WPILib.h>
 #include "commands/BooleanToggle.h"
+#include "GameEnums.h"
 
 namespace frc2019 {
-
-enum SliderStatus {
-	DIAL_CONTROL, MANUAL_PID_CONTROL, VELOCITY_CONTROL
-};
 
 #define OI_ARM_POSITION_LOW 1
 #define OI_ARM_POSITION_MEDUIM 2
@@ -26,12 +23,13 @@ enum SliderStatus {
 
 
 class OI {
+public:
+	static frc::Joystick driverJoystick;
+	static frc::Joystick buttonBoard;
 
 private:
 	SliderStatus sliderMode = SliderStatus::DIAL_CONTROL;
 
-	std::shared_ptr<frc::Joystick> driverJoystick;
-	std::shared_ptr<frc::Joystick> buttonBoard;
 
 	//Dial buttons
 	frc::JoystickButton low, medium, high, cargoHold, cargoGround;

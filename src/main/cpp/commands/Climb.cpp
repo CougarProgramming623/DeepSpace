@@ -5,25 +5,16 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#pragma once
-
-#include <frc/commands/Command.h>
-#include <frc/DriverStation.h>
-#include <functional>
+#include "commands/Climb.h"
+#include "Robot.h"
 
 namespace frc2019 {
 
-class BooleanToggle : public frc::Command {
-public:
-	BooleanToggle(bool* boolean, std::function<void(bool newValue)> onFlip);
-	void Initialize() override;
-	void Execute() override;
-	bool IsFinished() override;
-	void End() override;
-	void Interrupted() override;
- private:
-	bool* boolean;
-	std::function<void(bool newValue)> onFlip;
-};
+Climb::Climb(ClimbHeight height) : 
+	m_Height(height) {
+		//Add other commands here
+
+	}
+
 
 }//namespace
