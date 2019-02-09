@@ -8,25 +8,20 @@
 #pragma once
 
 #include <frc/commands/Command.h>
-#include <frc/WPILib.h>
-#include "AHRS.h"
+#include <frc/DriverStation.h>
 
 namespace frc2019 {
-class Turn : public frc::Command, public frc::PIDOutput {
- public:
-    Turn(double);
-    void Initialize() override;
-    void Execute() override;
-    bool IsFinished() override;
-    void End() override;
-    void Interrupted() override;
-    void PIDWrite(double) override;
-  private:
-    PIDController *turnController;
-    double m_angle;
-    double rotateToAngleRate;
-    AHRS *gyro;
 
-
+class BooleanToggle : public frc::Command {
+public:
+	BooleanToggle(bool* boolean);
+	void Initialize() override;
+	void Execute() override;
+	bool IsFinished() override;
+	void End() override;
+	void Interrupted() override;
+ private:
+	bool* boolean;
 };
-}
+
+}//namespace

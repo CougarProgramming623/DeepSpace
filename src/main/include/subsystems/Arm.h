@@ -7,26 +7,21 @@
 
 #pragma once
 
-#include <frc/commands/Command.h>
+#include <frc/commands/Subsystem.h>
 #include <frc/WPILib.h>
-#include "AHRS.h"
+#include <ctre/Phoenix.h>
 
 namespace frc2019 {
-class Turn : public frc::Command, public frc::PIDOutput {
+class Arm : public frc::Subsystem {
+ private:
+  // It's desirable that everything possible under private except
+  // for methods that implement subsystem capabilities
+  TalonSRX* armMC;
+  int potData;
  public:
-    Turn(double);
-    void Initialize() override;
-    void Execute() override;
-    bool IsFinished() override;
-    void End() override;
-    void Interrupted() override;
-    void PIDWrite(double) override;
-  private:
-    PIDController *turnController;
-    double m_angle;
-    double rotateToAngleRate;
-    AHRS *gyro;
-
-
+  Arm();
+  void InitDefaultCommand() override;
+  TalonSRX* GetArmMC();
+  int GetPotData();
 };
 }

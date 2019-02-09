@@ -1,6 +1,6 @@
 #pragma once
-
-#include "WPILib.h"
+#include <frc/WPILib.h>
+#include "commands/BooleanToggle.h"
 
 namespace frc2019 {
 
@@ -15,9 +15,11 @@ enum SliderStatus {
 #define OI_ARM_POSITION_CARGO_HOLD 3
 #define OI_ARM_POSITION_CARGO_GROUND 10
 
+#define OI_DRIVE_FOD_TOGGLE 4
+#define OI_DRIVE_ALIGN_TOGGLE 7
+
 #define OI_ARM_MANUAL_MODE 8
 #define OI_ARM_V_MODE 9
-
 
 #define OI_ARM_POSITION_SLIDER 1
 #define OI_WRIST_POSITION_SLIDER 2
@@ -35,6 +37,10 @@ private:
 	frc::JoystickButton low, medium, high, cargoHold, cargoGround;
 	//Arm Control Overrides
 	frc::JoystickButton manualControlOverride, vMode;
+	//Drive Control Overrids
+	frc::JoystickButton fodToggle;
+
+	bool fod;
 	
 public:
 	OI();
@@ -44,6 +50,8 @@ public:
 	std::shared_ptr<frc::Joystick> GetDriverJoystick();
 	std::shared_ptr<frc::Joystick> GetButtonBoard();
 
+	inline bool IsAlignmentMode() { return !IsFOD(); }
+	bool IsFOD();
 };
 
 

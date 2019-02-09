@@ -9,11 +9,11 @@
 
 #include <frc/TimedRobot.h>
 #include <frc/WPILib.h>
-#include <subsystems/DriveTrain.h>
+#include <ctre/Phoenix.h>
+#include "subsystems/DriveTrain.h"
+#include "subsystems/Arm.h"
 #include "AHRS.h"
 #include "OI.h"
-
-//eayfughiafewef rg eaifghwife
 
 namespace frc2019 {
 
@@ -31,8 +31,13 @@ class Robot : public frc::TimedRobot {
 	void TestPeriodic() override;
 	std::unique_ptr<Command> autonomousCommand;
 	static std::shared_ptr<DriveTrain> driveTrain;
+	static std::shared_ptr<Arm> arm;
 	static std::shared_ptr<AHRS> navx;
 	static std::shared_ptr<OI> oi;
+	static Joystick* joystick;
+	static Joystick* buttonboard;
+	private:
+	//TalonSRX* armMC;
 };
 
 

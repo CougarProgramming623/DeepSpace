@@ -5,28 +5,23 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#pragma once
-
-#include <frc/commands/Command.h>
-#include <frc/WPILib.h>
-#include "AHRS.h"
+#include "subsystems/Arm.h"
 
 namespace frc2019 {
-class Turn : public frc::Command, public frc::PIDOutput {
- public:
-    Turn(double);
-    void Initialize() override;
-    void Execute() override;
-    bool IsFinished() override;
-    void End() override;
-    void Interrupted() override;
-    void PIDWrite(double) override;
-  private:
-    PIDController *turnController;
-    double m_angle;
-    double rotateToAngleRate;
-    AHRS *gyro;
+Arm::Arm() : Subsystem("ExampleSubsystem") {
+  armMC = new TalonSRX(17);
+  armMC->ConfigSelectedFeedbackSensor(FeedbackDevice::Analog, 0, 10);
+  potData = 0;
+}
 
 
-};
+
+void Arm::InitDefaultCommand() {
+  // Set the default command for a subsystem here.
+  // SetDefaultCommand(new MySpecialCommand());
+}
+
+int Arm::GetPotData() {
+  return armMC->GetSensorCollection().GetAnalogIn();
+}
 }

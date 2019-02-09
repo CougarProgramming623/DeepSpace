@@ -30,6 +30,7 @@ void DriveTrain::FODDrive(double y, double x, double rotation, double gyroAngle)
 }
 
 int DriveTrain::GetTicks() {
-	return abs(m_LeftRearMC.GetSelectedSensorPosition(1));
+	return m_LeftRearMC.GetSelectedSensorPosition(1);
 }
+
 }//frc2019
