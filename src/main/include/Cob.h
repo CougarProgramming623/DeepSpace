@@ -55,6 +55,11 @@ inline void Cob::PushValue<int>(std::string str, int t){
   Cob::PushValue(str,(double)t);
 }
 
+template<>
+inline void Cob::PushValue<std::string>(std::string str, std::string val) {
+  InitValue(str);
+  map.at(str).SetString(val);
+}
 }
 
 

@@ -1,8 +1,8 @@
-
 #include "Robot.h"
 #include "Cob.h"
 #include <frc/DriverStation.h>
 #include "commands/PositveAngleTurnTest.h"
+
 namespace frc2019 {
 
 std::shared_ptr<DriveTrain> Robot::driveTrain;
@@ -26,7 +26,10 @@ void Robot::RobotInit() {
 		err += ex.what();
 		DriverStation::ReportError(err.c_str());
 	}
+  
 	Robot::navx.get()->ZeroYaw();
+	std::string color = frc::DriverStation::GetInstance().GetAlliance() == frc::DriverStation::Alliance::kRed ? "red" : "blue";
+	Cob::PushValue(COB_ALLIANCE_COLOR, color);
 }
 
 void Robot::RobotPeriodic() {
