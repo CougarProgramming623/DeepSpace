@@ -27,14 +27,11 @@ void Drive::Execute() {
 	double gyro = Robot::navx->GetYaw();
 	if (Robot::oi->IsFOD()) {
 		Robot::driveTrain->FODDrive(y, x, rot, gyro);
-		DriverStation::ReportError("FOD Drive!");
 	} else {// Is alignment
 		// Disabled for now - dims down the effect of x and rot
 		//x = ReduceValue(x, 3.0);
 		//rot = ReduceValue(rot, 2.0);
 		Robot::driveTrain->FODDrive(y, x, rot, 0.0);
-		DriverStation::ReportError("Robot Drive!");
-
 	}
 	//frc::DriverStation::ReportError("Ticks: " + std::to_string(Robot::driveTrain->GetTicks()));
 }

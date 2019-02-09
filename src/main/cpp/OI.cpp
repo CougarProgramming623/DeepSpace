@@ -1,5 +1,6 @@
 
 #include "OI.h"
+#include <frc/DriverStation.h>
 
 namespace frc2019 {
 
@@ -17,8 +18,9 @@ OI::OI() :
 	vMode(&buttonBoard, OI_ARM_V_MODE), 
 	fodToggle(&buttonBoard, OI_DRIVE_FOD_TOGGLE)
 	{
-		fodToggle.WhenPressed(new BooleanToggle(&fod));
-
+		fodToggle.WhenPressed(new BooleanToggle(&fod, [](bool newValue) {
+			frc::DriverStation::ReportError(std::string("LAMBDA TEST FOD: ") + (newValue ? "true" : "false"));
+		}));
 	}
 
 

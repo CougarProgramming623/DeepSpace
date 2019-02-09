@@ -14,7 +14,8 @@
 		"files.associations": {
 			"memory": "cpp",
 			"cstdlib": "cpp",
-			"xstring": "cpp"
+			"xstring": "cpp",
+			"functional": "cpp"
 		},
 	}
 	
