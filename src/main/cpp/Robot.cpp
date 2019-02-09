@@ -34,7 +34,14 @@ namespace frc2019 {
 
 		//CameraServer::GetInstance()->StartAutomaticCapture();
 	}
-	
+
+	void Robot::RobotPeriodic() {
+		Cob::PushValue(COB_X_VEL,Robot::navx->GetVelocityX());
+		Cob::PushValue(COB_Y_VEL,Robot::navx->GetVelocityY());
+		Cob::PushValue(COB_ROTATION,Robot::navx->GetYaw());
+		Cob::PushValue(COB_MAIN_ARM_ROTATION,Robot::arm->GetPotData());
+	}
+		
 	void Robot::AutonomousInit() {
 
 	}
@@ -51,7 +58,6 @@ void Robot::TeleopPeriodic() {
 	//DriverStation::ReportError("TeleopPeriodic");
 	DriverStation::ReportError(std::to_string(arm->GetPotData()));
 	frc::Scheduler::GetInstance()->Run();
-	Cob::PushRotation(navx->GetYaw());
 }
 
 void Robot::TestInit() {
