@@ -9,10 +9,16 @@
 
 #include <frc/commands/Command.h>
 #include <frc/WPILib.h>
-#include "AHRS.h"
 #include "networktables/NetworkTableInstance.h"
+#include "frc/PIDSource.h"
+
 
 namespace frc2019 {
+class geoffrey : public frc::PIDSource {
+  public:
+    double PIDGet();
+};
+
 class VisionDrive : public frc::Command, frc::PIDOutput {
  public:
   VisionDrive();
@@ -23,22 +29,19 @@ class VisionDrive : public frc::Command, frc::PIDOutput {
   void Interrupted() override;
   void PIDWrite(double output) override;
   std::shared_ptr<nt::NetworkTable> start_networkTable();
-  /*
-  class FakePIDSource : public frc::PIDOutput, frc::PIDSourceType {
-    public:
-     FakePIDSource();
-     PIDSourceType GetPIDSourceType();
-     double PIDGet();
-     void setPIDSourceType(PIDSourceType PIDSource);
-    private:
-     PIDSourceType fakePID;
-  };
-  */
+  static std::vector<double> arrCenterX, arrAngle, arrHeight, arrWidth;
+  static int correctIndex;
+  volatile static double xPower, zPower, yPower;
+  static double getPower();
+  static void getXPower();
 private:
-  std::shared_ptr<nt::NetworkTable> visionTable;
-  void getXPower();
+  static geoffrey geoff;
+  static std::shared_ptr<nt::NetworkTable> visionTable;
+
 	void getZPower(); 
-  frc::PIDController* turnController;
-  double rotationRate, xPower, zPower;
+  void getYPower();
+  bool somethingWrong();
+  static frc::PIDController* turnController;
+  double rotationRate;
 };
 }
