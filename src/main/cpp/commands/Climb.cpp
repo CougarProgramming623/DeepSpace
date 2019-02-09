@@ -5,22 +5,16 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#pragma once
-
-#include <frc/commands/Command.h>
+#include "commands/Climb.h"
+#include "Robot.h"
 
 namespace frc2019 {
-class AutoDrive : public frc::Command {
-public:
-	AutoDrive(double, bool);
-	void Initialize() override;
-	void Execute() override;
-	bool IsFinished() override;
-	void End() override;
-	void Interrupted() override;
-	private:
-	int currentTicks;
-	double m_distance;
-	bool isStraffing;
-};
-}
+
+Climb::Climb(ClimbHeight height) : 
+	m_Height(height) {
+		//Add other commands here
+
+	}
+
+
+}//namespace

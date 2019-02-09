@@ -7,20 +7,19 @@
 
 #pragma once
 
-#include <frc/commands/Command.h>
+#include <frc/commands/CommandGroup.h>
+
+#include "GameEnums.h"
+
 
 namespace frc2019 {
-class AutoDrive : public frc::Command {
+
+class Climb : public frc::CommandGroup {
 public:
-	AutoDrive(double, bool);
-	void Initialize() override;
-	void Execute() override;
-	bool IsFinished() override;
-	void End() override;
-	void Interrupted() override;
-	private:
-	int currentTicks;
-	double m_distance;
-	bool isStraffing;
+	Climb(ClimbHeight height);
+private:
+	ClimbHeight m_Height;
 };
-}
+
+
+}//namespace

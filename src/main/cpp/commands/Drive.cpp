@@ -21,16 +21,17 @@ void Drive::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void Drive::Execute() {
-	double y = -Robot::oi->GetDriverJoystick()->GetY();
-	double x = -Robot::oi->GetDriverJoystick()->GetX();
-	double rot = Robot::oi->GetDriverJoystick()->GetZ();
+	double y = -OI::driverJoystick.GetY();
+	double x = -OI::driverJoystick.GetX();
+	double rot = OI::driverJoystick.GetZ();
 	double gyro = Robot::navx->GetYaw();
 	if (Robot::oi->IsFOD()) {
 		Robot::driveTrain->FODDrive(y, x, rot, gyro);
 		DriverStation::ReportError("FOD Drive!");
 	} else {// Is alignment
-		x = ReduceValue(x, 3.0);
-		rot = ReduceValue(rot, 2.0);
+		// Disabled for now - dims down the effect of x and rot
+		//x = ReduceValue(x, 3.0);
+		//rot = ReduceValue(rot, 2.0);
 		Robot::driveTrain->FODDrive(y, x, rot, 0.0);
 		DriverStation::ReportError("Robot Drive!");
 
