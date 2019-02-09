@@ -19,8 +19,19 @@ volatile double VisionDrive::xPower;
 volatile double VisionDrive::yPower;
 volatile double VisionDrive::zPower;
 std::shared_ptr<nt::NetworkTable> VisionDrive::visionTable;
-frc::PIDController* VisionDrive::turnController;
+frc::PIDController* VisionDrive::xPID;
+frc::PIDController* VisionDrive::zPID;
 geoffrey VisionDrive::geoff;
+dummyOutput VisionDrive::zOutput;
+
+double geoffrey::PIDGet(){
+  //DriverStation::ReportError("val:" + std::to_string(VisionDrive::getPower()));
+  return -(VisionDrive::getCenterX() - 960/2) / (960 / 2);
+}
+
+void dummyOutput::PIDWrite(double output){
+  VisionDrive::zPower = output;
+}
 
 VisionDrive::VisionDrive() : frc::Command(), frc::PIDOutput() {
   // Use Requires() here to declare subsystem dependencies
@@ -32,15 +43,6 @@ VisionDrive::VisionDrive() : frc::Command(), frc::PIDOutput() {
   correctIndex = 0;
 }
 
-double geoffrey::PIDGet(){
-  VisionDrive::getXPower();
-  //DriverStation::ReportError("val:" + std::to_string(VisionDrive::getPower()));
-  return -(VisionDrive::getPower() - 960/2) / (960 / 2);
-}
-
-double VisionDrive::getPower(){
-  return xPower;
-}
 
 // Called just before this Command runs the first time
 void VisionDrive::Initialize() {
@@ -49,16 +51,23 @@ void VisionDrive::Initialize() {
   arrAngle = visionTable->GetNumberArray("angle", defaultVal); 
   arrWidth = visionTable->GetNumberArray("width", defaultVal);
   arrHeight = visionTable->GetNumberArray("height", defaultVal);
-  turnController = new frc::PIDController(.7f, 0.05f, 0.1f, &geoff, this);
+  xPID = new frc::PIDController(1.0f, 0.00f, .8f, &geoff, this);
+  zPID = new frc::PIDController(.05, 0.005, .03, Robot::navx, &zOutput);
   rotationRate = 0.0;
   SetTimeout(5); 
-  turnController->SetInputRange(-1.0f, 1.0f);
-  turnController->SetOutputRange(-1.0, 1.0);
-  turnController->SetPercentTolerance(1.0f);
-  turnController->SetPIDSourceType(frc::PIDSourceType::kDisplacement);
-  turnController->SetSetpoint(0.0f);
-  turnController->SetContinuous(false);
-  turnController->Enable();
+  xPID->SetInputRange(-1.0f, 1.0f);
+  zPID->SetInputRange(-180.0f, 180.0f);
+  xPID->SetOutputRange(-1.0, 1.0);
+  zPID->SetOutputRange(-1.0, 1.0);
+  xPID->SetPercentTolerance(5.0f);
+  xPID->SetPercentTolerance(5.0f);
+  xPID->SetPIDSourceType(frc::PIDSourceType::kDisplacement);
+  xPID->SetSetpoint(0.0f);
+  zPID->SetSetpoint(0.0f);
+  xPID->SetContinuous(false);
+  zPID->SetContinuous(true);
+  xPID->Enable();
+  zPID->Enable();
 }
 
 
@@ -67,25 +76,26 @@ void VisionDrive::Initialize() {
 void VisionDrive::Execute() {
   //Robot::driveTrain->FODDrive(0, xPower/1.5, zPower/1.5, 0);
  // Robot::driveTrain->FODDrive(0, 0, rotationRate, 0);
-  getXPower();
 
-  Robot::driveTrain->FODDrive(0,rotationRate,0, Robot::navx->GetYaw());
-  //DriverStation::ReportError("Rotation Rate: " + std::to_string(rotationRate));
-  //DriverStation::ReportError("Current Angle: " + std::to_string(Robot::navx->GetYaw()));
+  Robot::driveTrain->RODrive(0,xPower, zPower);
+  DriverStation::ReportError("xPower: " + std::to_string(xPower));
+  DriverStation::ReportError("zPower: " + std::to_string(zPower));
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool VisionDrive::IsFinished() { 
   //return xPower == 0 && zPower == 0 && !somethingWrong();
-  if(turnController->OnTarget() || IsTimedOut())
-    DriverStation::ReportError("is finished");
-  return turnController->OnTarget() || IsTimedOut();
+  //if(xPID->OnTarget() && zPID->OnTarget() || IsTimedOut())
+    //DriverStation::ReportError("is finished");
+  //return xPID->OnTarget() && zPID->OnTarget() || IsTimedOut();
+  return xPID->OnTarget() || IsTimedOut();
   }
 
 // Called once after isFinished returns true
 void VisionDrive::End() {
   DriverStation::ReportError("PID Disabled");
-  turnController->Disable();
+  xPID->Disable();
+  zPID->Disable();
 }
 
 // Called when another command which requires one or more of the same
@@ -110,10 +120,10 @@ bool VisionDrive::somethingWrong(){
 }
 
 
-void VisionDrive::getXPower() {
+double VisionDrive::getCenterX() {
   std::vector<double> defaultVal{0};
   arrCenterX = visionTable->GetNumberArray("centerX", defaultVal); 
-  xPower = arrCenterX[correctIndex];
+  return arrCenterX[correctIndex];
   
 	//DriverStation::ReportError("CenterX is :" + std::to_string(arrCenterX[correctIndex]));
   /*xPower = double(leftCenter - 960/2)/(960/2);
@@ -141,7 +151,7 @@ void VisionDrive::getZPower(){
 }
 
 void VisionDrive::PIDWrite(double output) {
-  rotationRate = output;
+  xPower = output;
   DriverStation::ReportError("Output:" + std::to_string(output));
 }
 }//namespace

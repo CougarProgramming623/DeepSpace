@@ -27,6 +27,10 @@ void DriveTrain::InitDefaultCommand() {
 void DriveTrain::FODDrive(double y, double x, double rotation, double gyroAngle) {
 	mMecanumDrive->DriveCartesian(y, x, rotation, gyroAngle);
 }
+
+void DriveTrain::RODrive(double x, double y, double rotation){
+	mMecanumDrive->DriveCartesian(x, y, rotation);
+}
 /*
 int DriveTrain::GetTicks() {
 	return mLeftRearMC->GetSelectedSensorPosition(1);
