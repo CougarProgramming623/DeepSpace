@@ -13,6 +13,6 @@ double ReduceValue(double original, double exponent);
 
 //Waits the specified number of seconds
 //Can only be used in a CommandGroup class since it requires AddSequential
-#define WAIT(x) AddSequential(new WaitCommand(x))
+#define WAIT(x) AddSequential(new frc::WaitCommand(x))
 
 }//namespace

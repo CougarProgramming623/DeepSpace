@@ -15,8 +15,8 @@ namespace frc2019 {
 #define OI_DRIVE_FOD_TOGGLE 1
 #define OI_DRIVE_ALIGN_TOGGLE 7
 
-#define OI_ARM_MANUAL_MODE 8
-#define OI_ARM_V_MODE 9
+#define OI_ARM_MANUAL_MODE 9
+#define OI_ARM_V_MODE 8
 
 #define OI_ARM_POSITION_SLIDER 1
 #define OI_WRIST_POSITION_SLIDER 2

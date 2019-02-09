@@ -14,7 +14,6 @@ Turn::Turn(double angle) : frc::Command("Turn") , frc::PIDOutput() {
   // Use Requires() here to declare subsystem dependencies
   // eg. Requires(Robot::chassis.get());
   Requires(Robot::driveTrain.get());
-  turnController = new PIDController(0.05f, 0.0f, 0.045f, Robot::navx.get(), this);
   rotateToAngleRate = 0.0;
   m_angle = angle;
   SetTimeout(2);
@@ -23,6 +22,7 @@ Turn::Turn(double angle) : frc::Command("Turn") , frc::PIDOutput() {
 // Called just before this Command runs the first time
 void Turn::Initialize() {
   //sRobot::navx->ZeroYaw();
+  turnController = new PIDController(0.05f, 0.0f, 0.045f, Robot::navx.get(), this);
   turnController->SetInputRange(-180.0f, 180.0f);
   turnController->SetOutputRange(-1.0, 1.0);
   turnController->SetAbsoluteTolerance(2.0f);
