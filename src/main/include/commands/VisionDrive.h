@@ -18,7 +18,7 @@ class geoffrey : public frc::PIDSource {
   public:
     double PIDGet();
 };
-
+class FakePIDOutput;
 class VisionDrive : public frc::Command, frc::PIDOutput {
  public:
   VisionDrive();
@@ -34,14 +34,26 @@ class VisionDrive : public frc::Command, frc::PIDOutput {
   volatile static double xPower, zPower, yPower;
   static double getPower();
   static void getXPower();
+  double rotationRate;
 private:
   static geoffrey geoff;
+  
   static std::shared_ptr<nt::NetworkTable> visionTable;
 
 	void getZPower(); 
   void getYPower();
   bool somethingWrong();
-  static frc::PIDController* turnController;
-  double rotationRate;
+  static frc::PIDController* zRot;
+  static frc::PIDController* xRot;
+  FakePIDOutput rotOutput;
+  double xDisplacement;
+  
+};
+class FakePIDOutput : public frc::PIDOutput{
+  public:
+    FakePIDOutput(VisionDrive& visiondrive);
+    void PIDWrite(double output);
+  private:
+    VisionDrive& visionDrive;
 };
 }

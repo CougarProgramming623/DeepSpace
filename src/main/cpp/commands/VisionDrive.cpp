@@ -20,8 +20,12 @@ volatile double VisionDrive::xPower;
 volatile double VisionDrive::yPower;
 volatile double VisionDrive::zPower;
 std::shared_ptr<nt::NetworkTable> VisionDrive::visionTable;
-frc::PIDController* VisionDrive::turnController;
+frc::PIDController* VisionDrive::xRot;
+frc::PIDController* VisionDrive::zRot;
 geoffrey VisionDrive::geoff;
+FakePIDOutput VisionDrive::rotOutput;
+
+
 
 VisionDrive::VisionDrive() : frc::Command(), frc::PIDOutput() {
   // Use Requires() here to declare subsystem dependencies
@@ -32,13 +36,15 @@ VisionDrive::VisionDrive() : frc::Command(), frc::PIDOutput() {
   xPower = zPower = yPower = 0;
   correctIndex = 0;
 }
+FakePIDOutput::FakePIDOutput(VisionDrive& drive) : visionDrive(drive){
+  
+}
 
 double geoffrey::PIDGet(){
   VisionDrive::getXPower();
   //DriverStation::ReportError("val:" + std::to_string(VisionDrive::getPower()));
   return -(VisionDrive::getPower() - 960/2) / (960 / 2);
 }
-
 double VisionDrive::getPower(){
   return xPower;
 }
@@ -50,16 +56,28 @@ void VisionDrive::Initialize() {
   arrAngle = visionTable->GetNumberArray("angle", defaultVal); 
   arrWidth = visionTable->GetNumberArray("width", defaultVal);
   arrHeight = visionTable->GetNumberArray("height", defaultVal);
-  turnController = new frc::PIDController(.7f, 0.05f, 0.1f, &geoff, this);
+  rotOutput = frc::FakePIDOutput(visionDrive);
+  xRot = new frc::PIDController(.7f, 0.05f, 0.1f, &geoff, this);
+  zRot = new frc::PIDController(.7f, 0.05f, 0.1f, Robot::navx, &rotOutput);
+  xDisplacement = 0.0;
   rotationRate = 0.0;
   SetTimeout(5); 
-  turnController->SetInputRange(-1.0f, 1.0f);
-  turnController->SetOutputRange(-1.0, 1.0);
-  turnController->SetPercentTolerance(1.0f);
-  turnController->SetPIDSourceType(frc::PIDSourceType::kDisplacement);
-  turnController->SetSetpoint(0.0f);
-  turnController->SetContinuous(false);
-  turnController->Enable();
+
+  xRot->SetInputRange(-1.0f, 1.0f);
+  xRot->SetOutputRange(-1.0, 1.0);
+  xRot->SetPercentTolerance(1.0f);
+  xRot->SetPIDSourceType(frc::PIDSourceType::kDisplacement);
+  xRot->SetSetpoint(0.0f);
+  xRot->SetContinuous(false);
+  xRot->Enable();
+
+  zRot->SetInputRange(-180.0f, 180.0f);
+  zRot->SetOutputRange(-1.0, 1.0);
+  zRot->SetPercentTolerance(2.0f);
+  zRot->SetSetpoint(0.0f);
+  zRot->SetContinuous(true);
+  zRot->Enable();
+
 }
 
 
@@ -70,7 +88,7 @@ void VisionDrive::Execute() {
  // Robot::driveTrain->FODDrive(0, 0, rotationRate, 0);
   getXPower();
 
-  Robot::driveTrain->FODDrive(0,rotationRate,0, Robot::navx->GetYaw());
+  Robot::driveTrain->FODDrive(0, xDisplacement, 0, Robot::navx->GetYaw());
   //DriverStation::ReportError("Rotation Rate: " + std::to_string(rotationRate));
   //DriverStation::ReportError("Current Angle: " + std::to_string(Robot::navx->GetYaw()));
 }
@@ -78,15 +96,16 @@ void VisionDrive::Execute() {
 // Make this return true when this Command no longer needs to run execute()
 bool VisionDrive::IsFinished() { 
   //return xPower == 0 && zPower == 0 && !somethingWrong();
-  if(turnController->OnTarget() || IsTimedOut())
+  if(xRot->OnTarget() || IsTimedOut())
     DriverStation::ReportError("is finished");
-  return turnController->OnTarget() || IsTimedOut();
+  return xRot->OnTarget() || IsTimedOut();
   }
 
 // Called once after isFinished returns true
 void VisionDrive::End() {
   DriverStation::ReportError("PID Disabled");
-  turnController->Disable();
+  xRot->Disable();
+  zRot->Disable();
 }
 
 // Called when another command which requires one or more of the same
@@ -141,8 +160,12 @@ void VisionDrive::getZPower(){
     zPower -= .25;
 }
 
+void FakePIDOutput::PIDWrite(double output){
+  visionDrive.rotationRate = output;
+  DriverStation::ReportError("Rotation Rate Output: " + std::to_string(output));
+}
 void VisionDrive::PIDWrite(double output) {
-  rotationRate = output;
+  xDisplacement = output;
   DriverStation::ReportError("Output:" + std::to_string(output));
 }
 }//namespace
