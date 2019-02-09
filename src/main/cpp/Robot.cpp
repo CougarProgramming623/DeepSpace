@@ -36,7 +36,7 @@ void Robot::RobotInit() {
 }
 
 void Robot::AutonomousInit() {
-
+	
 }
 
 void Robot::AutonomousPeriodic() {
@@ -67,6 +67,3 @@ int main() {
 	return frc::StartRobot<Robot>();
 }
 #endif
-
-
-
