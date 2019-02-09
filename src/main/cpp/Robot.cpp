@@ -22,6 +22,14 @@ namespace frc2019 {
 			DriverStation::ReportError(err.c_str());
 		}
 		
+		
+		/*
+		fodToggle = new JoystickButton(Robot::buttonboard, 1);
+		fodToggle->WhenPressed(new Drive());
+		alignToggle = new JoystickButton(Robot::buttonboard, 2);
+		alignToggle->WhenPressed();
+		*/
+
 		navx->ZeroYaw();
 
 		//CameraServer::GetInstance()->StartAutomaticCapture();

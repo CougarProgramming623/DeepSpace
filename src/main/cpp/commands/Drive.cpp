@@ -1,7 +1,10 @@
 
 #include "commands/Drive.h"
 #include "Robot.h"
+#include "OI.h"
+#include "Constants.h"
 
+using namespace ohs623;
 
 namespace frc2019 {
 
@@ -13,16 +16,25 @@ Drive::Drive() {
 
 // Called just before this Command runs the first time
 void Drive::Initialize() {
-	y = x = rot = angle = 0;
+	
 }
 
 // Called repeatedly when this Command is scheduled to run
 void Drive::Execute() {
-	y = -Robot::oi->GetDriverJoystick()->GetY();
-	x = -Robot::oi->GetDriverJoystick()->GetX();
-	rot = Robot::oi->GetDriverJoystick()->GetZ();
-	angle = Robot::navx->GetYaw();
-	Robot::driveTrain->FODDrive(y, x, rot, angle);
+	double y = -Robot::oi->GetDriverJoystick()->GetY();
+	double x = -Robot::oi->GetDriverJoystick()->GetX();
+	double rot = Robot::oi->GetDriverJoystick()->GetZ();
+	double gyro = Robot::navx->GetYaw();
+	if (Robot::oi->IsFOD()) {
+		Robot::driveTrain->FODDrive(y, x, rot, gyro);
+		DriverStation::ReportError("FOD Drive!");
+	} else {// Is alignment
+		x = ReduceValue(x, 3.0);
+		rot = ReduceValue(rot, 2.0);
+		Robot::driveTrain->FODDrive(y, x, rot, 0.0);
+		DriverStation::ReportError("Robot Drive!");
+
+	}
 	//frc::DriverStation::ReportError("Ticks: " + std::to_string(Robot::driveTrain->GetTicks()));
 }
 
