@@ -4,6 +4,8 @@
 #include "OI.h"
 #include "Constants.h"
 
+using namespace ohs623;
+
 namespace frc2019 {
 
 Drive::Drive() {
