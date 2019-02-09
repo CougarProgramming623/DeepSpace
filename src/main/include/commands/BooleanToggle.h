@@ -9,16 +9,19 @@
 
 #include <frc/commands/Command.h>
 #include <frc/DriverStation.h>
-#include "Robot.h"
 
-class DriveToggle : public frc::Command {
- public:
-  DriveToggle(bool& boolean);
-  void Initialize() override;
-  void Execute() override;
-  bool IsFinished() override;
-  void End() override;
-  void Interrupted() override;
+namespace frc2019 {
+
+class BooleanToggle : public frc::Command {
+public:
+	BooleanToggle(bool* boolean);
+	void Initialize() override;
+	void Execute() override;
+	bool IsFinished() override;
+	void End() override;
+	void Interrupted() override;
  private:
-  bool& boolean;
+	bool* boolean;
 };
+
+}//namespace

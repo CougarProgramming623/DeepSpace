@@ -15,8 +15,6 @@
 #include "AHRS.h"
 #include "OI.h"
 
-//eayfughiafewef rg eaifghwife
-
 namespace frc2019 {
 
 class Robot : public frc::TimedRobot {

@@ -5,30 +5,35 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/DriveToggle.h"
+#include "commands/BooleanToggle.h"
 
 namespace frc2019 {
-DriveToggle::DriveToggle(bool& boolean) : boolean{boolean} {
-  // Use Requires() here to declare subsystem dependencies
-  // eg. Requires(Robot::chassis.get());
+BooleanToggle::BooleanToggle(bool* ptr) : boolean(ptr) {
+	// Use Requires() here to declare subsystem dependencies
+	// eg. Requires(Robot::chassis.get());
 }
 
 // Called just before this Command runs the first time
-void DriveToggle::Initialize() {
-  this->boolean = !boolean;
-  frc::DriverStation::ReportError("Flipped the boolean!");
+void BooleanToggle::Initialize() {
+	frc::DriverStation::ReportError(std::string("Before: ") + (*boolean ? "True" : "False"));
+	if(*boolean) {
+		*boolean = false;
+	} else {
+		*boolean = true;
+	}
+	frc::DriverStation::ReportError(std::string("After: ") + (*boolean ? "True" : "False"));
 }
 
 // Called repeatedly when this Command is scheduled to run
-void DriveToggle::Execute() {}
+void BooleanToggle::Execute() {}
 
 // Make this return true when this Command no longer needs to run execute()
-bool DriveToggle::IsFinished() { return false; }
+bool BooleanToggle::IsFinished() { return true; }
 
 // Called once after isFinished returns true
-void DriveToggle::End() {}
+void BooleanToggle::End() {}
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void DriveToggle::Interrupted() {}
+void BooleanToggle::Interrupted() {}
 }

@@ -14,10 +14,9 @@ OI::OI() :
 	cargoGround(buttonBoard.get(), OI_ARM_POSITION_CARGO_GROUND),
 	manualControlOverride(buttonBoard.get(), OI_ARM_MANUAL_MODE), 
 	vMode(buttonBoard.get(), OI_ARM_V_MODE), 
-	fodToggle(buttonBoard.get(), OI_DRIVE_FODTOGGLE,
-	alignToggle(buttonBoard.get(), OI_DRIVE_ALIGNTOGGLE)
+	fodToggle(buttonBoard.get(), OI_DRIVE_FOD_TOGGLE)
 	{
-		alignToggle.WhenPressed(new DriveToggle(aToggle));
+		fodToggle.WhenPressed(new BooleanToggle(&fod));
 	}
 
 
@@ -38,7 +37,8 @@ std::shared_ptr<frc::Joystick> OI::GetButtonBoard() {
 	return buttonBoard;
 }
 
-static bool OI::GetAlignToggle(){
-	return aToggle;
+bool OI::IsFOD() {
+	return fod;
 }
+
 }//namespace

@@ -13,7 +13,8 @@
 		"editor.rulers": [],
 		"files.associations": {
 			"memory": "cpp",
-			"cstdlib": "cpp"
+			"cstdlib": "cpp",
+			"xstring": "cpp"
 		},
 	}
 	
