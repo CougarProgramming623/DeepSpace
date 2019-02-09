@@ -4,50 +4,45 @@
 #include "OI.h"
 #include "Constants.h"
 
-using namespace ohs623;
 
 namespace frc2019 {
 
 Drive::Drive() {
-	// Use Requires() here to declare subsystem dependencies
-	// eg. Requires(Robot::chassis.get());
-	Requires(Robot::driveTrain.get());
+	Requires(Robot::driveTrain.get()); //dependent on the Drivetrain Subsystem
 }
 
-// Called just before this Command runs the first time
 void Drive::Initialize() {
 	
 }
 
-// Called repeatedly when this Command is scheduled to run
 void Drive::Execute() {
-	double y = -OI::driverJoystick.GetY();
+	using namespace ohs623;
+	//get the x, y, and z values from the joystick
+	double y = -OI::driverJoystick.GetY(); 
 	double x = OI::driverJoystick.GetX();
 	double rot = OI::driverJoystick.GetZ();
-
-	double gyro = Robot::navx->GetYaw();
+	
+	//get the angle reading fromt the gyro
+	double angle = Robot::navx->GetYaw();
 	if (Robot::oi->IsFOD()) {
-		Robot::driveTrain->FODDrive(y, x, rot, gyro);
+		Robot::driveTrain->FODDrive(y, x, rot, angle); //used when we are in Field Oriented Driving Mode
 	} else {// Is alignment
 		// Disabled for now - dims down the effect of x and rot
 		//x = ReduceValue(x, 3.0);
 		//rot = ReduceValue(rot, 2.0);
-		Robot::driveTrain->FODDrive(y, x, rot, 0.0);
+		Robot::driveTrain->FODDrive(y, x, rot, 0.0); //used when we are in Robot Oriented Drivng Mode
 	}
-	//frc::DriverStation::ReportError("Ticks: " + std::to_string(Robot::driveTrain->GetTicks()));
 }
 
-// Make this return true when this Command no longer needs to run execute()
 bool Drive::IsFinished() { 
 	return false;
 }
 
-// Called once after isFinished returns true
-void Drive::End() {}
+void Drive::End() {
 
-// Called when another command which requires one or more of the same
-// subsystems is scheduled to run
-void Drive::Interrupted() {}
+}
 
+void Drive::Interrupted() {
 
+}
 }//frc2019

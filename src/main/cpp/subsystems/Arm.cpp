@@ -6,12 +6,11 @@
 /*----------------------------------------------------------------------------*/
 
 #include "subsystems/Arm.h"
+#include "RobotConstants.h"
 
 namespace frc2019 {
-Arm::Arm() : Subsystem("ExampleSubsystem") {
-  armMC = new TalonSRX(17);
-  armMC->ConfigSelectedFeedbackSensor(FeedbackDevice::Analog, 0, 10);
-  potData = 0;
+Arm::Arm() : Subsystem("Arm"), armMC(ARM_TALON_ID) {
+  armMC.ConfigSelectedFeedbackSensor(FeedbackDevice::Analog, 0, 10); //configure the potentiometer connected to the arm TalonSRX
 }
 
 
@@ -22,6 +21,6 @@ void Arm::InitDefaultCommand() {
 }
 
 int Arm::GetPotData() {
-  return armMC->GetSensorCollection().GetAnalogIn();
+  return armMC.GetSensorCollection().GetAnalogIn(); //return the potentiometer reading
 }
-}
+}//namespace

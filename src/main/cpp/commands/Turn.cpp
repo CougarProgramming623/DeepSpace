@@ -11,52 +11,42 @@
 
 namespace frc2019 {
 Turn::Turn(double angle) : frc::Command("Turn") , frc::PIDOutput() {
-  // Use Requires() here to declare subsystem dependencies
-  // eg. Requires(Robot::chassis.get());
-  Requires(Robot::driveTrain.get());
+  Requires(Robot::driveTrain.get()); //dependent on the Drivetrain subsystem
   rotateToAngleRate = 0.0;
   m_angle = angle;
-  SetTimeout(2);
+  SetTimeout(2); //sets how long the command is allowed to run for
 }
 
-// Called just before this Command runs the first time
 void Turn::Initialize() {
-  //sRobot::navx->ZeroYaw();
-  turnController = new PIDController(0.05f, 0.0f, 0.045f, Robot::navx.get(), this);
-  turnController->SetInputRange(-180.0f, 180.0f);
-  turnController->SetOutputRange(-1.0, 1.0);
-  turnController->SetAbsoluteTolerance(2.0f);
-  turnController->SetSetpoint(m_angle);
+  turnController = new PIDController(0.05f, 0.0f, 0.045f, Robot::navx.get(), this); //initializes a PIDController with a kP, kI, kD, PIDSource, and PIDOuput
+  turnController->SetInputRange(-180.0f, 180.0f); //sets input range to an angle
+  turnController->SetOutputRange(-1.0, 1.0); //sets output range to a motor power
+  turnController->SetAbsoluteTolerance(2.0f); //makes it so the robot ends at most 2 degrees of its target angle
+  turnController->SetSetpoint(m_angle); //sets target angle
   turnController->SetContinuous(true);
   turnController->Enable();
 
 }
 
-// Called repeatedly when this Command is scheduled to run
 void Turn::Execute() {
   frc::DriverStation::ReportError("Executing turn");
   Robot::driveTrain->FODDrive(0, 0, rotateToAngleRate / 2, Robot::navx.get()->GetYaw());
-  //if(Robot::navx->GetYaw() >= 90)
-    SmartDashboard::PutNumber("Error", m_angle - Robot::navx.get()->GetYaw());
 }
 
-// Make this return true when this Command no longer needs to run execute()
 bool Turn::IsFinished() { 
-  return IsTimedOut();
+  return IsTimedOut(); //command ends when timeout is reached
 }
 
-// Called once after isFinished returns true
 void Turn::End() {
-  Robot::driveTrain->FODDrive(0,0,0,0);
   DriverStation::ReportError("Finished turn");
 }
 
-// Called when another command which requires one or more of the same
-// subsystems is scheduled to run
-void Turn::Interrupted() {}
+void Turn::Interrupted() {
+
+}
 
 void Turn::PIDWrite(double output)
 {
-  rotateToAngleRate = output;
+  rotateToAngleRate = output; //sets rotateToAngleRate to output from the PID loop running in the background
 }
-}
+} //namespace

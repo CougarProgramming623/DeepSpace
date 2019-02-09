@@ -4,8 +4,6 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-
-
 #include "Cob.h"
 
 namespace frc2019 {
@@ -16,17 +14,16 @@ Cob::Cob() {
    //never contruct
 }
 
-void Cob::InitBoard(){
+void Cob::InitBoard() {
     auto inst = nt::NetworkTableInstance::GetDefault();
     table = inst.GetTable("cob");
- }
+}
 
 
 void Cob::InitValue(std::string str){
-  if(map.count(str)==0){
+  if(map.count(str)==0) {
     map[str] = table->GetEntry(str);
   }
 }
-
 
 }//namespace

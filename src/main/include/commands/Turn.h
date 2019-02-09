@@ -20,13 +20,9 @@ class Turn : public frc::Command, public frc::PIDOutput {
     bool IsFinished() override;
     void End() override;
     void Interrupted() override;
-    void PIDWrite(double) override;
+    void PIDWrite(double) override; //comes from PIDOutput class
   private:
-    PIDController *turnController;
-    double m_angle;
-    double rotateToAngleRate;
-    AHRS *gyro;
-
-
+    PIDController* turnController;
+    double m_angle, rotateToAngleRate;
 };
-}
+} //namespace

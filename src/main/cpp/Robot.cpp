@@ -11,28 +11,26 @@ std::shared_ptr<OI> Robot::oi;
 std::shared_ptr<Arm> Robot::arm;
 
 void Robot::RobotInit() {
-	Cob::InitBoard();
+	Cob::InitBoard(); //starts the network tables for the Cougar Optic Board
+	//instantiates the subsystems and OI
 	driveTrain.reset(new DriveTrain());
-	DriverStation::ReportError("constructed drivetrain");
 	arm.reset(new Arm());
-	DriverStation::ReportError("constructed arm");
 	oi.reset(new OI());
-	DriverStation::ReportError("constructed oi");
 	try {
-		navx.reset(new AHRS(SPI::Port::kMXP));
-		DriverStation::ReportError("constructed navx");
+		navx.reset(new AHRS(SPI::Port::kMXP)); //instantiates the gyro
 	} catch (std::exception &ex) {
 		std::string err = "Error instantiating navX MXP: ";
 		err += ex.what();
 		DriverStation::ReportError(err.c_str());
 	}
   
-	Robot::navx.get()->ZeroYaw();
-	std::string color = frc::DriverStation::GetInstance().GetAlliance() == frc::DriverStation::Alliance::kRed ? "red" : "blue";
-	Cob::PushValue(COB_ALLIANCE_COLOR, color);
+	Robot::navx.get()->ZeroYaw(); //makes it so whatever start position the robot is facing is 0 degrees
+	std::string color = frc::DriverStation::GetInstance().GetAlliance() == frc::DriverStation::Alliance::kRed ? "red" : "blue"; //determine alliance color as a string
+	Cob::PushValue(COB_ALLIANCE_COLOR, color); //push the alliance color as a string
 }
 
 void Robot::RobotPeriodic() {
+	//pushed during robot periodic because these values constantly change
 	Cob::PushValue(COB_X_VEL,Robot::navx->GetVelocityX());
 	Cob::PushValue(COB_Y_VEL,Robot::navx->GetVelocityY());
 	Cob::PushValue(COB_ROTATION,Robot::navx->GetYaw());
@@ -40,11 +38,9 @@ void Robot::RobotPeriodic() {
 }
 		
 void Robot::AutonomousInit() {
-	navx->ZeroYaw();
-	autonomousCommand.reset(new PositveAngleTurnTest());
+	autonomousCommand.reset(new PositveAngleTurnTest()); //set the autonomous command or command group here
 	if(autonomousCommand)
 		autonomousCommand->Start();
-	//CameraServer::GetInstance()->StartAutomaticCapture();
 }
 
 void Robot::AutonomousPeriodic() {
@@ -55,8 +51,6 @@ void Robot::TeleopInit() {
 }
 
 void Robot::TeleopPeriodic() {
-	//DriverStation::ReportError("TeleopPeriodic");
-	DriverStation::ReportError(std::to_string(arm->GetPotData()));
 	frc::Scheduler::GetInstance()->Run();
 }
 

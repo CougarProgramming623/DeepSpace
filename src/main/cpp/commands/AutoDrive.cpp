@@ -10,52 +10,34 @@
 #include "RobotConstants.h"
 namespace frc2019 {
 AutoDrive::AutoDrive(double distance, bool strafe) {
-	// Use Requires() here to declare subsystem dependencies
-	// eg. Requires(Robot::chassis.get());
-	Requires(Robot::driveTrain.get());
-	currentTicks = abs(Robot::driveTrain->GetTicks());
+	Requires(Robot::driveTrain.get()); //dependent on the Drivetrain subsystem
+	initialTicks = abs(Robot::driveTrain->GetTicks()); //get current ticks reading since encoders do not reset
 	m_distance = distance;
-	isStraffing = strafe;
+	isStrafing = strafe;
+	maxTicks = m_distance * (isStrafing ? S_TICKS_PER_INCH : TICKS_PER_INCH);
 }
 
-// Called just before this Command runs the first time
 void AutoDrive::Initialize() {
-	//SetTimeout(3);
 }
 
-// Called repeatedly when this Command is scheduled to run
 void AutoDrive::Execute() {
-	if (isStraffing){
-		Robot::driveTrain->FODDrive(0.0, 0.5, 0.0, Robot::navx->GetYaw());
-		DriverStation::ReportError("Ticks Driven: " + std::to_string(Robot::driveTrain->GetTicks()-currentTicks));
+	if (isStrafing) {
+		Robot::driveTrain->FODDrive(0.0, 0.5, 0.0, Robot::navx->GetYaw()); //input power to xSpeed if we are strafing
 	}
 	else {
-		Robot::driveTrain->FODDrive(0.5, 0.0, 0.0, Robot::navx->GetYaw());
-		DriverStation::ReportError("Ticks Driven: " + std::to_string(Robot::driveTrain->GetTicks()-currentTicks));
+		Robot::driveTrain->FODDrive(0.5, 0.0, 0.0, Robot::navx->GetYaw()); //input power to ySpeed if we are not strafing
 	}
+	
+	ticksDriven = Robot::driveTrain->GetTicks() - initialTicks; //ticksDriven = current amount of ticks minus initial reading
+	DriverStation::ReportError("Ticks Driven: " + std::to_string(ticksDriven)); //report to driverstation the number of ticks driven
 }
 
-// Make this return true when this Command no longer needs to run execute()
 bool AutoDrive::IsFinished() { 
-	double maxTicks;
-	if (isStraffing){
-		maxTicks = m_distance * S_TICKS_PER_INCH;
-	}
-	else {
-		maxTicks = m_distance * TICKS_PER_INCH;
-	}
-	int ticks = abs(Robot::driveTrain->GetTicks() - currentTicks);
-	return maxTicks <= ticks;
+	return ticksDriven >= maxTicks; //check to see if ticksDriven has surpassed the amount ticks needed to be driven, if so end the command
  }
 
-// Called once after isFinished returns true
 void AutoDrive::End() {
-	//Robot::driveTrain->fodDrive(0.0, 0.0, 0.0, Robot::navx->GetYaw());
-	int ticksDriven = Robot::driveTrain->GetTicks() - currentTicks;
-	DriverStation::ReportError("Ticks Driven: " + std::to_string(ticksDriven));
 }
 
-// Called when another command which requires one or more of the same
-// subsystems is scheduled to run
 void AutoDrive::Interrupted() {}
 }

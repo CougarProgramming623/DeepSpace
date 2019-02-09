@@ -18,9 +18,9 @@ public:
 	bool IsFinished() override;
 	void End() override;
 	void Interrupted() override;
-	private:
-	int currentTicks;
+private:
+	int initialTicks, ticksDriven, maxTicks;
 	double m_distance;
-	bool isStraffing;
+	bool isStrafing;
 };
 }

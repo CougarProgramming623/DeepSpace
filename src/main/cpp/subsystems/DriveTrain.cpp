@@ -1,7 +1,7 @@
 
 #include "subsystems/DriveTrain.h"
-#include "commands/Drive.h"
 #include "RobotConstants.h"
+#include "commands/Drive.h"
 
 #include <frc/DriverStation.h>
 
@@ -17,20 +17,18 @@ DriveTrain::DriveTrain() : Subsystem("DriveTrain"),
 		m_MecanumDrive.SetExpiration(0.1);
 		m_MecanumDrive.SetSafetyEnabled(false);
 		m_MecanumDrive.SetMaxOutput(1.0);
-		//mLeftRearMC->ConfigSelectedFeedbackSensor(FeedbackDevice::QuadEncoder, 1, 5);
+		m_LeftRearMC.ConfigSelectedFeedbackSensor(FeedbackDevice::QuadEncoder, 1, 5); //sets up encoder on left rear TalonSRX
 	}
 
 void DriveTrain::InitDefaultCommand() {
-	// Set the default command for a subsystem here.
 	SetDefaultCommand(new Drive());
 }
 
 void DriveTrain::FODDrive(double y, double x, double rotation, double gyroAngle) {
-	m_MecanumDrive.DriveCartesian(y, x, rotation, gyroAngle);
+	m_MecanumDrive.DriveCartesian(y, x, rotation, gyroAngle); //Cartesian Mecanum Drive with the option for Field Oriented Drive
 }
 
 int DriveTrain::GetTicks() {
-	return m_LeftRearMC.GetSelectedSensorPosition(1);
+	return m_LeftRearMC.GetSelectedSensorPosition(); //return the number of ticks the encoder returns
 }
-
 }//frc2019
