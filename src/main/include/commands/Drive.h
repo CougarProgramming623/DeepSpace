@@ -8,8 +8,6 @@
 
 namespace frc2019 {
 
-namespace frc2019 {
-
 class Drive : public frc::Command {
 public:
 	Drive();

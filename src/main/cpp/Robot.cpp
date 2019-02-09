@@ -1,6 +1,7 @@
 
 #include "Robot.h"
 #include "Cob.h"
+#include "Lights.h"
 #include <frc/DriverStation.h>
 namespace frc2019 {
 
@@ -11,6 +12,7 @@ namespace frc2019 {
 	
 	void Robot::RobotInit() {
 		Cob::InitBoard();
+		Lights::InitLights();
 		driveTrain.reset(new DriveTrain());
 		arm.reset(new Arm());
 		oi.reset(new OI());
@@ -60,6 +62,8 @@ void Robot::TestInit() {
 void Robot::TestPeriodic() {
 }
 } //frc2019
+
+
 
 #ifndef RUNNING_FRC_TESTS
 int main() { 
