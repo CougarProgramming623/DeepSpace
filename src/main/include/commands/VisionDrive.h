@@ -11,6 +11,7 @@
 #include <frc/WPILib.h>
 #include "networktables/NetworkTableInstance.h"
 #include "frc/PIDSource.h"
+#include "frc/PIDOutput.h"
 
 
 namespace frc2019 {
@@ -18,7 +19,12 @@ class geoffrey : public frc::PIDSource {
   public:
     double PIDGet();
 };
-class FakePIDOutput;
+
+class dummyOutput : public frc::PIDOutput {
+  public:
+    void PIDWrite(double output);
+};
+
 class VisionDrive : public frc::Command, frc::PIDOutput {
  public:
   VisionDrive();
@@ -33,8 +39,8 @@ class VisionDrive : public frc::Command, frc::PIDOutput {
   static int correctIndex;
   volatile static double xPower, zPower, yPower;
   static double getPower();
-  static void getXPower();
-  double rotationRate;
+  static double getCenterX();
+  static dummyOutput zOutput;
 private:
   static geoffrey geoff;
   
@@ -43,17 +49,8 @@ private:
 	void getZPower(); 
   void getYPower();
   bool somethingWrong();
-  static frc::PIDController* zRot;
-  static frc::PIDController* xRot;
-  FakePIDOutput rotOutput;
-  double xDisplacement;
-  
-};
-class FakePIDOutput : public frc::PIDOutput{
-  public:
-    FakePIDOutput(VisionDrive& visiondrive);
-    void PIDWrite(double output);
-  private:
-    VisionDrive& visionDrive;
+  static frc::PIDController* xPID;
+  static frc::PIDController* zPID;
+  double rotationRate;
 };
 }
