@@ -14,4 +14,11 @@
   "wpilib.online": true,
   "editor.wrappingIndent": "indent",
 "C_Cpp.configurationWarnings": "Disabled",
+"files.associations": {
+  "array": "cpp",
+  "functional": "cpp",
+  "istream": "cpp",
+  "tuple": "cpp",
+  "utility": "cpp"
+},
 }

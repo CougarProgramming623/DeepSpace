@@ -9,18 +9,36 @@
 
 #include <frc/commands/Command.h>
 #include <frc/WPILib.h>
+#include "AHRS.h"
+#include "networktables/NetworkTableInstance.h"
 
 namespace frc2019 {
-class VisionDrive : public frc::Command {
+class VisionDrive : public frc::Command, frc::PIDOutput {
  public:
-  std::shared_ptr<NetworkTable> visionTable;
   VisionDrive();
   void Initialize() override;
   void Execute() override;
   bool IsFinished() override;
   void End() override;
   void Interrupted() override;
-  double centerStrafe(double, double);
-
+  void PIDWrite(double output) override;
+  std::shared_ptr<nt::NetworkTable> start_networkTable();
+  /*
+  class FakePIDSource : public frc::PIDOutput, frc::PIDSourceType {
+    public:
+     FakePIDSource();
+     PIDSourceType GetPIDSourceType();
+     double PIDGet();
+     void setPIDSourceType(PIDSourceType PIDSource);
+    private:
+     PIDSourceType fakePID;
+  };
+  */
+private:
+  std::shared_ptr<nt::NetworkTable> visionTable;
+  void getXPower();
+	void getZPower(); 
+  frc::PIDController* turnController;
+  double rotationRate, xPower, zPower;
 };
 }
