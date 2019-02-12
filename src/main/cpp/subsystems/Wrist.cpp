@@ -10,7 +10,7 @@
 namespace frc2019 {
 
 Wrist::Wrist() : Subsystem("Wrist"), wristMC(2) {
-  wristMC.ConfigSelectedFeedbackSensor(FeedbackDevice::Analog, 0, 0);
+  wristMC.ConfigSelectedFeedbackSensor(FeedbackDevice::Analog, 0, 10);
 }
 
 void Wrist::InitDefaultCommand() {
