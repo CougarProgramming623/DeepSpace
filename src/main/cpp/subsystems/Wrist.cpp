@@ -9,16 +9,14 @@
 
 namespace frc2019 {
 
-Wrist::Wrist() : Subsystem("Wrist"), wristMC(2) {}
+Wrist::Wrist() : Subsystem("Wrist"), wristMC(2) {
+  wristMC.ConfigSelectedFeedbackSensor(FeedbackDevice::Analog, 0, 0);
+}
 
 void Wrist::InitDefaultCommand() {
-  wristMC.ConfigSelectedFeedbackSensor(FeedbackDevice::Analog, 0, 0);
-  potData = 0;
+  
 }
 
-int Wrist::GetPotData() {
-  return wristMC.GetSensorCollection().GetAnalogIn();
-}
 // Put methods for controlling this subsystem
 // here. Call these from Commands.
 }
