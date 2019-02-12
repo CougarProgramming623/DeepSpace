@@ -15,9 +15,9 @@
 #define HAMBONE_LEFT_BACK_ID    1
 #define HAMBONE_RIGHT_BACK_ID   5
 #define HAMBONE_ARM_TALON_ID    0
-#define HAMBONE_BOT_NAME "Hambone"
-#define HAMBONE_ARM_TALON_ID 21
+#define HAMBONE_PICKUP         21
 #define HAMBONE_WRIST_TALON_ID 22
+#define HAMBONE_BOT_NAME "Hambone"
 
 #define RAFIKI_LEFT_FRONT_ID  -1
 #define RAFIKI_RIGHT_FRONT_ID -1
