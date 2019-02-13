@@ -9,6 +9,7 @@
 #define COB_MAIN_ARM_ROTATION "arm/main-arm/rotation"
 #define COB_WRIST_ROTATION "arm/wrist/rotation"
 #define COB_VACUUM "arm/wrist/vacuum"
+#define COB_HATCH "arm/wrist/is-hatch"
 #define COB_SANDSTORM "robot/is-sandstorm"
 #define COB_TELEOP "robot/is-teleop"
 #define COB_ENABLED "robot/is-enabled"
