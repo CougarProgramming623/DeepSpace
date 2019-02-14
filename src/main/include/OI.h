@@ -50,7 +50,7 @@
 	public:
 		OI();
 		void Update();
-	
+		bool GetVision();
 		std::shared_ptr<frc::Joystick> GetDriverJoystick();
 		std::shared_ptr<frc::Joystick> GetButtonBoard();
 	

@@ -25,6 +25,12 @@
 	void OI::Update() {
 	
 	}
+
+	bool OI::GetVision(){
+		return buttonBoard->GetRawButton(9);
+	}
+
+	
 	
 	
 	
