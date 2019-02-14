@@ -42,7 +42,7 @@ VisionDrive::VisionDrive() : frc::Command(), frc::PIDOutput(){
   xPower = zPower = yPower = 0;
   correctIndex = 0;
   prefs = Preferences::GetInstance();
-  xP = prefs->GetDouble("xP", .03f);//
+  xP = prefs->GetDouble("xP", .03f);
   xI = prefs->GetDouble("xI", 0.002f);
   xD = prefs->GetDouble("xD", .03f);
   zP = prefs->GetDouble("zP", 0.03f);
