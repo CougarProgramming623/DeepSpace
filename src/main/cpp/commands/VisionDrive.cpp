@@ -62,20 +62,16 @@ VisionDrive::VisionDrive() : frc::Command(), frc::PIDOutput(){
 // Called just before this Command runs the first time
 void VisionDrive::Initialize() {
   std::vector<double> defaultVal{0};
-  
+
   arrCenterX = visionTable->GetNumberArray("centerX", defaultVal); 
   arrAngle = visionTable->GetNumberArray("angle", defaultVal); 
   arrWidth = visionTable->GetNumberArray("width", defaultVal);
   arrHeight = visionTable->GetNumberArray("height", defaultVal);
-
-  xPID = new frc::PIDController(xP, xI, xD, &geoff, this);
-  zPID = new frc::PIDController(zP, zI, zD, Robot::navx, &zOutput);
-  DriverStation::ReportError("xP: " + std::to_string(xP));
-  DriverStation::ReportError("xI: " + std::to_string(xI));
-  DriverStation::ReportError("xD: " + std::to_string(xD));
-  DriverStation::ReportError("zP: " + std::to_string(zP));
-  DriverStation::ReportError("zI: " + std::to_string(zI));
-  DriverStation::ReportError("zD: " + std::to_string(zD));
+  
+  if(!somethingWrong()){
+    xPID = new frc::PIDController(xP, xI, xD, &geoff, this);
+    zPID = new frc::PIDController(zP, zI, zD, Robot::navx, &zOutput);
+  }
 
   rotationRate = 0.0;
   SetTimeout(5); 
