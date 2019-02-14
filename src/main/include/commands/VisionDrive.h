@@ -41,6 +41,9 @@ class VisionDrive : public frc::Command, frc::PIDOutput {
   static double getPower();
   static double getCenterX();
   static dummyOutput zOutput;
+  frc::Preferences* prefs;
+  double xP, xI, xD;
+  double zP, zI, zD;
 private:
   static geoffrey geoff;
   

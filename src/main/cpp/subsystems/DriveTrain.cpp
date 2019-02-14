@@ -29,7 +29,7 @@ void DriveTrain::FODDrive(double y, double x, double rotation, double gyroAngle)
 }
 
 void DriveTrain::RODrive(double x, double y, double rotation){
-	mMecanumDrive->DriveCartesian(x, y, rotation);
+	mMecanumDrive->DriveCartesian(x, y, rotation, 0.0);
 }
 /*
 int DriveTrain::GetTicks() {

@@ -42,7 +42,7 @@ namespace frc2019 {
 	}
 
 void Robot::TeleopPeriodic() {
-	DriverStation::ReportError("TeleopPeriodic");
+	//DriverStation::ReportError("TeleopPeriodic");
 	frc::Scheduler::GetInstance()->Run();
 	Cob::PushRotation(navx->GetYaw());
 }
