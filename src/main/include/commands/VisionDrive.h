@@ -19,8 +19,16 @@ class geoffrey : public frc::PIDSource {
   public:
     double PIDGet();
 };
+class jacques : public frc::PIDSource {
+  public:
+    double PIDGet();
+};
 
 class dummyOutput : public frc::PIDOutput {
+  public:
+    void PIDWrite(double output);
+};
+class dummierOutput : public frc::PIDOutput{
   public:
     void PIDWrite(double output);
 };
@@ -41,18 +49,21 @@ class VisionDrive : public frc::Command, frc::PIDOutput {
   static double getPower();
   static double getCenterX();
   static dummyOutput zOutput;
+  static dummierOutput zOutput2;
   frc::Preferences* prefs;
   double xP, xI, xD;
+  double yP, yI, yD;
   double zP, zI, zD;
 private:
   static geoffrey geoff;
-  
+  static jacques jacque;
   static std::shared_ptr<nt::NetworkTable> visionTable;
 
 	void getZPower(); 
   void getYPower();
   bool somethingWrong();
   static frc::PIDController* xPID;
+  static frc::PIDController* yPID;
   static frc::PIDController* zPID;
   double rotationRate;
 };

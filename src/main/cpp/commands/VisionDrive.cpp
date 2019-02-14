@@ -20,17 +20,26 @@ volatile double VisionDrive::yPower;
 volatile double VisionDrive::zPower;
 std::shared_ptr<nt::NetworkTable> VisionDrive::visionTable;
 frc::PIDController* VisionDrive::xPID;
+frc::PIDController* VisionDrive::yPID;
 frc::PIDController* VisionDrive::zPID;
 geoffrey VisionDrive::geoff;
+jacques VisionDrive::jacque;
 dummyOutput VisionDrive::zOutput;
+dummierOutput VisionDrive::zOutput2;
 
 double geoffrey::PIDGet(){
   //DriverStation::ReportError("val:" + std::to_string(VisionDrive::getPower()));
   return -(VisionDrive::getCenterX() - 960/2) / (960 / 2);
 }
-
+double jacques::PIDGet(){
+  //change this for the Y - axis PID
+  return 0.0; 
+}
 void dummyOutput::PIDWrite(double output){
   VisionDrive::zPower = output;
+}
+void dummierOutput::PIDWrite(double output){
+  VisionDrive::yPower = output;
 }
 
 VisionDrive::VisionDrive() : frc::Command(), frc::PIDOutput(){
@@ -45,6 +54,9 @@ VisionDrive::VisionDrive() : frc::Command(), frc::PIDOutput(){
   xP = prefs->GetDouble("xP", .03f);
   xI = prefs->GetDouble("xI", 0.002f);
   xD = prefs->GetDouble("xD", .03f);
+  yP = prefs->GetDouble("yP", .03f); //not tuned
+  yI = prefs->GetDouble("yI", 0.002f); //not tuned
+  yD = prefs->GetDouble("yD", .03f); //not tuned
   zP = prefs->GetDouble("zP", 0.03f);
   zI = prefs->GetDouble("zI", 0.002f);
   zD = prefs->GetDouble("zD", 0.03f);
@@ -52,6 +64,9 @@ VisionDrive::VisionDrive() : frc::Command(), frc::PIDOutput(){
   prefs->PutDouble("xP", xP);
   prefs->PutDouble("xI", xI);
   prefs->PutDouble("xD", xD);
+  prefs->PutDouble("yP", yP);
+  prefs->PutDouble("yI", yI);
+  prefs->PutDouble("yD", yD);
   prefs->PutDouble("zP", zP);
   prefs->PutDouble("zI", zI);
   prefs->PutDouble("zD", zD);
@@ -71,6 +86,7 @@ void VisionDrive::Initialize() {
   DriverStation::ReportError("size:" + std::to_string(arrAngle.size()));
 
   xPID = new frc::PIDController(xP, xI, xD, &geoff, this);
+  yPID = new frc::PIDController(yP, yI, yD, &jacque, &zOutput2);
   zPID = new frc::PIDController(zP, zI, zD, Robot::navx, &zOutput);/*
   DriverStation::ReportError("xP: " + std::to_string(xP));
   DriverStation::ReportError("xI: " + std::to_string(xI));
@@ -82,17 +98,27 @@ void VisionDrive::Initialize() {
   rotationRate = 0.0;
   SetTimeout(5); 
   xPID->SetInputRange(-1.0f, 1.0f);
+  yPID->SetInputRange(-1.0f, 1.0f);
   zPID->SetInputRange(-180.0f, 180.0f);
+
   xPID->SetOutputRange(-1.0, 1.0);
+  yPID->SetOutputRange(-1.0, 1.0);
   zPID->SetOutputRange(-1.0, 1.0);
+
   xPID->SetPercentTolerance(2.0f);
+  yPID->SetPercentTolerance(2.0f);
   zPID->SetAbsoluteTolerance(1.0f);
+
   xPID->SetSetpoint(0.0f);
+  yPID->SetSetpoint(0.0f);
   zPID->SetSetpoint(0.0f);
+
   xPID->SetContinuous(false);
+  yPID->SetContinuous(false);
   zPID->SetContinuous(true);
   if(!somethingWrong()){
     xPID->Enable();
+    yPID->Enable();
     zPID->Enable();
   }
 }
@@ -107,6 +133,7 @@ void VisionDrive::Execute() {
   //getZPower();
   Robot::driveTrain->RODrive(0,xPower,zPower);
   DriverStation::ReportError("xPower: " + std::to_string(xPower));
+  DriverStation::ReportError("yPower: " + std::to_string(yPower));
   DriverStation::ReportError("zPower: " + std::to_string(zPower));
 
   //DriverStation::ReportError("xP: " + std::to_string(xP));
@@ -123,13 +150,17 @@ bool VisionDrive::IsFinished() {
   //if(xPID->OnTarget() && zPID->OnTarget() || IsTimedOut())
     //DriverStation::ReportError("is finished");
   //return xPID->OnTarget() && zPID->OnTarget() || IsTimedOut();
-  return somethingWrong() || (xPID->OnTarget() && zPID->OnTarget()) || IsTimedOut() || !frc2019::Robot::oi->GetVision();
+  return somethingWrong() || (xPID->OnTarget() && 
+    //change this later when yPID works
+    //yPID->OnTarget() &&
+    zPID->OnTarget()) || IsTimedOut() || !frc2019::Robot::oi->GetVision();
 }
 
 // Called once after isFinished returns true
 void VisionDrive::End() {
   DriverStation::ReportError("PID Disabled");
   xPID->Disable();
+  yPID->Disable();
   zPID->Disable();
 }
 
