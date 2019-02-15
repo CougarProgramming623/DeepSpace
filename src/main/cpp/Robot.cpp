@@ -5,6 +5,7 @@
 
 namespace frc2019 {
 
+std::shared_ptr<Climb> Robot::climb;
 std::shared_ptr<DriveTrain> Robot::driveTrain;
 std::shared_ptr<AHRS> Robot::navx;
 std::shared_ptr<OI> Robot::oi;
@@ -26,6 +27,7 @@ void Robot::RobotInit() {
 		err += ex.what();
 		DriverStation::ReportError(err.c_str());
 	}
+	climb.reset(new Climb());
   
 	Robot::navx.get()->ZeroYaw();
 	std::string color = frc::DriverStation::GetInstance().GetAlliance() == frc::DriverStation::Alliance::kRed ? "red" : "blue";

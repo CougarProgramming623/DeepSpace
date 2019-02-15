@@ -5,16 +5,27 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/Climb.h"
-#include "Robot.h"
+#pragma once
+
+#include <frc/commands/Command.h>
+#include <frc/Timer.h>
+
 
 namespace frc2019 {
 
-Climb::Climb(ClimbHeight height) : 
-	m_Height(height) {
-		//Add other commands here
+class ClimbDown : public frc::Command {
 
-	}
+public:
+	ClimbDown();
+	void Initialize() override;
+	void Execute() override;
+	bool IsFinished() override;
+	void End() override;
+	void Interrupted() override;
+private:
+	frc::Timer m_Timer;
+	double m_LastTime = 0.0;
+};
 
 
 }//namespace

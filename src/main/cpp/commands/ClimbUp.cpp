@@ -5,21 +5,36 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#pragma once
-
-#include <frc/commands/CommandGroup.h>
-
-#include "GameEnums.h"
-
+#include "commands/ClimbUp.h"
+#include "Robot.h"
 
 namespace frc2019 {
 
-class Climb : public frc::CommandGroup {
-public:
-	Climb(ClimbHeight height);
-private:
-	ClimbHeight m_Height;
-};
+ClimbUp::ClimbUp() : m_Timer() {
+	Requires(Robot::climb.get());
+}
+
+void ClimbUp::Initialize() {
+	m_Timer.Start();
+}
+
+void ClimbUp::Execute() {
+	Robot::climb.get()->SetPower(1.0);
+	Robot::climb.get()->SetClimbTime(m_Timer.Get());//Count the time we climbed for
+}
+
+bool ClimbUp::IsFinished() {
+	return false;// FIXME return true if we detect the hard limit of the climb motor
+}
+
+void ClimbUp::End() {
+
+}
+
+void ClimbUp::Interrupted() {
+
+}
+
 
 
 }//namespace
