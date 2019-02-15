@@ -25,7 +25,8 @@ frc::PIDController* VisionDrive::zPID;
 geoffrey VisionDrive::geoff;
 jacques VisionDrive::jacque;
 dummyOutput VisionDrive::zOutput;
-dummierOutput VisionDrive::zOutput2;
+dummierOutput VisionDrive::yOutput;
+double targetWidth;
 
 double geoffrey::PIDGet(){
   //DriverStation::ReportError("val:" + std::to_string(VisionDrive::getPower()));
@@ -33,12 +34,13 @@ double geoffrey::PIDGet(){
 }
 double jacques::PIDGet(){
   //change this for the Y - axis PID
-  return 0.0; 
+  return (targetWidth - VisionDrive::getTargetWidth())/targetWidth; 
 }
 void dummyOutput::PIDWrite(double output){
   VisionDrive::zPower = output;
 }
 void dummierOutput::PIDWrite(double output){
+  DriverStation::ReportError("yPower writing: "+std::to_string(output));
   VisionDrive::yPower = output;
 }
 
@@ -86,7 +88,7 @@ void VisionDrive::Initialize() {
   DriverStation::ReportError("size:" + std::to_string(arrAngle.size()));
 
   xPID = new frc::PIDController(xP, xI, xD, &geoff, this);
-  yPID = new frc::PIDController(yP, yI, yD, &jacque, &zOutput2);
+  yPID = new frc::PIDController(yP, yI, yD, &jacque, &yOutput);
   zPID = new frc::PIDController(zP, zI, zD, Robot::navx, &zOutput);/*
   DriverStation::ReportError("xP: " + std::to_string(xP));
   DriverStation::ReportError("xI: " + std::to_string(xI));
@@ -94,6 +96,9 @@ void VisionDrive::Initialize() {
   DriverStation::ReportError("zP: " + std::to_string(zP));
   DriverStation::ReportError("zI: " + std::to_string(zI));
   DriverStation::ReportError("zD: " + std::to_string(zD));*/
+  if(arrAngle[correctIndex] > -50)
+    targetWidth = 60.0;
+  else targetWidth = 147.0;
 
   rotationRate = 0.0;
   SetTimeout(5); 
@@ -131,10 +136,14 @@ void VisionDrive::Execute() {
  // Robot::driveTrain->FODDrive(0, 0, rotationRate, 0);
   //getCenterX();
   //getZPower();
-  Robot::driveTrain->RODrive(0,xPower,zPower);
-  DriverStation::ReportError("xPower: " + std::to_string(xPower));
+
+
+  //Robot::driveTrain->RODrive(yPower,xPower,zPower);
+
+  
+  //DriverStation::ReportError("xPower: " + std::to_string(xPower));
   DriverStation::ReportError("yPower: " + std::to_string(yPower));
-  DriverStation::ReportError("zPower: " + std::to_string(zPower));
+  //DriverStation::ReportError("zPower: " + std::to_string(zPower));
 
   //DriverStation::ReportError("xP: " + std::to_string(xP));
   //DriverStation::ReportError("xI: " + std::to_string(xI));
@@ -152,7 +161,7 @@ bool VisionDrive::IsFinished() {
   //return xPID->OnTarget() && zPID->OnTarget() || IsTimedOut();
   return somethingWrong() || (xPID->OnTarget() && 
     //change this later when yPID works
-    //yPID->OnTarget() &&
+    yPID->OnTarget() &&
     zPID->OnTarget()) || IsTimedOut() || !frc2019::Robot::oi->GetVision();
 }
 
@@ -204,10 +213,14 @@ double VisionDrive::getCenterX() {
     */
 }
 
-void VisionDrive::getYPower(){
-  
+//also probably never called lol
+double VisionDrive::getTargetWidth(){
+  std::vector<double> defaultVal{0};
+  arrWidth = visionTable->GetNumberArray("width", defaultVal); 
+  return arrWidth[correctIndex];
 }
 
+//never called lol
 void VisionDrive::getZPower(){
   float angle = Robot::navx->GetYaw();
   zPower = (-angle)/90;

@@ -48,12 +48,15 @@ class VisionDrive : public frc::Command, frc::PIDOutput {
   volatile static double xPower, zPower, yPower;
   static double getPower();
   static double getCenterX();
+  static double getTargetWidth();
   static dummyOutput zOutput;
-  static dummierOutput zOutput2;
+  static dummierOutput yOutput;
   frc::Preferences* prefs;
   double xP, xI, xD;
   double yP, yI, yD;
   double zP, zI, zD;
+
+  double targetWidth;
 private:
   static geoffrey geoff;
   static jacques jacque;
