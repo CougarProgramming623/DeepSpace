@@ -8,9 +8,11 @@
 #pragma once
 #define ELBOWID 0 //change for whatever port talon
 #define WRISTID 0 //change for whatever port talon
+#define FORKLIFTID 0
 
 #include <frc/commands/Subsystem.h>
 #include "frc/WPILib.h"
+#include "ctre/Phoenix.h"
 
 namespace frc2019{
   class Arm : public frc::Subsystem {
@@ -18,10 +20,11 @@ namespace frc2019{
   // It's desirable that everything possible under private except
   // for methods that implement subsystem capabilities
 
-  /*
-  std::shared_ptr<frc::WPI_TalonSRX> wrist;
-	std::shared_ptr<frc::WPI_TalonSRX> elbow;
-  */
+  
+  std::shared_ptr<WPI_TalonSRX> wrist;
+	std::shared_ptr<WPI_TalonSRX> elbow;
+  std::shared_ptr<WPI_TalonSRX> forklift;
+  
 
  public:
   Arm();

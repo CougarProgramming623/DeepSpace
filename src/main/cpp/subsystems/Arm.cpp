@@ -10,12 +10,9 @@
 
 namespace frc2019{
   Arm::Arm() : Subsystem("Arm") {
-    /*
-  wrist.reset(new WPI_TalonSRX(WRISTID));
-  elbow.reset(new WPI_TalonSRX(ELBOWID));
-  wrist->ConfigSelectedFeedbackSensor(FeedbackDevice::Analog, 30);
-  wrist->GetSelectedSensorPosition();
-  */
+    wrist.reset(new WPI_TalonSRX(WRISTID));
+    elbow.reset(new WPI_TalonSRX(ELBOWID));
+    forklift.reset(new WPI_TalonSRX(FORKLIFTID));
   }
 
   void Arm::InitDefaultCommand() {
@@ -23,7 +20,7 @@ namespace frc2019{
   // SetDefaultCommand(new MySpecialCommand());
     
     
-    //SetDefaultCommand(new ArmMovement());
+    SetDefaultCommand(new ArmMovement());
   }
 
 // Put methods for controlling this subsystem

@@ -37,13 +37,6 @@ namespace frc2019{
       static dumbOutput wristOutput;
       static superDumbOutput elbowOutput;
 
-      static std::shared_ptr<frc::AnalogPotentiometer> wristPot;
-	    static std::shared_ptr<frc::AnalogInput> wristAnalogInput;
-      static std::shared_ptr<frc::AnalogPotentiometer> elbowPot;
-	    static std::shared_ptr<frc::AnalogInput> elbowAnalogInput;
-      static std::shared_ptr<frc::AnalogPotentiometer> forkliftPot;
-	    static std::shared_ptr<frc::AnalogInput> forkliftAnalogInput;
-
       volatile static double wristPower, elbowPower, forkliftPower;
       
     private:

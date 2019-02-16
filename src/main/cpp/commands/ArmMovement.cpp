@@ -9,20 +9,13 @@
 #include "ctre/Phoenix.h"
 namespace frc2019{
 
-std::shared_ptr<frc::AnalogPotentiometer> ArmMovement::wristPot;
-std::shared_ptr<frc::AnalogInput> ArmMovement::wristAnalogInput;
-std::shared_ptr<frc::AnalogPotentiometer> ArmMovement::elbowPot;
-std::shared_ptr<frc::AnalogInput> ArmMovement::elbowAnalogInput;
-std::shared_ptr<frc::AnalogPotentiometer> ArmMovement::forkliftPot;
-std::shared_ptr<frc::AnalogInput> ArmMovement::forkliftAnalogInput;
-
-
 dumbOutput ArmMovement::wristOutput;
 superDumbOutput ArmMovement::elbowOutput;
 
 frc::PIDController* ArmMovement::elbowPID;
 frc::PIDController* ArmMovement::wristPID;
 frc::PIDController* ArmMovement::forkliftPID;
+
 int ArmMovement::state;
 
 volatile double ArmMovement::wristPower;
