@@ -14,14 +14,20 @@ std::vector<double> VisionDrive::arrCenterX;
 std::vector<double> VisionDrive::arrAngle; 
 std::vector<double> VisionDrive::arrWidth;
 std::vector<double> VisionDrive::arrHeight;
+
 int VisionDrive::correctIndex;
+int VisionDrive::isThereLeftTarget;
+
 volatile double VisionDrive::xPower;
 volatile double VisionDrive::yPower;
 volatile double VisionDrive::zPower;
+
 std::shared_ptr<nt::NetworkTable> VisionDrive::visionTable;
+
 frc::PIDController* VisionDrive::xPID;
 frc::PIDController* VisionDrive::yPID;
 frc::PIDController* VisionDrive::zPID;
+
 geoffrey VisionDrive::geoff;
 jacques VisionDrive::jacque;
 dummyOutput VisionDrive::zOutput;
@@ -34,7 +40,8 @@ double geoffrey::PIDGet(){
 }
 double jacques::PIDGet(){
   //change this for the Y - axis PID
-  //DriverStation::ReportError("TargetWidth: " + std::to_string(VisionDrive::targetWidth));
+  DriverStation::ReportError("TargetWidth: " + std::to_string(VisionDrive::targetWidth));
+  DriverStation::ReportError("getTargetWidth: " + std::to_string(VisionDrive::getTargetWidth()));
   return -(VisionDrive::targetWidth - VisionDrive::getTargetWidth())/VisionDrive::targetWidth; 
 }
 void dummyOutput::PIDWrite(double output){
@@ -97,10 +104,7 @@ void VisionDrive::Initialize() {
   DriverStation::ReportError("zP: " + std::to_string(zP));
   DriverStation::ReportError("zI: " + std::to_string(zI));
   DriverStation::ReportError("zD: " + std::to_string(zD));*/
-  if(arrAngle[correctIndex] > -50)
-    VisionDrive::targetWidth = 120.0;
-  else VisionDrive::targetWidth = 50.0;
-
+  
   rotationRate = 0.0;
   SetTimeout(5); 
   xPID->SetInputRange(-1.0f, 1.0f);
@@ -112,7 +116,7 @@ void VisionDrive::Initialize() {
   zPID->SetOutputRange(-1.0, 1.0);
 
   xPID->SetPercentTolerance(2.0f);
-  yPID->SetPercentTolerance(2.0f);
+  yPID->SetPercentTolerance(1.5f);
   zPID->SetAbsoluteTolerance(1.0f);
 
   xPID->SetSetpoint(0.0f);
@@ -123,10 +127,16 @@ void VisionDrive::Initialize() {
   yPID->SetContinuous(false);
   zPID->SetContinuous(true);
   if(!somethingWrong()){
+    if(arrAngle[correctIndex] > -100 && arrAngle[correctIndex] < -50)
+    VisionDrive::targetWidth = 120.0;
+    else  if (arrAngle[correctIndex] > -50)
+    VisionDrive::targetWidth = 50.0;
+    else VisionDrive::targetWidth = 70.0;
     xPID->Enable();
     yPID->Enable();
     zPID->Enable();
   }
+  
 }
 
 
@@ -140,12 +150,12 @@ void VisionDrive::Execute() {
 
 
 
-  Robot::driveTrain->RODrive(yPower,xPower,zPower);
+  //Robot::driveTrain->RODrive(yPower,xPower,zPower);
 
   
 
   //DriverStation::ReportError("xPower: " + std::to_string(xPower));
-  DriverStation::ReportError("yPower: " + std::to_string(yPower));
+  //DriverStation::ReportError("yPower: " + std::to_string(yPower));
   //DriverStation::ReportError("zPower: " + std::to_string(zPower));
 
   //DriverStation::ReportError("xP: " + std::to_string(xP));
@@ -188,16 +198,30 @@ std::shared_ptr<nt::NetworkTable> VisionDrive::start_networkTable(){
 bool VisionDrive::somethingWrong(){
   if (arrAngle.size() == 0)
     return true;
-  while(correctIndex < arrAngle.size()){
-    if(arrAngle[correctIndex] > -100 && arrAngle[correctIndex] < -50){
+  isThereLeftTarget = arrAngle.size() - 1;
+  while(isThereLeftTarget >= 0){
+    if(arrAngle[isThereLeftTarget] > -100 && arrAngle[isThereLeftTarget] < -50){
       return false;
     }
-    correctIndex++;
+    isThereLeftTarget--;
   }
   DriverStation::ReportError("no left targets found");
   return true;
 }
-
+int VisionDrive::getCorrectIndex(){
+  std::vector<double> defaultVal{0};
+  arrCenterX = visionTable->GetNumberArray("centerX", defaultVal);
+  arrAngle = visionTable->GetNumberArray("angle", defaultVal);
+  double currentIndex = 0;
+  correctIndex = 0;
+  while(currentIndex < arrCenterX.size()){
+    if((arrAngle[currentIndex] > -100 && arrAngle[currentIndex] < -50))
+      if(arrCenterX[currentIndex] - 960/2 < arrCenterX[correctIndex] - 960/2)
+        correctIndex = currentIndex;
+    currentIndex++;
+  }
+  return correctIndex++;
+}
 
 double VisionDrive::getCenterX() {
   std::vector<double> defaultVal{0};

@@ -45,6 +45,7 @@ class VisionDrive : public frc::Command, frc::PIDOutput {
   std::shared_ptr<nt::NetworkTable> start_networkTable();
   static std::vector<double> arrCenterX, arrAngle, arrHeight, arrWidth;
   static int correctIndex;
+  static int isThereLeftTarget;
   volatile static double xPower, zPower, yPower;
   static double getPower();
   static double getCenterX();
@@ -64,6 +65,7 @@ private:
 
 	void getZPower(); 
   void getYPower();
+  int getCorrectIndex();
   bool somethingWrong();
   static frc::PIDController* xPID;
   static frc::PIDController* yPID;
