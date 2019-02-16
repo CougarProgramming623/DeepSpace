@@ -68,4 +68,13 @@
 #error you must specity a robot to compile for!
 #endif
 
+#define lerp(a, b, f) a + f * (b - a)
+
+#define normalize(min, max, value) (value - min) / (max - min)
+
+#define map(value, sourceMin, sourceMax, destMin, destMax) lerp(destMin, destMax, normalize(sourceMin, sourceMax, value))
+
+#define kMAX_VELOCITY_LEFT 322
+#define kMAX_VELOCITY_RIGHT 322
+
 

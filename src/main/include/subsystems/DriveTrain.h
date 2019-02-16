@@ -22,6 +22,8 @@ public:
 	void InitDefaultCommand() override;
 	void FODDrive(double x, double y, double rotation, double gyroAngle);
 	int GetTicks();
+	double GetLeftVelocity();
+	double GetRightVelocity();
 };
 
 

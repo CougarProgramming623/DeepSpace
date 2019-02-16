@@ -33,4 +33,12 @@ int DriveTrain::GetTicks() {
 	return m_LeftRearMC.GetSelectedSensorPosition(1);
 }
 
+double DriveTrain::GetLeftVelocity() {
+	return m_LeftRearMC.GetSelectedSensorVelocity();
+}
+
+double DriveTrain::GetRightVelocity() {
+	return m_RightRearMC.GetSelectedSensorVelocity();
+}
+
 }//frc2019

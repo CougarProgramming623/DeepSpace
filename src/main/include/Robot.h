@@ -11,6 +11,7 @@
 #include <frc/WPILib.h>
 #include <ctre/Phoenix.h>
 #include "subsystems/DriveTrain.h"
+#include "subsystems/VelocityDrivetrain.h"
 #include "subsystems/Arm.h"
 #include "AHRS.h"
 #include "OI.h"
@@ -37,7 +38,9 @@ class Robot : public frc::TimedRobot {
 	static std::shared_ptr<OI> oi;
 	static Joystick* joystick;
 	static Joystick* buttonboard;
+	static std::shared_ptr<VelocityDrivetrain> vD;
 	private:
+	int maxVelocity_left, maxVelocity_right;
 	//TalonSRX* armMC;
 };
 

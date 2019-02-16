@@ -18,7 +18,7 @@ OI::OI() :
 	cargoGround(&buttonBoard, OI_ARM_POSITION_CARGO_GROUND),
 	manualControlOverride(&buttonBoard, OI_ARM_MANUAL_MODE), 
 	vMode(&buttonBoard, OI_ARM_V_MODE), 
-	fodToggle(&buttonBoard, OI_DRIVE_FOD_TOGGLE)
+	fodToggle(&driverJoystick, OI_DRIVE_FOD_TOGGLE)
 	{
 		fodToggle.WhenPressed(new BooleanToggle(&fod, [](bool newValue) {
 			frc::DriverStation::ReportError(std::string("LAMBDA TEST FOD: ") + (newValue ? "true" : "false"));

@@ -18,6 +18,8 @@ public:
 	void Interrupted() override;
 	void SetAlignDriver();
 	void SetFODDriver();
+private:
+	int initialLeftTicks, initialRightTicks;
 	
 };
 
