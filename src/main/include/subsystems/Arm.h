@@ -8,6 +8,7 @@
 #pragma once
 
 #include <frc/commands/Subsystem.h>
+#include <frc/WPILib.h>
 #include <ctre/Phoenix.h>
 
 namespace frc2019 {
@@ -16,6 +17,7 @@ public:
   Arm();
   void InitDefaultCommand() override;
   int GetPotData();
+  void SetSpeed(double);
 private:
   TalonSRX armMC;
 };

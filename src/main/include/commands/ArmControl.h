@@ -7,21 +7,23 @@
 
 #pragma once
 
-#include <frc/commands/Subsystem.h>
+#include <frc/commands/Command.h>
 #include <frc/WPILib.h>
 #include <ctre/Phoenix.h>
+#include "subsystems/Arm.h"
+#include "Robot.h"
 
-namespace frc2019{
+namespace frc2019 {
 
-class Wrist : public frc::Subsystem {
- private:
-  // It's desirable that everything possible under private except
-  // for methods that implement subsystem capabilities
-  TalonSRX wristMC;
-
+class ArmControl : public frc::Command {
  public:
-  Wrist();
-  void InitDefaultCommand() override;
-  void SetSpeed(double);
+  ArmControl();
+  void Initialize() override;
+  void Execute() override;
+  bool IsFinished() override;
+  void End() override;
+  void Interrupted() override;
+ public:
+  static std::shared_ptr<Arm> arm;
 };
 }

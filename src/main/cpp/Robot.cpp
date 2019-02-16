@@ -9,12 +9,18 @@ std::shared_ptr<DriveTrain> Robot::driveTrain;
 std::shared_ptr<AHRS> Robot::navx;
 std::shared_ptr<OI> Robot::oi;
 std::shared_ptr<Arm> Robot::arm;
+std::shared_ptr<Wrist> Robot::wrist;
+std::shared_ptr<Vacuum> Robot::vacuum;
+std::shared_ptr<HatchPickup> Robot::pickup;
 
 void Robot::RobotInit() {
 	Cob::InitBoard(); //starts the network tables for the Cougar Optic Board
 	//instantiates the subsystems and OI
 	driveTrain.reset(new DriveTrain());
 	arm.reset(new Arm());
+	wrist.reset(new Wrist());
+	vacuum.reset(new Vacuum());
+	pickup.reset(new HatchPickup());
 	oi.reset(new OI());
 	try {
 		navx.reset(new AHRS(SPI::Port::kMXP)); //instantiates the gyro

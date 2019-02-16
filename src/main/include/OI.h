@@ -2,6 +2,7 @@
 #include <frc/WPILib.h>
 #include "commands/BooleanToggle.h"
 #include "GameEnums.h"
+#include "RobotConstants.h"
 
 namespace frc2019 {
 
@@ -19,8 +20,11 @@ private:
 	frc::JoystickButton manualControlOverride, vMode;
 	//Drive Control Overrids
 	frc::JoystickButton fodToggle;
-
 	bool fod;
+	//temporary individual motor buttons
+	frc::JoystickButton arm;
+	frc::JoystickButton wrist;
+	frc::JoystickButton pickup;
 	
 public:
 	OI();

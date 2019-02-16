@@ -23,4 +23,8 @@ void Arm::InitDefaultCommand() {
 int Arm::GetPotData() {
   return armMC.GetSensorCollection().GetAnalogIn(); //return the potentiometer reading
 }
+
+void Arm::SetSpeed(double speed) {
+  armMC.Set(ControlMode::PercentOutput, speed);
+}
 }//namespace

@@ -8,8 +8,10 @@
 #pragma once
 
 #include <frc/commands/Subsystem.h>
+#include <frc/WPILib.h>
 #include <ctre/Phoenix.h>
 
+namespace frc2019 {
 class HatchPickup : public frc::Subsystem {
  private:
   // It's desirable that everything possible under private except
@@ -20,4 +22,6 @@ class HatchPickup : public frc::Subsystem {
   HatchPickup();
   void InitDefaultCommand() override;
   int GetPotData();
+  void SetSpeed(double);
 };
+}

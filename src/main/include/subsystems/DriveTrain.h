@@ -18,8 +18,9 @@ private:
 public:
 	DriveTrain();
 	void InitDefaultCommand() override;
-	void FODDrive(double x, double y, double rotation, double gyroAngle);
+	void FODDrive(double y, double x, double rotation, double gyroAngle);
 	int GetTicks();
+	int SetSpeed();
 };
 
 }//frc2019
