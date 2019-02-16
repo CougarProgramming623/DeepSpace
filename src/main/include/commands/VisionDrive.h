@@ -56,7 +56,7 @@ class VisionDrive : public frc::Command, frc::PIDOutput {
   double yP, yI, yD;
   double zP, zI, zD;
 
-  double targetWidth;
+  static double targetWidth;
 private:
   static geoffrey geoff;
   static jacques jacque;

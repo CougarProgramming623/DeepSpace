@@ -6,6 +6,7 @@
 namespace frc2019 {
 
 	std::shared_ptr<DriveTrain> Robot::driveTrain;
+	std::shared_ptr<Arm> Robot::arm;
 	AHRS* Robot::navx;
 	std::shared_ptr<OI> Robot::oi;
 	

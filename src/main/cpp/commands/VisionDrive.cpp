@@ -26,7 +26,7 @@ geoffrey VisionDrive::geoff;
 jacques VisionDrive::jacque;
 dummyOutput VisionDrive::zOutput;
 dummierOutput VisionDrive::yOutput;
-double targetWidth;
+double VisionDrive::targetWidth;
 
 double geoffrey::PIDGet(){
   //DriverStation::ReportError("val:" + std::to_string(VisionDrive::getPower()));
@@ -34,13 +34,14 @@ double geoffrey::PIDGet(){
 }
 double jacques::PIDGet(){
   //change this for the Y - axis PID
-  return (targetWidth - VisionDrive::getTargetWidth())/targetWidth; 
+  //DriverStation::ReportError("TargetWidth: " + std::to_string(VisionDrive::targetWidth));
+  return -(VisionDrive::targetWidth - VisionDrive::getTargetWidth())/VisionDrive::targetWidth; 
 }
 void dummyOutput::PIDWrite(double output){
   VisionDrive::zPower = output;
 }
 void dummierOutput::PIDWrite(double output){
-  DriverStation::ReportError("yPower writing: "+std::to_string(output));
+  //DriverStation::ReportError("yPower writing: "+std::to_string(output));
   VisionDrive::yPower = output;
 }
 
@@ -97,8 +98,8 @@ void VisionDrive::Initialize() {
   DriverStation::ReportError("zI: " + std::to_string(zI));
   DriverStation::ReportError("zD: " + std::to_string(zD));*/
   if(arrAngle[correctIndex] > -50)
-    targetWidth = 60.0;
-  else targetWidth = 147.0;
+    VisionDrive::targetWidth = 120.0;
+  else VisionDrive::targetWidth = 50.0;
 
   rotationRate = 0.0;
   SetTimeout(5); 
@@ -138,9 +139,11 @@ void VisionDrive::Execute() {
   //getZPower();
 
 
-  //Robot::driveTrain->RODrive(yPower,xPower,zPower);
+
+  Robot::driveTrain->RODrive(yPower,xPower,zPower);
 
   
+
   //DriverStation::ReportError("xPower: " + std::to_string(xPower));
   DriverStation::ReportError("yPower: " + std::to_string(yPower));
   //DriverStation::ReportError("zPower: " + std::to_string(zPower));
@@ -199,6 +202,7 @@ bool VisionDrive::somethingWrong(){
 double VisionDrive::getCenterX() {
   std::vector<double> defaultVal{0};
   arrCenterX = visionTable->GetNumberArray("centerX", defaultVal); 
+ // DriverStation::ReportError("Width: " + std::to_string(arrCenterX[correctIndex]));
   return arrCenterX[correctIndex];
   
 	//DriverStation::ReportError("CenterX is :" + std::to_string(arrCenterX[correctIndex]));
@@ -213,10 +217,10 @@ double VisionDrive::getCenterX() {
     */
 }
 
-//also probably never called lol
 double VisionDrive::getTargetWidth(){
   std::vector<double> defaultVal{0};
   arrWidth = visionTable->GetNumberArray("width", defaultVal); 
+  //DriverStation::ReportError("Width: " + std::to_string(arrWidth[correctIndex]));
   return arrWidth[correctIndex];
 }
 
