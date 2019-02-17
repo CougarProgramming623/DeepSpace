@@ -94,7 +94,5 @@ int DriveTrain::GetTicks() {
 	return m_LeftRearMC.GetSelectedSensorPosition(); //return the number of ticks the encoder returns
 }
 
-int DriveTrain::SetSpeed() {
-	return 0;
-}
+
 }//frc2019

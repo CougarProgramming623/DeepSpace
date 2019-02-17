@@ -1,7 +1,7 @@
 #pragma once
 #include <frc/WPILib.h>
 #include "commands/BooleanToggle.h"
-#include "commands/SetArmPosition.h"
+#include "commands/SetPickupPosition.h"
 #include "GameEnums.h"
 #include "RobotConstants.h"
 

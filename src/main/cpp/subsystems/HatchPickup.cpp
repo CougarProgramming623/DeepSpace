@@ -21,9 +21,7 @@ int HatchPickup::GetPotData() {
   return pickupMC.GetSensorCollection().GetAnalogIn();
 }
 
-void HatchPickup::SetSpeed(double speed) {
-  pickupMC.Set(ControlMode::PercentOutput, speed);
-}
+
 // Put methods for controlling this subsystem
 // here. Call these from Commands.
 }

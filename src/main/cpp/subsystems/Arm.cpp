@@ -7,7 +7,7 @@
 
 #include "subsystems/Arm.h"
 #include "RobotConstants.h"
-#include "commands/SetArmPosition.h"
+#include "commands/SetPickupPosition.h"
 
 namespace frc2019 {
 Arm::Arm() : Subsystem("Arm"), armMC(ARM_TALON_ID) {
@@ -45,7 +45,5 @@ void Arm::SetSetpoint(int setpoint) {
   frc::SmartDashboard::PutNumber("trajectory", armMC.GetActiveTrajectoryPosition());  
 }
 
-void Arm::SetSpeed(double speed) {
-  armMC.Set(ControlMode::PercentOutput, speed);
-}
+
 }//namespace

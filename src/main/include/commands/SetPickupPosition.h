@@ -8,22 +8,17 @@
 #pragma once
 
 #include <frc/commands/Command.h>
-#include "subsystems/HatchPickup.h"
-#include <frc/WPILib.h>
-#include <ctre/Phoenix.h>
-#include "Robot.h"
 
 namespace frc2019 {
-
-class PickupControl : public frc::Command {
- public:
-  PickupControl();
+class SetPickupPosition : public frc::Command {
+public:
+  SetPickupPosition(int setpoint);
   void Initialize() override;
   void Execute() override;
   bool IsFinished() override;
   void End() override;
   void Interrupted() override;
- public:
-  static std::shared_ptr<HatchPickup> pickup;
+private:
+  int m_setpoint;
 };
 }

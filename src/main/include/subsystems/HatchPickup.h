@@ -22,6 +22,5 @@ class HatchPickup : public frc::Subsystem {
   HatchPickup();
   void InitDefaultCommand() override;
   int GetPotData();
-  void SetSpeed(double);
 };
 }

@@ -18,10 +18,12 @@ class Wrist : public frc::Subsystem {
   // It's desirable that everything possible under private except
   // for methods that implement subsystem capabilities
   TalonSRX wristMC;
+  int initialReading;
 
  public:
   Wrist();
   void InitDefaultCommand() override;
-  void SetSpeed(double);
+  void SetSetpoint(int setpoint);
+  int GetPositionData();
 };
 }
