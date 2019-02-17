@@ -1,18 +1,20 @@
 
-#define BOT_SAMUS
-//#define BOT_HAMBONE
+//#define BOT_SAMUS
+#define BOT_HAMBONE
 //#define BOT_RAFIKI
 
 #define SAMUS_LEFT_FRONT_ID  15
 #define SAMUS_RIGHT_FRONT_ID  4
 #define SAMUS_LEFT_BACK_ID    3
 #define SAMUS_RIGHT_BACK_ID   7
+#define SAMUS_ARM_TALON_ID   17
 #define SAMUS_BOT_NAME "Samus"
 
-#define HAMBONE_LEFT_FRONT_ID  -1
-#define HAMBONE_RIGHT_FRONT_ID -1
-#define HAMBONE_LEFT_BACK_ID   -1
-#define HAMBONE_RIGHT_BACK_ID  -1
+#define HAMBONE_LEFT_FRONT_ID   6
+#define HAMBONE_RIGHT_FRONT_ID  2
+#define HAMBONE_LEFT_BACK_ID    1
+#define HAMBONE_RIGHT_BACK_ID   5
+#define HAMBONE_ARM_TALON_ID   14
 #define HAMBONE_BOT_NAME "Hambone"
 
 #define RAFIKI_LEFT_FRONT_ID  -1
@@ -40,6 +42,7 @@
 #define RIGHT_FRONT_ID SAMUS_RIGHT_FRONT_ID
 #define LEFT_BACK_ID SAMUS_LEFT_BACK_ID
 #define RIGHT_BACK_ID SAMUS_RIGHT_BACK_ID
+#define ARM_TALON_ID SAMUS_ARM_TALON_ID
 #define BOT_NAME SAMUS_BOT_NAME
 
 #elif defined(BOT_HAMBONE)
@@ -48,6 +51,7 @@
 #define RIGHT_FRONT_ID HAMBONE_RIGHT_FRONT_ID
 #define LEFT_BACK_ID HAMBONE_LEFT_BACK_ID
 #define RIGHT_BACK_ID HAMBONE_RIGHT_BACK_ID
+#define ARM_TALON_ID HAMBONE_ARM_TALON_ID
 #define BOT_NAME HAMBONE_BOT_NAME
 
 #elif defined(BOT_RAFIKI)
@@ -74,7 +78,15 @@
 
 #define map(value, sourceMin, sourceMax, destMin, destMax) lerp(destMin, destMax, normalize(sourceMin, sourceMax, value))
 
-#define kMAX_VELOCITY_LEFT 322
-#define kMAX_VELOCITY_RIGHT 322
+#ifdef BOT_SAMUS
+
+#define kMAX_VELOCITY 322
+
+#else
+
+#define kMAX_VELOCITY 643
+
+#endif
+
 
 

@@ -1,8 +1,9 @@
 
 #include "OI.h"
+#include "OIConstants.h"
 #include <frc/DriverStation.h>
 #include "commands/PositveAngleTurnTest.h"
-
+#include "commands/Drive.h"
 
 namespace frc2019 {
 
@@ -18,13 +19,13 @@ OI::OI() :
 	cargoGround(&buttonBoard, OI_ARM_POSITION_CARGO_GROUND),
 	manualControlOverride(&buttonBoard, OI_ARM_MANUAL_MODE), 
 	vMode(&buttonBoard, OI_ARM_V_MODE), 
-	fodToggle(&driverJoystick, OI_DRIVE_FOD_TOGGLE)
+	fodToggle(&driverJoystick, 1)
 	{
 		fodToggle.WhenPressed(new BooleanToggle(&fod, [](bool newValue) {
 			frc::DriverStation::ReportError(std::string("LAMBDA TEST FOD: ") + (newValue ? "true" : "false"));
 		}));
 
-		vMode.WhenPressed(new PositveAngleTurnTest());
+		vMode.WhileHeld(new Drive());		
 	}
 
 

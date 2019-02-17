@@ -8,37 +8,31 @@
 #include "commands/AutoDrive.h"
 #include "Robot.h"
 #include "RobotConstants.h"
+
 namespace frc2019 {
 AutoDrive::AutoDrive(double distance, bool strafe) {
-	// Use Requires() here to declare subsystem dependencies
-	// eg. Requires(Robot::chassis.get());
-	Requires(Robot::driveTrain.get());
-	currentTicks = abs(Robot::driveTrain->GetTicks());
+	Requires(Robot::driveTrain.get()); //requires the Drivetrain subsystem to function
+	currentTicks = abs(Robot::driveTrain->GetTicks()); // saves the inital tick count because it does not reset
 	m_distance = distance;
-	isStraffing = strafe;
-}
+	isStrafing = strafe;
+} //AutoDrive()
 
-// Called just before this Command runs the first time
 void AutoDrive::Initialize() {
-	//SetTimeout(3);
-}
+	
+} //Initialize()
 
-// Called repeatedly when this Command is scheduled to run
 void AutoDrive::Execute() {
-	if (isStraffing){
-		Robot::driveTrain->FODDrive(0.0, 0.5, 0.0, Robot::navx->GetYaw());
-		DriverStation::ReportError("Ticks Driven: " + std::to_string(Robot::driveTrain->GetTicks()-currentTicks));
+	if (isStrafing) {
+		Robot::driveTrain->FODDrive(0.0, 0.5, 0.0, Robot::navx->GetYaw()); //input power to the x parameter
 	}
 	else {
-		Robot::driveTrain->FODDrive(0.5, 0.0, 0.0, Robot::navx->GetYaw());
-		DriverStation::ReportError("Ticks Driven: " + std::to_string(Robot::driveTrain->GetTicks()-currentTicks));
+		Robot::driveTrain->FODDrive(0.5, 0.0, 0.0, Robot::navx->GetYaw()); //input power to the y parameter
 	}
-}
+} //Execute()
 
-// Make this return true when this Command no longer needs to run execute()
 bool AutoDrive::IsFinished() { 
 	double maxTicks;
-	if (isStraffing){
+	if (isStrafing){
 		maxTicks = m_distance * S_TICKS_PER_INCH;
 	}
 	else {
@@ -48,14 +42,8 @@ bool AutoDrive::IsFinished() {
 	return maxTicks <= ticks;
  }
 
-// Called once after isFinished returns true
 void AutoDrive::End() {
-	//Robot::driveTrain->fodDrive(0.0, 0.0, 0.0, Robot::navx->GetYaw());
-	int ticksDriven = Robot::driveTrain->GetTicks() - currentTicks;
-	DriverStation::ReportError("Ticks Driven: " + std::to_string(ticksDriven));
 }
 
-// Called when another command which requires one or more of the same
-// subsystems is scheduled to run
 void AutoDrive::Interrupted() {}
 }

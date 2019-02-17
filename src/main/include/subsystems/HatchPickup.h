@@ -7,18 +7,17 @@
 
 #pragma once
 
-#include <frc/commands/Command.h>
+#include <frc/commands/Subsystem.h>
+#include <ctre/Phoenix.h>
 
-namespace frc2019 {
-class VDTest : public frc::Command {
+class HatchPickup : public frc::Subsystem {
+ private:
+  // It's desirable that everything possible under private except
+  // for methods that implement subsystem capabilities
+  TalonSRX pickupMC;
+
  public:
-  VDTest();
-  void Initialize() override;
-  void Execute() override;
-  bool IsFinished() override;
-  void End() override;
-  void Interrupted() override;
-  private:
-    double joystickVal;
+  HatchPickup();
+  void InitDefaultCommand() override;
+  int GetPotData();
 };
-}

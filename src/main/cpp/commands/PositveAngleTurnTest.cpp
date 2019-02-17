@@ -12,27 +12,22 @@
 
 namespace frc2019 {
 PositveAngleTurnTest::PositveAngleTurnTest() : frc::CommandGroup("Turn Test") {
-  using namespace ohs623;
-  AddSequential(new Turn(45.0f));
-  WAIT(0.5);
-  AddSequential(new Turn(90.0f));
-  WAIT(0.5);
-  AddSequential(new Turn(135.0f));
-  WAIT(0.5);
-  AddSequential(new Turn(180.0));
-  WAIT(0.5);
+  using namespace ohs623; //since WAIT(x) is found under the ohs623 namespace in Constants.h
+
+  //turn 180 degrees clockwise in 45 degree increments
+  for(int i = 0; i < 4; i++) {
+    AddSequential(new Turn(i * 45.0f));
+    WAIT(0.5);
+  }
+
   AddSequential(new Turn(0.0f));
   WAIT(0.5);
-  AddSequential(new Turn(-45.0f));    
-  WAIT(0.5);
-  AddSequential(new Turn(-90.0f));
-  WAIT(0.5);
-  AddSequential(new Turn(-135.0f));
-  WAIT(0.5);
-  AddSequential(new Turn(-180.f));  
-  WAIT(0.5);
+
+  //turn 180 degrees counter-clockwise in 45 degree increments
+  for(int i = 0; i < 4; i++) {
+    AddSequential(new Turn(-1 * i * 45.0f));
+    WAIT(0.5);
+  }
   AddSequential(new Turn(0.0f));
-  //Requires(Robot::driveTrain.get());
-  //Robot::navx.get()->ZeroYaw();
 }
-}
+} //namespace

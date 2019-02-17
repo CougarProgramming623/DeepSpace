@@ -18,41 +18,40 @@
 
 namespace frc2019 {
 class Cob {
- public:
-  static std::shared_ptr<NetworkTable> table;
+public:
   Cob();
   static void InitBoard();
-
   template<typename T>
   static void PushValue(std::string str,T t);
-
-// private:
+public: 
+  static std::shared_ptr<NetworkTable> table;
   static std::map<std::string,nt::NetworkTableEntry> map;
-  private:
-    static void InitValue(std::string str);
+  
+private:
+  static void InitValue(std::string str);
 };
 
 
 template<>
-inline void Cob::PushValue<double>(std::string str, double t){
+inline void Cob::PushValue<double>(std::string str, double t) {
   InitValue(str);
   map.at(str).SetDouble(t);
 }
 
 template<>
-inline void Cob::PushValue<float>(std::string str, float t){
+inline void Cob::PushValue<int>(std::string str, int t) {
   Cob::PushValue(str,(double)t);
 }
 
 template<>
-inline void Cob::PushValue<bool>(std::string str, bool t){
+inline void Cob::PushValue<float>(std::string str, float t) {
+  Cob::PushValue(str,(double)t);
+}
+
+template<>
+inline void Cob::PushValue<bool>(std::string str, bool t) {
   InitValue(str);
   map.at(str).SetBoolean(t);
-}
-
-template<>
-inline void Cob::PushValue<int>(std::string str, int t){
-  Cob::PushValue(str,(double)t);
 }
 
 template<>
@@ -60,6 +59,6 @@ inline void Cob::PushValue<std::string>(std::string str, std::string val) {
   InitValue(str);
   map.at(str).SetString(val);
 }
-}
+}//namespace
 
 

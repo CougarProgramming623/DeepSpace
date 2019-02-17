@@ -2,9 +2,6 @@
 #pragma once
 
 #include <frc/commands/Command.h>
-#include <frc/WPILib.h>
-#include "AHRS.h"
-#include "OI.h"
 
 namespace frc2019 {
 
@@ -22,6 +19,5 @@ private:
 	int initialLeftTicks, initialRightTicks;
 	
 };
-
 
 }//frc2019

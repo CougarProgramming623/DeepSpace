@@ -8,9 +8,7 @@
 #pragma once
 
 #include <frc/commands/CommandGroup.h>
-
 #include "GameEnums.h"
-
 
 namespace frc2019 {
 
@@ -20,6 +18,4 @@ public:
 private:
 	ClimbHeight m_Height;
 };
-
-
 }//namespace

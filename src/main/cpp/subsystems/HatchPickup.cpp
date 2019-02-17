@@ -5,22 +5,19 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "subsystems/Arm.h"
-#include "RobotConstants.h"
+#include "subsystems/HatchPickup.h"
 
-namespace frc2019 {
-Arm::Arm() : Subsystem("Arm"), armMC(ARM_TALON_ID) {
-  armMC.ConfigSelectedFeedbackSensor(FeedbackDevice::Analog, 0, 10); //configure the potentiometer connected to the arm TalonSRX
+HatchPickup::HatchPickup() : Subsystem("ExampleSubsystem"), pickupMC(100) {
+  pickupMC.ConfigSelectedFeedbackSensor(FeedbackDevice::Analog, 0, 10);
 }
 
-
-
-void Arm::InitDefaultCommand() {
+void HatchPickup::InitDefaultCommand() {
   // Set the default command for a subsystem here.
   // SetDefaultCommand(new MySpecialCommand());
 }
 
-int Arm::GetPotData() {
-  return armMC.GetSensorCollection().GetAnalogIn(); //return the potentiometer reading
+int HatchPickup::GetPotData() {
+  return pickupMC.GetSensorCollection().GetAnalogIn();
 }
-}//namespace
+// Put methods for controlling this subsystem
+// here. Call these from Commands.

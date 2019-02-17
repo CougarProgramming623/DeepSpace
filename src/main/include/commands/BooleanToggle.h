@@ -25,5 +25,4 @@ public:
 	bool* boolean;
 	std::function<void(bool newValue)> onFlip;
 };
-
 }//namespace

@@ -18,9 +18,9 @@ public:
 	bool IsFinished() override;
 	void End() override;
 	void Interrupted() override;
-	private:
+private:
 	int currentTicks;
 	double m_distance;
-	bool isStraffing;
-};
-}
+	bool isStrafing;
+}; //AutoDrive
+} //frc2019

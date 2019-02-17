@@ -8,20 +8,15 @@
 #pragma once
 
 #include <frc/commands/Subsystem.h>
-#include <frc/WPILib.h>
 #include <ctre/Phoenix.h>
 
 namespace frc2019 {
 class Arm : public frc::Subsystem {
- private:
-  // It's desirable that everything possible under private except
-  // for methods that implement subsystem capabilities
-  TalonSRX* armMC;
-  int potData;
- public:
+public:
   Arm();
   void InitDefaultCommand() override;
-  TalonSRX* GetArmMC();
   int GetPotData();
+private:
+  TalonSRX armMC;
 };
 }
