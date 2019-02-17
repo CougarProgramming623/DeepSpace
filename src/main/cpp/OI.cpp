@@ -32,7 +32,10 @@ OI::OI() :
 
 		vMode.WhenPressed(new PositveAngleTurnTest());
 
-		arm.WhileHeld(new ArmControl());
+		arm.WhileHeld(new ArmControl(.25));
+		arm.WhenReleased(new ArmControl(0.0));
+		manualControlOverride.WhileHeld(new ArmControl(-.25));
+		manualControlOverride.WhenReleased( new ArmControl(0.0));
 		wrist.WhileHeld(new WristControl());
 		pickup.WhileHeld(new PickupControl());
 	}

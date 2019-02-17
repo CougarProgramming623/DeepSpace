@@ -17,7 +17,7 @@ namespace frc2019 {
 
 class ArmControl : public frc::Command {
  public:
-  ArmControl();
+  ArmControl(double speed);
   void Initialize() override;
   void Execute() override;
   bool IsFinished() override;
@@ -25,5 +25,8 @@ class ArmControl : public frc::Command {
   void Interrupted() override;
  public:
   static std::shared_ptr<Arm> arm;
+private:
+   double m_speed;
+
 };
 }

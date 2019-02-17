@@ -10,10 +10,12 @@
 
 namespace frc2019 {
 
-ArmControl::ArmControl() {
+ArmControl::ArmControl(double speed) {
   // Use Requires() here to declare subsystem dependencies
   // eg. Requires(Robot::chassis.get());
   Requires(Robot::arm.get());
+  m_speed = speed;
+  
 }
 
 // Called just before this Command runs the first time
@@ -21,7 +23,7 @@ void ArmControl::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void ArmControl::Execute() {
-  Robot::arm->SetSpeed(1.0);
+  Robot::arm->SetSpeed(m_speed);
 }
 
 // Make this return true when this Command no longer needs to run execute()
