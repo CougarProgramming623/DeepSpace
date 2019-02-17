@@ -8,6 +8,7 @@
 #pragma once
 
 #include <frc/commands/Subsystem.h>
+#include <frc/WPILib.h>
 #include <ctre/Phoenix.h>
 #include <frc/WPILib.h>
 

@@ -7,6 +7,7 @@
 
 #include "subsystems/HatchPickup.h"
 
+namespace frc2019 {
 HatchPickup::HatchPickup() : Subsystem("ExampleSubsystem"), pickupMC(100) {
   pickupMC.ConfigSelectedFeedbackSensor(FeedbackDevice::Analog, 0, 10);
 }
@@ -19,5 +20,10 @@ void HatchPickup::InitDefaultCommand() {
 int HatchPickup::GetPotData() {
   return pickupMC.GetSensorCollection().GetAnalogIn();
 }
+
+void HatchPickup::SetSpeed(double speed) {
+  pickupMC.Set(ControlMode::PercentOutput, speed);
+}
 // Put methods for controlling this subsystem
 // here. Call these from Commands.
+}

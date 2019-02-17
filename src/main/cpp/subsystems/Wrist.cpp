@@ -17,6 +17,9 @@ void Wrist::InitDefaultCommand() {
   
 }
 
+void Wrist::SetSpeed(double speed) {
+  wristMC.Set(ControlMode::PercentOutput, speed);
+}
 // Put methods for controlling this subsystem
 // here. Call these from Commands.
 }

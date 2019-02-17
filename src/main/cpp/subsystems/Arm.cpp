@@ -44,4 +44,8 @@ void Arm::SetSetpoint(int setpoint) {
   frc::SmartDashboard::PutNumber("Target", armMC.GetClosedLoopTarget());
   frc::SmartDashboard::PutNumber("trajectory", armMC.GetActiveTrajectoryPosition());  
 }
+
+void Arm::SetSpeed(double speed) {
+  armMC.Set(ControlMode::PercentOutput, speed);
+}
 }//namespace
