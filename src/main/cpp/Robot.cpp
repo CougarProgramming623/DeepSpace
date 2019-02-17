@@ -34,6 +34,7 @@ void Robot::RobotPeriodic() {
 	Cob::PushValue(COB_X_VEL,Robot::navx->GetVelocityX());
 	Cob::PushValue(COB_Y_VEL,Robot::navx->GetVelocityY());
 	Cob::PushValue(COB_ROTATION,Robot::navx->GetYaw());
+	SmartDashboard::PutNumber("POT", arm->GetPositionData());
 	//Cob::PushValue(COB_MAIN_ARM_ROTATION,Robot::arm->GetPotData());
 }
 		

@@ -1,6 +1,7 @@
 #pragma once
 #include <frc/WPILib.h>
 #include "commands/BooleanToggle.h"
+#include "commands/SetArmPosition.h"
 #include "GameEnums.h"
 
 namespace frc2019 {

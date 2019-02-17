@@ -7,19 +7,18 @@
 
 #pragma once
 
-#include <frc/commands/Subsystem.h>
-#include <ctre/Phoenix.h>
-#include <frc/WPILib.h>
+#include <frc/commands/Command.h>
 
 namespace frc2019 {
-class Arm : public frc::Subsystem {
+class SetArmPosition : public frc::Command {
 public:
-  Arm();
-  void InitDefaultCommand() override;
-  void SetSetpoint(int setpoint);
-  int GetPositionData();
+  SetArmPosition(int setpoint);
+  void Initialize() override;
+  void Execute() override;
+  bool IsFinished() override;
+  void End() override;
+  void Interrupted() override;
 private:
-  TalonSRX armMC;
-  int initialReading;
+  int m_setpoint;
 };
 }
