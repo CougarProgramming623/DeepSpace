@@ -59,14 +59,15 @@ void DriveTrain::ConfigureEncoders() {
 	m_RightRearMC.Config_kI(0, 0.0, 30);
 	m_RightRearMC.Config_kD(0, 40.0, 30);
 }
+
 void DriveTrain::CartesianDrive(double y, double x, double rotation, double angle) {
-	Vector2d input{y, x};
-	input.Rotate(-angle);
+	Vector2d input{x, y};
+	input.Rotate(angle);
 	double wheelSpeeds[4] ;
 	
 	wheelSpeeds[kFRONT_LEFT] = input.y + input.x + rotation;
-	wheelSpeeds[kREAR_LEFT] = input.y - input.x + rotation;
 	wheelSpeeds[kFRONT_RIGHT] = input.y - input.x - rotation;
+	wheelSpeeds[kREAR_LEFT] = input.y - input.x + rotation;
 	wheelSpeeds[kREAR_RIGHT] = input.y + input.x  - rotation;
 
 	Normalize(wheelSpeeds);
@@ -76,7 +77,17 @@ void DriveTrain::CartesianDrive(double y, double x, double rotation, double angl
 	m_RightFrontMC.Set(ControlMode::Velocity, wheelSpeeds[kFRONT_RIGHT] * kMAX_VELOCITY);
 	m_RightRearMC.Set(ControlMode::Velocity, wheelSpeeds[kREAR_RIGHT] * kMAX_VELOCITY);
 
-	frc::SmartDashboard::PutNumberArray("Speeds", wheelSpeeds);
+	double velocities[4];
+
+	velocities[0] = m_LeftFrontMC.GetSelectedSensorVelocity();
+	velocities[1] = m_LeftRearMC.GetSelectedSensorVelocity();
+	velocities[2] = m_RightFrontMC.GetSelectedSensorVelocity();
+	velocities[3] = m_RightRearMC.GetSelectedSensorVelocity();
+	SmartDashboard::PutNumber("LF", velocities[0]);
+	SmartDashboard::PutNumber("LR", velocities[1]);
+	SmartDashboard::PutNumber("RF", velocities[2]);
+	SmartDashboard::PutNumber("RR", velocities[3]);
+
 }
 
 int DriveTrain::GetTicks() {
