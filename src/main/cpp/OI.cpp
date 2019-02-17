@@ -3,8 +3,7 @@
 #include "OIConstants.h"
 #include <frc/DriverStation.h>
 #include "commands/PositveAngleTurnTest.h"
-#include "commands/Drive.h"
-
+#include "commands/SetForkPosition.h"
 namespace frc2019 {
 
 //Instantiate the Joystick and Button Board
@@ -25,7 +24,8 @@ OI::OI() :
 			frc::DriverStation::ReportError(std::string("LAMBDA TEST FOD: ") + (newValue ? "true" : "false"));
 		}));
 
-		vMode.WhileHeld(new Drive());		
+		low.WhenPressed(new SetForkPosition(200));
+		low.WhenPressed(new SetForkPosition(0));		
 	}
 
 

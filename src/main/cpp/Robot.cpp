@@ -9,6 +9,7 @@ std::shared_ptr<DriveTrain> Robot::driveTrain;
 std::shared_ptr<AHRS> Robot::navx;
 std::shared_ptr<OI> Robot::oi;
 std::shared_ptr<Arm> Robot::arm;
+std::shared_ptr<HatchPickup> Robot::fork;
 
 void Robot::RobotInit() {
 	Cob::InitBoard();
@@ -16,6 +17,7 @@ void Robot::RobotInit() {
 	DriverStation::ReportError("constructed drivetrain");
 	arm.reset(new Arm());
 	oi.reset(new OI());
+	fork.reset(new HatchPickup());
 	try {
 		navx.reset(new AHRS(SPI::Port::kMXP)); //instantiates the gyro
 	} catch (std::exception &ex) {

@@ -5,25 +5,20 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "subsystems/Vacuum.h"
-#include "RobotConstants.h"
+#pragma once
 
-
-#define SUCK_SPEED 0.5
+#include <frc/commands/Command.h>
 
 namespace frc2019 {
-
-Vacuum::Vacuum() : Subsystem("ExampleSubsystem"), vacuumMC(VACUUM_ID) {
-}
-
-void Vacuum::InitDefaultCommand() {
-  // Set the default command for a subsystem here.
-  // SetDefaultCommand(new MySpecialCommand());
-}
-
-void Vacuum::SetVacuumSpeed() {
-  vacuumMC.Set(ControlMode::PercentOutput, SUCK_SPEED);
-}
-// Put methods for controlling this subsystem
-// here. Call these from Commands.
+class SetForkPosition : public frc::Command {
+ public:
+  SetForkPosition(int);
+  void Initialize() override;
+  void Execute() override;
+  bool IsFinished() override;
+  void End() override;
+  void Interrupted() override;
+private:
+  int m_setpoint;
+};
 }

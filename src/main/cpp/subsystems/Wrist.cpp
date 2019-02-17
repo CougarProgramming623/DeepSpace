@@ -6,10 +6,11 @@
 /*----------------------------------------------------------------------------*/
 
 #include "subsystems/Wrist.h"
+#include "RobotConstants.h"
 
 namespace frc2019 {
 
-Wrist::Wrist() : Subsystem("Wrist"), wristMC(2) {
+Wrist::Wrist() : Subsystem("Wrist"), wristMC(WRIST_ID) {
   wristMC.ConfigSelectedFeedbackSensor(FeedbackDevice::Analog, 0, 10);
 }
 

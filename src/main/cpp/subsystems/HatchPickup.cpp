@@ -6,9 +6,21 @@
 /*----------------------------------------------------------------------------*/
 
 #include "subsystems/HatchPickup.h"
+#include "RobotConstants.h"
 
-HatchPickup::HatchPickup() : Subsystem("ExampleSubsystem"), pickupMC(100) {
+namespace frc2019 {
+HatchPickup::HatchPickup() : Subsystem("ExampleSubsystem"), pickupMC(FORK_ID) {
+  pickupMC.SetSelectedSensorPosition(pickupMC.GetSelectedSensorPosition(0));
+  initialReading = pickupMC.GetSelectedSensorPosition(0);
   pickupMC.ConfigSelectedFeedbackSensor(FeedbackDevice::Analog, 0, 10);
+  pickupMC.ConfigNominalOutputForward(0, 30);
+	pickupMC.ConfigNominalOutputReverse(0, 30);
+	pickupMC.ConfigPeakOutputForward(1, 30);		
+  pickupMC.ConfigPeakOutputReverse(-1, 30);
+  pickupMC.Config_kF(0, 0.0, 30);
+  pickupMC.Config_kP(0, 2.0, 30);
+  pickupMC.Config_kI(0, 0.0, 30);
+  pickupMC.Config_kD(0, 0.0, 30);
 }
 
 void HatchPickup::InitDefaultCommand() {
@@ -16,8 +28,15 @@ void HatchPickup::InitDefaultCommand() {
   // SetDefaultCommand(new MySpecialCommand());
 }
 
-int HatchPickup::GetPotData() {
-  return pickupMC.GetSensorCollection().GetAnalogIn();
+int HatchPickup::GetPositionData() {
+  return pickupMC.GetSelectedSensorPosition(0);
+}
+
+void HatchPickup::SetSetpoint(int setpoint) {
+  pickupMC.Set(ControlMode::Position, initialReading + setpoint);
+  frc::SmartDashboard::PutNumber("Target", pickupMC.GetClosedLoopTarget());
+  frc::SmartDashboard::PutNumber("Error", pickupMC.GetClosedLoopError());
+}
 }
 // Put methods for controlling this subsystem
 // here. Call these from Commands.
