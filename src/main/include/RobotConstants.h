@@ -88,5 +88,12 @@
 
 #endif
 
+#define kFRONT_LEFT 0
+#define kFRONT_RIGHT 1
+#define kREAR_LEFT 2
+#define kREAR_RIGHT 3
+
+
+
 
 

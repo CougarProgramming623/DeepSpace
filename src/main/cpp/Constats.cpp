@@ -21,7 +21,7 @@ void Normalize(wpi::MutableArrayRef<double> wheelSpeeds) {
       maxMagnitude = temp;
     }
   }
-  if (maxMagnitude > kMAX_VELOCITY) {
+  if (maxMagnitude > 1) {
     for (size_t i = 0; i < wheelSpeeds.size(); i++) {
       wheelSpeeds[i] = wheelSpeeds[i] / maxMagnitude;
     }

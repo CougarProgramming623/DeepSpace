@@ -19,10 +19,8 @@ DriveTrain::DriveTrain() : Subsystem("DriveTrain"),
 		m_MecanumDrive.SetSafetyEnabled(false);
 		m_MecanumDrive.SetMaxOutput(1.0);
 		m_MecanumDrive.SetExpiration(0.1);
-		/*
-			m_RightFrontMC.SetInverted(true);
-			m_RightRearMC.SetInverted(true);
-		*/
+		m_RightFrontMC.SetInverted(true);
+		m_RightRearMC.SetInverted(true);
 		ConfigureEncoders();
 	}
 
@@ -62,25 +60,21 @@ void DriveTrain::ConfigureEncoders() {
 	m_RightRearMC.Config_kD(0, 40.0, 30);
 }
 void DriveTrain::CartesianDrive(double y, double x, double rotation, double angle) {
-
-	if(abs(x) > kMAX_VELOCITY || abs(y) > kMAX_VELOCITY)
-		x = x < 0 ? -1 : 1 * kMAX_VELOCITY;
-
 	Vector2d input{y, x};
 	input.Rotate(-angle);
 	double wheelSpeeds[4] ;
 	
-	wheelSpeeds[0] = y + x + rotation;
-	wheelSpeeds[1] = y - x + rotation;
-	wheelSpeeds[2] = y - x - rotation;
-	wheelSpeeds[3] = y + x  - rotation;
+	wheelSpeeds[kFRONT_LEFT] = input.y + input.x + rotation;
+	wheelSpeeds[kREAR_LEFT] = input.y - input.x + rotation;
+	wheelSpeeds[kFRONT_RIGHT] = input.y - input.x - rotation;
+	wheelSpeeds[kREAR_RIGHT] = input.y + input.x  - rotation;
 
 	Normalize(wheelSpeeds);
 
-	m_LeftFrontMC.Set(ControlMode::Velocity, wheelSpeeds[0]);
-	m_LeftRearMC.Set(ControlMode::Velocity,wheelSpeeds[1]);
-	m_RightFrontMC.Set(ControlMode::Velocity, wheelSpeeds[2]);
-	m_RightRearMC.Set(ControlMode::Velocity, wheelSpeeds[3]);
+	m_LeftFrontMC.Set(ControlMode::Velocity, wheelSpeeds[kFRONT_LEFT] * kMAX_VELOCITY);
+	m_LeftRearMC.Set(ControlMode::Velocity,wheelSpeeds[kREAR_LEFT] * kMAX_VELOCITY);
+	m_RightFrontMC.Set(ControlMode::Velocity, wheelSpeeds[kFRONT_RIGHT] * kMAX_VELOCITY);
+	m_RightRearMC.Set(ControlMode::Velocity, wheelSpeeds[kREAR_RIGHT] * kMAX_VELOCITY);
 
 	frc::SmartDashboard::PutNumberArray("Speeds", wheelSpeeds);
 }
