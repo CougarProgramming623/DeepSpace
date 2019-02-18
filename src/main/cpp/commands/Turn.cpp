@@ -30,7 +30,7 @@ void Turn::Initialize() {
 
 void Turn::Execute() {
   frc::DriverStation::ReportError("Executing turn");
-  Robot::driveTrain->FODDrive(0, 0, rotateToAngleRate / 2, Robot::navx.get()->GetYaw());
+  Robot::driveTrain->CartesianDrive(0, 0, rotateToAngleRate / 2, Robot::navx.get()->GetYaw());
 }
 
 bool Turn::IsFinished() { 
