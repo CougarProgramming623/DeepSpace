@@ -14,11 +14,19 @@ Turn::Turn(double angle) : frc::Command("Turn") , frc::PIDOutput() {
   Requires(Robot::driveTrain.get()); //dependent on the Drivetrain subsystem
   rotateToAngleRate = 0.0;
   m_angle = angle;
+  prefs = frc::Preferences::GetInstance();
+  kP = prefs->GetDouble("Turn kP", 0.09);
+  kI = prefs->GetDouble("Turn kI", 0.0);
+  kD = prefs->GetDouble("Turn kD", 0.15);
+  prefs->PutDouble("Turn kP", kP);
+  prefs->PutDouble("Turn kI", kI);
+  prefs->PutDouble("Turn kD", kD);
   SetTimeout(2); //sets how long the command is allowed to run for
 }
 
 void Turn::Initialize() {
-  turnController = new PIDController(0.05f, 0.0f, 0.045f, Robot::navx.get(), this); //initializes a PIDController with a kP, kI, kD, PIDSource, and PIDOuput
+  //Robot::navx->ZeroYaw();
+  turnController = new PIDController(kP, kI, kD, Robot::navx.get(), this); //initializes a PIDController with a kP, kI, kD, PIDSource, and PIDOuput
   turnController->SetInputRange(-180.0f, 180.0f); //sets input range to an angle
   turnController->SetOutputRange(-1.0, 1.0); //sets output range to a motor power
   turnController->SetAbsoluteTolerance(2.0f); //makes it so the robot ends at most 2 degrees of its target angle
@@ -30,11 +38,11 @@ void Turn::Initialize() {
 
 void Turn::Execute() {
   frc::DriverStation::ReportError("Executing turn");
-  Robot::driveTrain->FODDrive(0, 0, rotateToAngleRate / 2, Robot::navx.get()->GetYaw());
+  Robot::driveTrain->CartesianDrive(0, 0, rotateToAngleRate / 2, Robot::navx.get()->GetYaw());
 }
 
 bool Turn::IsFinished() { 
-  return IsTimedOut(); //command ends when timeout is reached
+  return false; //command ends when timeout is reached
 }
 
 void Turn::End() {

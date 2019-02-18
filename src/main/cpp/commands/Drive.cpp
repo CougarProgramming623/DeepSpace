@@ -23,10 +23,10 @@ void Drive::Execute() {
 	double x = OI::driverJoystick.GetX();
 	double rot = OI::driverJoystick.GetZ();
 
-	if(abs(y) <= 0.05f) {
+	if(abs(y) <= 0.075f) {
 		y = 0;
 	}
-	if(abs(x) <= 0.05f) {
+	if(abs(x) <= 0.075f) {
 		x = 0;
 	}
 	if(abs(rot) <= 0.05f) {
