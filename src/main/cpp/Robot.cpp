@@ -2,6 +2,7 @@
 #include "Cob.h"
 #include <frc/DriverStation.h>
 #include "commands/PositveAngleTurnTest.h"
+#include "commands/Turn.h"
 
 namespace frc2019 {
 
@@ -38,7 +39,7 @@ void Robot::RobotPeriodic() {
 }
 		
 void Robot::AutonomousInit() {
-	autonomousCommand.reset(new PositveAngleTurnTest()); //set the autonomous command or command group here
+	autonomousCommand.reset(new Turn(90.0f)); //set the autonomous command or command group here
 	if(autonomousCommand)
 		autonomousCommand->Start();
 }
