@@ -37,6 +37,11 @@ void Robot::RobotPeriodic() {
 	Cob::PushValue(COB_Y_VEL,Robot::navx->GetVelocityY());
 	Cob::PushValue(COB_ROTATION,Robot::navx->GetYaw());
 	//Cob::PushValue(COB_MAIN_ARM_ROTATION,Robot::arm->GetPotData());
+	frc::SmartDashboard::PutNumber("Fork Position", fork->GetForkTalonData(TalonData::SENSOR_POSITION));
+	frc::SmartDashboard::PutNumber("Fork Velocity", fork->GetForkTalonData(TalonData::SENSOR_VELOCITY));
+	frc::SmartDashboard::PutNumber("Fork Target", fork->GetForkTalonData(TalonData::TARGET));
+	frc::SmartDashboard::PutNumber("Fork Error", fork->GetForkTalonData(TalonData::ERROR));
+	frc::SmartDashboard::PutNumber("Fork Percent Output", fork->GetForkTalonData(TalonData::PERCENT_OUTPUT));
 }
 		
 void Robot::AutonomousInit() {

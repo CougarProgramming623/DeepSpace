@@ -25,7 +25,7 @@ OI::OI() :
 		}));
 
 		low.WhenPressed(new SetForkPosition(200));
-		low.WhenPressed(new SetForkPosition(0));		
+		medium.WhenPressed(new SetForkPosition(0));		
 	}
 
 

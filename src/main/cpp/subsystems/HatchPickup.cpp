@@ -7,6 +7,7 @@
 
 #include "subsystems/HatchPickup.h"
 #include "RobotConstants.h"
+#include "TalonConfig.h"
 
 namespace frc2019 {
 HatchPickup::HatchPickup() : Subsystem("ExampleSubsystem"), pickupMC(FORK_ID) {
@@ -28,8 +29,9 @@ void HatchPickup::InitDefaultCommand() {
   // SetDefaultCommand(new MySpecialCommand());
 }
 
-int HatchPickup::GetPositionData() {
-  return pickupMC.GetSelectedSensorPosition(0);
+int HatchPickup::GetForkTalonData(TalonData data) {
+  using namespace talon;
+  return GetTalonData(&pickupMC, data);
 }
 
 void HatchPickup::SetSetpoint(int setpoint) {
@@ -37,6 +39,7 @@ void HatchPickup::SetSetpoint(int setpoint) {
   frc::SmartDashboard::PutNumber("Target", pickupMC.GetClosedLoopTarget());
   frc::SmartDashboard::PutNumber("Error", pickupMC.GetClosedLoopError());
 }
+
 }
 // Put methods for controlling this subsystem
 // here. Call these from Commands.

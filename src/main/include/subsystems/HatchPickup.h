@@ -10,6 +10,7 @@
 #include <frc/commands/Subsystem.h>
 #include <frc/WPILib.h>
 #include <ctre/Phoenix.h>
+#include "GameEnums.h"
 
 namespace frc2019 {
 class HatchPickup : public frc::Subsystem {
@@ -23,6 +24,6 @@ class HatchPickup : public frc::Subsystem {
   HatchPickup();
   void InitDefaultCommand() override;
   void SetSetpoint(int);
-  int GetPositionData();
+  int GetForkTalonData(TalonData);
 };
 }
