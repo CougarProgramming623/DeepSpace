@@ -15,9 +15,9 @@ Turn::Turn(double angle) : frc::Command("Turn") , frc::PIDOutput() {
   rotateToAngleRate = 0.0;
   m_angle = angle;
   prefs = frc::Preferences::GetInstance();
-  kP = prefs->GetDouble("Turn kP", 0.09);
+  kP = prefs->GetDouble("Turn kP", 0.051);
   kI = prefs->GetDouble("Turn kI", 0.0);
-  kD = prefs->GetDouble("Turn kD", 0.15);
+  kD = prefs->GetDouble("Turn kD", 0.022);
   prefs->PutDouble("Turn kP", kP);
   prefs->PutDouble("Turn kI", kI);
   prefs->PutDouble("Turn kD", kD);
@@ -37,7 +37,7 @@ void Turn::Initialize() {
 }
 
 void Turn::Execute() {
-  frc::DriverStation::ReportError("Executing turn");
+  frc::DriverStation::ReportError(std::to_string(Robot::navx->GetYaw()));
   Robot::driveTrain->CartesianDrive(0, 0, rotateToAngleRate / 2, Robot::navx.get()->GetYaw());
 }
 

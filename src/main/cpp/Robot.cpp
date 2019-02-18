@@ -46,6 +46,7 @@ void Robot::RobotPeriodic() {
 }
 		
 void Robot::AutonomousInit() {
+	navx->ZeroYaw();
 	autonomousCommand.reset(new Turn(90.0f)); //set the autonomous command or command group here
 	if(autonomousCommand)
 		autonomousCommand->Start();

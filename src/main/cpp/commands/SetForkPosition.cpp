@@ -18,7 +18,7 @@ SetForkPosition::SetForkPosition(int setpoint) {
 
 // Called just before this Command runs the first time
 void SetForkPosition::Initialize() {
-  SetTimeout(10);
+  //SetTimeout(10);
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -27,7 +27,7 @@ void SetForkPosition::Execute() {
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool SetForkPosition::IsFinished() { return IsTimedOut(); }
+bool SetForkPosition::IsFinished() { return true; }
 
 // Called once after isFinished returns true
 void SetForkPosition::End() {}
