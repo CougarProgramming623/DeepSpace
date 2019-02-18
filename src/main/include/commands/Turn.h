@@ -23,6 +23,8 @@ class Turn : public frc::Command, public frc::PIDOutput {
     void PIDWrite(double) override; //comes from PIDOutput class
   private:
     PIDController* turnController;
-    double m_angle, rotateToAngleRate;
+    double m_angle, rotateToAngleRate, kP, kI, kD;
+    frc::Preferences* prefs;
+
 };
 } //namespace
