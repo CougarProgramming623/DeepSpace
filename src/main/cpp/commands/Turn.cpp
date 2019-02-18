@@ -15,9 +15,9 @@ Turn::Turn(double angle) : frc::Command("Turn") , frc::PIDOutput() {
   rotateToAngleRate = 0.0;
   m_angle = angle;
   prefs = frc::Preferences::GetInstance();
-  kP = prefs->GetDouble("Turn kP", 0.3);
+  kP = prefs->GetDouble("Turn kP", 0.09);
   kI = prefs->GetDouble("Turn kI", 0.0);
-  kD = prefs->GetDouble("Turn kD", 0.0);
+  kD = prefs->GetDouble("Turn kD", 0.15);
   prefs->PutDouble("Turn kP", kP);
   prefs->PutDouble("Turn kI", kI);
   prefs->PutDouble("Turn kD", kD);
@@ -25,6 +25,7 @@ Turn::Turn(double angle) : frc::Command("Turn") , frc::PIDOutput() {
 }
 
 void Turn::Initialize() {
+  //Robot::navx->ZeroYaw();
   turnController = new PIDController(kP, kI, kD, Robot::navx.get(), this); //initializes a PIDController with a kP, kI, kD, PIDSource, and PIDOuput
   turnController->SetInputRange(-180.0f, 180.0f); //sets input range to an angle
   turnController->SetOutputRange(-1.0, 1.0); //sets output range to a motor power
@@ -41,7 +42,7 @@ void Turn::Execute() {
 }
 
 bool Turn::IsFinished() { 
-  return IsTimedOut(); //command ends when timeout is reached
+  return false; //command ends when timeout is reached
 }
 
 void Turn::End() {
