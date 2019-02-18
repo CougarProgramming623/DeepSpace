@@ -24,8 +24,9 @@ OI::OI() :
 			frc::DriverStation::ReportError(std::string("LAMBDA TEST FOD: ") + (newValue ? "true" : "false"));
 		}));
 
-		low.WhenPressed(new SetForkPosition(200));
-		medium.WhenPressed(new SetForkPosition(0));		
+		low.WhenPressed(new SetForkPosition(300));
+		medium.WhenPressed(new SetForkPosition(0));	
+		high.WhenPressed(new SetForkPosition(150));	
 	}
 
 
