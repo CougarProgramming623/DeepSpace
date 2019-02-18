@@ -42,7 +42,7 @@ void Turn::Execute() {
 }
 
 bool Turn::IsFinished() { 
-  return false; //command ends when timeout is reached
+  return IsTimedOut(); //command ends when timeout is reached
 }
 
 void Turn::End() {
