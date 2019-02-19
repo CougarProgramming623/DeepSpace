@@ -36,19 +36,21 @@ double VisionDrive::targetWidth;
 
 double geoffrey::PIDGet(){
   //DriverStation::ReportError("val:" + std::to_string(VisionDrive::getPower()));
+  //DriverStation::ReportError("x: " + std::to_string(-(VisionDrive::getCenterX() - 960/2) / (960 / 2)));
   return -(VisionDrive::getCenterX() - 960/2) / (960 / 2);
 }
 double jacques::PIDGet(){
   //change this for the Y - axis PID
-  DriverStation::ReportError("TargetWidth: " + std::to_string(VisionDrive::targetWidth));
-  DriverStation::ReportError("getTargetWidth: " + std::to_string(VisionDrive::getTargetWidth()));
+  //DriverStation::ReportError("TargetWidth: " + std::to_string(VisionDrive::targetWidth));
+  //DriverStation::ReportError("getTargetWidth: " + std::to_string(VisionDrive::getTargetWidth()));
+  //DriverStation::ReportError("y: " + std::to_string(-(VisionDrive::targetWidth - VisionDrive::getTargetWidth())/VisionDrive::targetWidth));
   return -(VisionDrive::targetWidth - VisionDrive::getTargetWidth())/VisionDrive::targetWidth; 
 }
 void dummyOutput::PIDWrite(double output){
   VisionDrive::zPower = output;
 }
 void dummierOutput::PIDWrite(double output){
-  //DriverStation::ReportError("yPower writing: "+std::to_string(output));
+  DriverStation::ReportError("yPower writing: " + std::to_string(output));
   VisionDrive::yPower = output;
 }
 
@@ -127,11 +129,14 @@ void VisionDrive::Initialize() {
   yPID->SetContinuous(false);
   zPID->SetContinuous(true);
   if(!somethingWrong()){
-    if(arrAngle[correctIndex] > -100 && arrAngle[correctIndex] < -50)
+    int index = getCorrectIndex();
+    if(arrAngle[index] > -100 && arrAngle[index] < -50)
     VisionDrive::targetWidth = 120.0;
-    else  if (arrAngle[correctIndex] > -50)
+    else  if (arrAngle[index] > -50)
     VisionDrive::targetWidth = 50.0;
     else VisionDrive::targetWidth = 70.0;
+    DriverStation::ReportError("PID start");
+    getCorrectIndex();
     xPID->Enable();
     yPID->Enable();
     zPID->Enable();
@@ -208,26 +213,44 @@ bool VisionDrive::somethingWrong(){
   DriverStation::ReportError("no left targets found");
   return true;
 }
+//case control
 int VisionDrive::getCorrectIndex(){
   std::vector<double> defaultVal{0};
   arrCenterX = visionTable->GetNumberArray("centerX", defaultVal);
   arrAngle = visionTable->GetNumberArray("angle", defaultVal);
-  double currentIndex = 0;
-  correctIndex = 0;
-  while(currentIndex < arrCenterX.size()){
+  int currentIndex = arrAngle.size() - 1;
+  VisionDrive::correctIndex = -1;
+  while(currentIndex >= 0){
     if((arrAngle[currentIndex] > -100 && arrAngle[currentIndex] < -50))
-      if(arrCenterX[currentIndex] - 960/2 < arrCenterX[correctIndex] - 960/2)
-        correctIndex = currentIndex;
-    currentIndex++;
+    //left most pair
+      //if(arrCenterX[currentIndex] - 960/2 < arrCenterX[correctIndex] -960/2)
+        //VisionDrive::correctIndex = currentIndex; 
+    //right most pair
+    //if(arrCenterX[currentIndex] - 960/2 > arrCenterX[correctIndex] - 960/2)
+
+    //closest pair
+    
+      if(correctIndex == -1)
+        VisionDrive::correctIndex = currentIndex;
+      else {
+        if(fabs(arrCenterX[currentIndex] - 960/2) < fabs(arrCenterX[VisionDrive::correctIndex] - 960/2)){
+            VisionDrive::correctIndex = currentIndex;
+          }
+      }
+      
+    currentIndex--; 
   }
-  return correctIndex++;
+  DriverStation::ReportError("cI: " + std::to_string(VisionDrive::correctIndex));
+  return VisionDrive::correctIndex;
 }
 
 double VisionDrive::getCenterX() {
   std::vector<double> defaultVal{0};
   arrCenterX = visionTable->GetNumberArray("centerX", defaultVal); 
  // DriverStation::ReportError("Width: " + std::to_string(arrCenterX[correctIndex]));
-  return arrCenterX[correctIndex];
+  getCorrectIndex();
+  DriverStation::ReportError("correctIndex: " + std::to_string(correctIndex));
+  return arrCenterX[VisionDrive::correctIndex];
   
 	//DriverStation::ReportError("CenterX is :" + std::to_string(arrCenterX[correctIndex]));
   /*
@@ -245,7 +268,9 @@ double VisionDrive::getTargetWidth(){
   std::vector<double> defaultVal{0};
   arrWidth = visionTable->GetNumberArray("width", defaultVal); 
   //DriverStation::ReportError("Width: " + std::to_string(arrWidth[correctIndex]));
-  return arrWidth[correctIndex];
+  getCorrectIndex();
+  //DriverStation::ReportError("arrWidth: " + std::to_string(arrWidth[VisionDrive::correctIndex]));
+  return arrWidth[VisionDrive::correctIndex];
 }
 
 //never called lol
@@ -261,6 +286,6 @@ void VisionDrive::getZPower(){
 }
 void VisionDrive::PIDWrite(double output) {
   xPower = output;
-  //DriverStation::ReportError("Output:" + std::to_string(output));
+  //DriverStation::ReportError("xPower writing: " + std::to_string(output));
 }
 }//namespace

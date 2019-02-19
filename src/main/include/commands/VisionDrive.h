@@ -50,13 +50,13 @@ class VisionDrive : public frc::Command, frc::PIDOutput {
   static double getPower();
   static double getCenterX();
   static double getTargetWidth();
+  static int getCorrectIndex();
   static dummyOutput zOutput;
   static dummierOutput yOutput;
   frc::Preferences* prefs;
   double xP, xI, xD;
   double yP, yI, yD;
   double zP, zI, zD;
-
   static double targetWidth;
 private:
   static geoffrey geoff;
@@ -65,7 +65,6 @@ private:
 
 	void getZPower(); 
   void getYPower();
-  int getCorrectIndex();
   bool somethingWrong();
   static frc::PIDController* xPID;
   static frc::PIDController* yPID;
