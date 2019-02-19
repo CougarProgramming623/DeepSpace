@@ -3,6 +3,7 @@
 #include "OIConstants.h"
 #include <frc/DriverStation.h>
 #include "commands/PositveAngleTurnTest.h"
+#include "Cob.h"
 
 namespace frc2019 {
 
@@ -21,7 +22,8 @@ OI::OI() :
 	fodToggle(&driverJoystick, 1)
 	{
 		fodToggle.WhenPressed(new BooleanToggle(&fod, [](bool newValue) {
-			frc::DriverStation::ReportError(std::string("LAMBDA TEST FOD: ") + (newValue ? "true" : "false"));
+			// frc::DriverStation::ReportError(std::string("LAMBDA TEST FOD: ") + (newValue ? "true" : "false"));
+			Cob::PushValue(COB_FIELD_ORIENTED,newValue);
 		}));
 
 		vMode.WhenPressed(new PositveAngleTurnTest());
