@@ -4,6 +4,7 @@
 #include <frc/DriverStation.h>
 #include "commands/PositveAngleTurnTest.h"
 #include "Cob.h"
+#include "commands/SetForkPosition.h"
 
 namespace frc2019 {
 
@@ -27,12 +28,8 @@ OI::OI() :
 		}));
 
 
-		vMode.WhenPressed(new PositveAngleTurnTest());
-	}
-
 
 void OI::Update() {
-
 }
 
 SliderStatus OI::getSliderMode() {

@@ -6,14 +6,14 @@
 /*----------------------------------------------------------------------------*/
 
 #include "subsystems/Vacuum.h"
+#include "RobotConstants.h"
 
-#define VACUUM_PORT 1
+
 #define SUCK_SPEED 0.5
 
 namespace frc2019 {
 
-Vacuum::Vacuum() : Subsystem("ExampleSubsystem") {
-  victor.reset(new WPI_VictorSPX(VACUUM_PORT));
+Vacuum::Vacuum() : Subsystem("ExampleSubsystem"), vacuumMC(VACUUM_ID) {
 }
 
 void Vacuum::InitDefaultCommand() {
@@ -22,7 +22,7 @@ void Vacuum::InitDefaultCommand() {
 }
 
 void Vacuum::SetVacuumSpeed() {
-  victor->Set(SUCK_SPEED);
+  vacuumMC.Set(ControlMode::PercentOutput, SUCK_SPEED);
 }
 // Put methods for controlling this subsystem
 // here. Call these from Commands.

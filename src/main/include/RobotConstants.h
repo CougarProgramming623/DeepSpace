@@ -1,6 +1,6 @@
 
-#define BOT_SAMUS
-//#define BOT_HAMBONE 
+//#define BOT_SAMUS
+#define BOT_HAMBONE
 //#define BOT_RAFIKI
 
 #define SAMUS_LEFT_FRONT_ID  15
@@ -14,9 +14,7 @@
 #define HAMBONE_RIGHT_FRONT_ID  2
 #define HAMBONE_LEFT_BACK_ID    1
 #define HAMBONE_RIGHT_BACK_ID   5
-#define HAMBONE_ARM_TALON_ID    0
-#define HAMBONE_PICKUP         21
-#define HAMBONE_WRIST_TALON_ID 22
+#define HAMBONE_ARM_TALON_ID   14
 #define HAMBONE_BOT_NAME "Hambone"
 
 #define RAFIKI_LEFT_FRONT_ID  -1
@@ -53,7 +51,11 @@
 #define RIGHT_FRONT_ID HAMBONE_RIGHT_FRONT_ID
 #define LEFT_BACK_ID HAMBONE_LEFT_BACK_ID
 #define RIGHT_BACK_ID HAMBONE_RIGHT_BACK_ID
-#define ARM_TALON_ID HAMBONE_ARM_TALON_ID
+#define ARM_TALON_ID 13
+#define FORK_ID 14
+#define CLIMB_ID 18
+#define WRIST_ID 21
+#define VACUUM_ID 16
 #define BOT_NAME HAMBONE_BOT_NAME
 
 #elif defined(BOT_RAFIKI)
@@ -73,5 +75,29 @@
 #if !defined(LEFT_FRONT_ID) || !defined(LEFT_FRONT_ID) || !defined(LEFT_FRONT_ID) || !defined(LEFT_FRONT_ID) || !defined(BOT_NAME)
 #error you must specity a robot to compile for!
 #endif
+
+#define lerp(a, b, f) a + f * (b - a)
+
+#define normalize(min, max, value) (value - min) / (max - min)
+
+#define map(value, sourceMin, sourceMax, destMin, destMax) lerp(destMin, destMax, normalize(sourceMin, sourceMax, value))
+
+#ifdef BOT_SAMUS
+
+#define kMAX_VELOCITY 322
+
+#else
+
+#define kMAX_VELOCITY 643
+
+#endif
+
+#define kFRONT_LEFT 0
+#define kFRONT_RIGHT 1
+#define kREAR_LEFT 2
+#define kREAR_RIGHT 3
+
+
+
 
 

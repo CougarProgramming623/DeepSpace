@@ -13,6 +13,11 @@ public:
 	bool IsFinished() override;
 	void End() override;
 	void Interrupted() override;
+	void SetAlignDriver();
+	void SetFODDriver();
+private:
+	int initialLeftTicks, initialRightTicks;
+	
 };
 
 }//frc2019

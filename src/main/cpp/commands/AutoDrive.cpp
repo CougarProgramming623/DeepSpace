@@ -8,32 +8,38 @@
 #include "commands/AutoDrive.h"
 #include "Robot.h"
 #include "RobotConstants.h"
+
 namespace frc2019 {
 AutoDrive::AutoDrive(double distance, bool strafe) {
-	Requires(Robot::driveTrain.get()); //dependent on the Drivetrain subsystem
-	initialTicks = abs(Robot::driveTrain->GetTicks()); //get current ticks reading since encoders do not reset
+	Requires(Robot::driveTrain.get()); //requires the Drivetrain subsystem to function
+	currentTicks = abs(Robot::driveTrain->GetTicks()); // saves the inital tick count because it does not reset
 	m_distance = distance;
 	isStrafing = strafe;
-	maxTicks = m_distance * (isStrafing ? S_TICKS_PER_INCH : TICKS_PER_INCH);
-}
+} //AutoDrive()
 
 void AutoDrive::Initialize() {
-}
+	
+} //Initialize()
 
 void AutoDrive::Execute() {
 	if (isStrafing) {
-		Robot::driveTrain->FODDrive(0.0, 0.5, 0.0, Robot::navx->GetYaw()); //input power to xSpeed if we are strafing
+		Robot::driveTrain->FODDrive(0.0, 0.5, 0.0, Robot::navx->GetYaw()); //input power to the x parameter
 	}
 	else {
-		Robot::driveTrain->FODDrive(0.5, 0.0, 0.0, Robot::navx->GetYaw()); //input power to ySpeed if we are not strafing
+		Robot::driveTrain->FODDrive(0.5, 0.0, 0.0, Robot::navx->GetYaw()); //input power to the y parameter
 	}
-	
-	ticksDriven = Robot::driveTrain->GetTicks() - initialTicks; //ticksDriven = current amount of ticks minus initial reading
-	DriverStation::ReportError("Ticks Driven: " + std::to_string(ticksDriven)); //report to driverstation the number of ticks driven
-}
+} //Execute()
 
 bool AutoDrive::IsFinished() { 
-	return ticksDriven >= maxTicks; //check to see if ticksDriven has surpassed the amount ticks needed to be driven, if so end the command
+	double maxTicks;
+	if (isStrafing){
+		maxTicks = m_distance * S_TICKS_PER_INCH;
+	}
+	else {
+		maxTicks = m_distance * TICKS_PER_INCH;
+	}
+	int ticks = abs(Robot::driveTrain->GetTicks() - currentTicks);
+	return maxTicks <= ticks;
  }
 
 void AutoDrive::End() {
