@@ -26,7 +26,8 @@ OI::OI() :
 			// frc::DriverStation::ReportError(std::string("LAMBDA TEST FOD: ") + (newValue ? "true" : "false"));
 			Cob::PushValue(COB_FIELD_ORIENTED,newValue);
 		}));
-
+	}
+	
 
 
 void OI::Update() {
