@@ -43,6 +43,8 @@ void Robot::RobotPeriodic() {
 	frc::SmartDashboard::PutNumber("Fork Target", fork->GetForkTalonData(TalonData::TARGET));
 	frc::SmartDashboard::PutNumber("Fork Error", fork->GetForkTalonData(TalonData::ERROR));
 	frc::SmartDashboard::PutNumber("Fork Percent Output", fork->GetForkTalonData(TalonData::PERCENT_OUTPUT));
+
+	frc::DriverStation::ReportError(OI::isCargoMode ? "Cargo Mode" : "Hatch Mode");
 }
 		
 void Robot::AutonomousInit() {

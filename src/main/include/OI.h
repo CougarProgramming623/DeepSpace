@@ -30,6 +30,7 @@ public:
 		return !IsFOD(); 
 	}
 	bool IsFOD();
+	static bool isCargoMode;
 };
 
 }//namespace

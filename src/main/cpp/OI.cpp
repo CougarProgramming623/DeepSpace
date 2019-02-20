@@ -5,12 +5,16 @@
 #include "commands/PositveAngleTurnTest.h"
 #include "Cob.h"
 #include "commands/SetForkPosition.h"
+#include "commands/Drive.h"
+#include "commands/ModeSwitch.h"
 
 namespace frc2019 {
 
 //Instantiate the Joystick and Button Board
 frc::Joystick OI::driverJoystick = frc::Joystick(0);
 frc::Joystick OI::buttonBoard = frc::Joystick(1);
+
+bool OI::isCargoMode;
 
 OI::OI() : 
 	low(&buttonBoard, OI_ARM_POSITION_LOW), 
@@ -30,6 +34,9 @@ OI::OI() :
 		low.WhenPressed(new SetForkPosition(300));
 		medium.WhenPressed(new SetForkPosition(0));
 		high.WhenPressed(new SetForkPosition(150));
+
+		cargoHold.WhenPressed(new ModeSwitch(&isCargoMode, true));
+		cargoGround.WhenPressed(new ModeSwitch(&isCargoMode, false));
 	}
 
 
