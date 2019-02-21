@@ -10,13 +10,13 @@
 #include "math.h"
 
 namespace frc2019 {
+//MEMBER DECLARATIONS:
 std::vector<double> VisionDrive::arrCenterX;
 std::vector<double> VisionDrive::arrAngle; 
 std::vector<double> VisionDrive::arrWidth;
 std::vector<double> VisionDrive::arrHeight;
 
 int VisionDrive::correctIndex;
-int VisionDrive::isThereLeftTarget;
 
 volatile double VisionDrive::xPower;
 volatile double VisionDrive::yPower;
@@ -28,34 +28,45 @@ frc::PIDController* VisionDrive::xPID;
 frc::PIDController* VisionDrive::yPID;
 frc::PIDController* VisionDrive::zPID;
 
-geoffrey VisionDrive::geoff;
-jacques VisionDrive::jacque;
-dummyOutput VisionDrive::zOutput;
-dummierOutput VisionDrive::yOutput;
+frc::Preferences* VisionDrive::prefs;
+
+centerX_Source VisionDrive::xSource;
+width_Source VisionDrive::ySource;
+
+xOutput VisionDrive::xOut;
+yOutput VisionDrive::yOut;
+zOutput VisionDrive::zOut;
+
 double VisionDrive::targetWidth;
 
-double geoffrey::PIDGet(){
-  //DriverStation::ReportError("val:" + std::to_string(VisionDrive::getPower()));
-  //DriverStation::ReportError("x: " + std::to_string(-(VisionDrive::getCenterX() - 960/2) / (960 / 2)));
-  return -(VisionDrive::getCenterX() - 960/2) / (960 / 2);
+//DUMMY CLASSES FOR PID:
+
+double centerX_Source::PIDGet(){
+  if(VisionDrive::correctIndex == -1)
+    return 0;
+  return -(VisionDrive::getCenterX() - 480) / (480);
 }
-double jacques::PIDGet(){
-  //change this for the Y - axis PID
-  //DriverStation::ReportError("TargetWidth: " + std::to_string(VisionDrive::targetWidth));
-  //DriverStation::ReportError("getTargetWidth: " + std::to_string(VisionDrive::getTargetWidth()));
-  //DriverStation::ReportError("y: " + std::to_string(-(VisionDrive::targetWidth - VisionDrive::getTargetWidth())/VisionDrive::targetWidth));
-  return -(VisionDrive::targetWidth - VisionDrive::getTargetWidth())/VisionDrive::targetWidth; 
+
+double width_Source::PIDGet(){
+  if(VisionDrive::correctIndex == -1)
+    return 0;
+  return -(VisionDrive::targetWidth - VisionDrive::getWidth())/VisionDrive::targetWidth; 
 }
-void dummyOutput::PIDWrite(double output){
-  VisionDrive::zPower = output;
+
+void xOutput::PIDWrite(double output){
+  VisionDrive::xPower = output;
 }
-void dummierOutput::PIDWrite(double output){
-  DriverStation::ReportError("yPower writing: " + std::to_string(output));
+void yOutput::PIDWrite(double output){
   VisionDrive::yPower = output;
 }
 
-VisionDrive::VisionDrive() : frc::Command(), frc::PIDOutput(){
-  // Use Requires() here to declare subsystem dependencies
+void zOutput::PIDWrite(double output){
+  VisionDrive::zPower = output;
+}
+
+//VISION DRIVE:
+
+VisionDrive::VisionDrive() : frc::Command() {
   Requires(Robot::driveTrain.get());
   visionTable = start_networkTable();
   
@@ -84,30 +95,14 @@ VisionDrive::VisionDrive() : frc::Command(), frc::PIDOutput(){
   prefs->PutDouble("zD", zD);
 }
 
-
-// Called just before this Command runs the first time
 void VisionDrive::Initialize() {
-  correctIndex = 0;
-  std::vector<double> defaultVal;
-  
-  arrCenterX = visionTable->GetNumberArray("centerX", defaultVal); 
-  arrAngle = visionTable->GetNumberArray("angle", defaultVal); 
-  arrWidth = visionTable->GetNumberArray("width", defaultVal);
-  arrHeight = visionTable->GetNumberArray("height", defaultVal);
+  correctIndex = -1;
+  targetWidth = 70;
 
-  DriverStation::ReportError("size:" + std::to_string(arrAngle.size()));
+  xPID = new frc::PIDController(xP, xI, xD, &xSource, &xOut);
+  yPID = new frc::PIDController(yP, yI, yD, &ySource, &yOut);
+  zPID = new frc::PIDController(zP, zI, zD, Robot::navx.get(), &zOut);
 
-  xPID = new frc::PIDController(xP, xI, xD, &geoff, this);
-  yPID = new frc::PIDController(yP, yI, yD, &jacque, &yOutput);
-  zPID = new frc::PIDController(zP, zI, zD, Robot::navx, &zOutput);/*
-  DriverStation::ReportError("xP: " + std::to_string(xP));
-  DriverStation::ReportError("xI: " + std::to_string(xI));
-  DriverStation::ReportError("xD: " + std::to_string(xD));
-  DriverStation::ReportError("zP: " + std::to_string(zP));
-  DriverStation::ReportError("zI: " + std::to_string(zI));
-  DriverStation::ReportError("zD: " + std::to_string(zD));*/
-  
-  rotationRate = 0.0;
   SetTimeout(5); 
   xPID->SetInputRange(-1.0f, 1.0f);
   yPID->SetInputRange(-1.0f, 1.0f);
@@ -128,62 +123,31 @@ void VisionDrive::Initialize() {
   xPID->SetContinuous(false);
   yPID->SetContinuous(false);
   zPID->SetContinuous(true);
-  if(!somethingWrong()){
-    int index = getCorrectIndex();
-    if(arrAngle[index] > -100 && arrAngle[index] < -50)
-    VisionDrive::targetWidth = 120.0;
-    else  if (arrAngle[index] > -50)
-    VisionDrive::targetWidth = 50.0;
-    else VisionDrive::targetWidth = 70.0;
-    DriverStation::ReportError("PID start");
-    getCorrectIndex();
+
+  findLeftSignature();
+  if(correctIndex != -1){
     xPID->Enable();
     yPID->Enable();
     zPID->Enable();
   }
-  
+
 }
 
-
-
-// Called repeatedly when this Command is scheduled to run
 void VisionDrive::Execute() {
-  //Robot::driveTrain->FODDrive(0, xPower/1.5, zPower/1.5, 0);
- // Robot::driveTrain->FODDrive(0, 0, rotationRate, 0);
-  //getCenterX();
-  //getZPower();
-
-
-
-  //Robot::driveTrain->RODrive(yPower,xPower,zPower);
-
-  
-
-  //DriverStation::ReportError("xPower: " + std::to_string(xPower));
-  //DriverStation::ReportError("yPower: " + std::to_string(yPower));
-  //DriverStation::ReportError("zPower: " + std::to_string(zPower));
-
-  //DriverStation::ReportError("xP: " + std::to_string(xP));
-  //DriverStation::ReportError("xI: " + std::to_string(xI));
-  //DriverStation::ReportError("xD: " + std::to_string(xD));
-  //DriverStation::ReportError("zP: " + std::to_string(zP));
-  //DriverStation::ReportError("zI: " + std::to_string(zI));
-  //DriverStation::ReportError("zD: " + std::to_string(zD));
+  findLeftSignature();
+  DriverStation::ReportError("xPower:   " + std::to_string(xPower));
+  DriverStation::ReportError("   yPower:      " + std::to_string(yPower));
+  DriverStation::ReportError("      zPower:         " + std::to_string(zPower));
+  Robot::driveTrain->RODrive(yPower,xPower,zPower);
 }
 
-// Make this return true when this Command no longer needs to run execute()
 bool VisionDrive::IsFinished() { 
-  //return xPower == 0 && zPower == 0 && !somethingWrong();
-  //if(xPID->OnTarget() && zPID->OnTarget() || IsTimedOut())
-    //DriverStation::ReportError("is finished");
-  //return xPID->OnTarget() && zPID->OnTarget() || IsTimedOut();
-  return somethingWrong() || (xPID->OnTarget() && 
-    //change this later when yPID works
-    yPID->OnTarget() &&
-    zPID->OnTarget()) || IsTimedOut() || !frc2019::Robot::oi->GetVision();
+  return correctIndex == -1 || 
+  (xPID->OnTarget() && yPID->OnTarget() && zPID->OnTarget()) ||
+  IsTimedOut() ||
+  !frc2019::Robot::oi->GetVision();
 }
 
-// Called once after isFinished returns true
 void VisionDrive::End() {
   DriverStation::ReportError("PID Disabled");
   xPID->Disable();
@@ -191,8 +155,6 @@ void VisionDrive::End() {
   zPID->Disable();
 }
 
-// Called when another command which requires one or more of the same
-// subsystems is scheduled to run
 void VisionDrive::Interrupted() {}
 
 std::shared_ptr<nt::NetworkTable> VisionDrive::start_networkTable(){
@@ -200,92 +162,32 @@ std::shared_ptr<nt::NetworkTable> VisionDrive::start_networkTable(){
   return inst.GetTable("vision");
 }
 
-bool VisionDrive::somethingWrong(){
-  if (arrAngle.size() == 0)
-    return true;
-  isThereLeftTarget = arrAngle.size() - 1;
-  while(isThereLeftTarget >= 0){
-    if(arrAngle[isThereLeftTarget] > -100 && arrAngle[isThereLeftTarget] < -50){
-      return false;
-    }
-    isThereLeftTarget--;
-  }
-  DriverStation::ReportError("no left targets found");
-  return true;
-}
-//case control
-int VisionDrive::getCorrectIndex(){
+void VisionDrive::findLeftSignature(){
   std::vector<double> defaultVal{0};
-  arrCenterX = visionTable->GetNumberArray("centerX", defaultVal);
   arrAngle = visionTable->GetNumberArray("angle", defaultVal);
-  int currentIndex = arrAngle.size() - 1;
-  VisionDrive::correctIndex = -1;
-  while(currentIndex >= 0){
-    if((arrAngle[currentIndex] > -100 && arrAngle[currentIndex] < -50))
-    //left most pair
-      //if(arrCenterX[currentIndex] - 960/2 < arrCenterX[correctIndex] -960/2)
-        //VisionDrive::correctIndex = currentIndex; 
-    //right most pair
-    //if(arrCenterX[currentIndex] - 960/2 > arrCenterX[correctIndex] - 960/2)
-
-    //closest pair
-    
-      if(correctIndex == -1)
-        VisionDrive::correctIndex = currentIndex;
-      else {
-        if(fabs(arrCenterX[currentIndex] - 960/2) < fabs(arrCenterX[VisionDrive::correctIndex] - 960/2)){
-            VisionDrive::correctIndex = currentIndex;
-          }
-      }
-      
-    currentIndex--; 
+  arrCenterX = visionTable->GetNumberArray("centerX", defaultVal);
+  double pixelsToCenter = 480.0;
+  for(int i = 0; i < arrAngle.size(); i++){
+    if(arrAngle[i] < -50.0 && abs(arrCenterX[i] - 480.0) < pixelsToCenter){
+      correctIndex = i;
+      pixelsToCenter = abs(arrCenterX[i] - 480.0);
+    }
   }
-  DriverStation::ReportError("cI: " + std::to_string(VisionDrive::correctIndex));
-  return VisionDrive::correctIndex;
+  DriverStation::ReportError("correctIndex: " + std::to_string(correctIndex));
+  if(correctIndex == -1)
+    DriverStation::ReportError("No left targets found");
 }
 
 double VisionDrive::getCenterX() {
   std::vector<double> defaultVal{0};
   arrCenterX = visionTable->GetNumberArray("centerX", defaultVal); 
- // DriverStation::ReportError("Width: " + std::to_string(arrCenterX[correctIndex]));
-  getCorrectIndex();
-  DriverStation::ReportError("correctIndex: " + std::to_string(correctIndex));
   return arrCenterX[VisionDrive::correctIndex];
-  
-	//DriverStation::ReportError("CenterX is :" + std::to_string(arrCenterX[correctIndex]));
-  /*
-  xPower = double(leftCenter - 960/2)/(960/2);
-	if(abs(xPower) < 0.03)
-    xPower = 0;
-  else if (xPower > 0)
-    xPower += .3;
-  else
-    xPower -= .3;
-    */
 }
 
-double VisionDrive::getTargetWidth(){
+double VisionDrive::getWidth(){
   std::vector<double> defaultVal{0};
   arrWidth = visionTable->GetNumberArray("width", defaultVal); 
-  //DriverStation::ReportError("Width: " + std::to_string(arrWidth[correctIndex]));
-  getCorrectIndex();
-  //DriverStation::ReportError("arrWidth: " + std::to_string(arrWidth[VisionDrive::correctIndex]));
   return arrWidth[VisionDrive::correctIndex];
 }
 
-//never called lol
-void VisionDrive::getZPower(){
-  float angle = Robot::navx->GetYaw();
-  zPower = (-angle)/90;
-  if(abs(zPower) < 0.05)
-    zPower = 0;
-  else if (zPower > 0)
-    zPower += .25;
-  else
-    zPower -= .25;
-}
-void VisionDrive::PIDWrite(double output) {
-  xPower = output;
-  //DriverStation::ReportError("xPower writing: " + std::to_string(output));
-}
 }//namespace

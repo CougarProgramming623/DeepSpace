@@ -6,7 +6,6 @@
 /*----------------------------------------------------------------------------*/
 
 #include "subsystems/Arm.h"
-#include "commands/ArmMovement.h"
 
 namespace frc2019{
   Arm::Arm() : Subsystem("Arm") {
@@ -20,7 +19,6 @@ namespace frc2019{
   // SetDefaultCommand(new MySpecialCommand());
     
     
-    SetDefaultCommand(new ArmMovement());
   }
 
 // Put methods for controlling this subsystem

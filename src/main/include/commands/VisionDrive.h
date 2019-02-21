@@ -15,25 +15,30 @@
 
 
 namespace frc2019 {
-class geoffrey : public frc::PIDSource {
+
+class centerX_Source : public frc::PIDSource {
   public:
     double PIDGet();
 };
-class jacques : public frc::PIDSource {
+class width_Source : public frc::PIDSource {
   public:
     double PIDGet();
 };
 
-class dummyOutput : public frc::PIDOutput {
+class xOutput : public frc::PIDOutput {
   public:
     void PIDWrite(double output);
 };
-class dummierOutput : public frc::PIDOutput{
+class yOutput : public frc::PIDOutput{
+  public:
+    void PIDWrite(double output);
+};
+class zOutput : public frc::PIDOutput{
   public:
     void PIDWrite(double output);
 };
 
-class VisionDrive : public frc::Command, frc::PIDOutput {
+class VisionDrive : public frc::Command {
  public:
   VisionDrive();
   void Initialize() override;
@@ -41,34 +46,29 @@ class VisionDrive : public frc::Command, frc::PIDOutput {
   bool IsFinished() override;
   void End() override;
   void Interrupted() override;
-  void PIDWrite(double output) override;
   std::shared_ptr<nt::NetworkTable> start_networkTable();
   static std::vector<double> arrCenterX, arrAngle, arrHeight, arrWidth;
   static int correctIndex;
-  static int isThereLeftTarget;
   volatile static double xPower, zPower, yPower;
-  static double getPower();
   static double getCenterX();
-  static double getTargetWidth();
-  static int getCorrectIndex();
-  static dummyOutput zOutput;
-  static dummierOutput yOutput;
-  frc::Preferences* prefs;
+  static double getWidth();
+  static frc::Preferences* prefs;
   double xP, xI, xD;
   double yP, yI, yD;
   double zP, zI, zD;
   static double targetWidth;
 private:
-  static geoffrey geoff;
-  static jacques jacque;
-  static std::shared_ptr<nt::NetworkTable> visionTable;
+  static centerX_Source xSource;
+  static width_Source ySource;
+  
+  static xOutput xOut;
+  static yOutput yOut;
+  static zOutput zOut;
 
-	void getZPower(); 
-  void getYPower();
-  bool somethingWrong();
+  static std::shared_ptr<nt::NetworkTable> visionTable;
+  void findLeftSignature();
   static frc::PIDController* xPID;
   static frc::PIDController* yPID;
   static frc::PIDController* zPID;
-  double rotationRate;
 };
 }
