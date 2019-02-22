@@ -23,10 +23,10 @@ void Drive::Execute() {
 	double x = OI::driverJoystick.GetX();
 	double rot = OI::driverJoystick.GetZ();
 
-	if(abs(y) <= 0.05f) {
+	if(abs(y) <= 0.075f) {
 		y = 0;
 	}
-	if(abs(x) <= 0.05f) {
+	if(abs(x) <= 0.075f) {
 		x = 0;
 	}
 	if(abs(rot) <= 0.05f) {
@@ -43,13 +43,13 @@ void Drive::Execute() {
 
 	if (Robot::oi->IsFOD()) {
 		//Robot::driveTrain->FODDrive(y, x, rot, gyro);
-		Robot::driveTrain->CartesianDrive(y, x, rot, gyro);
+		Robot::driveTrain->CartesianDrive(y, x, rot/2, gyro);
 	} else {// Is alignment
 		// Disabled for now - dims down the effect of x and rot
 		//x = ReduceValue(x, 3.0);
 		//rot = ReduceValue(rot, 2.0);
 		//Robot::driveTrain->FODDrive(y, x, rot, 0.0);
-		Robot::driveTrain->CartesianDrive(y, x, rot, 0.0);
+		Robot::driveTrain->CartesianDrive(y, x, rot/2, 0.0);
 	}
 }
 

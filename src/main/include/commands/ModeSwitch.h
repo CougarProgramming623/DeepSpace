@@ -9,16 +9,18 @@
 
 #include <frc/commands/Command.h>
 
-namespace frc2019 {
-class SetPickupPosition : public frc::Command {
-public:
-  SetPickupPosition(int setpoint);
+namespace frc2019{ 
+  
+class ModeSwitch : public frc::Command {
+ public:
+  ModeSwitch(bool*, bool);
   void Initialize() override;
   void Execute() override;
   bool IsFinished() override;
   void End() override;
   void Interrupted() override;
-private:
-  int m_setpoint;
+ private:
+  bool* boolean;
+  bool state;
 };
 }

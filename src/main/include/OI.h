@@ -1,7 +1,7 @@
 #pragma once
 #include <frc/WPILib.h>
 #include "commands/BooleanToggle.h"
-#include "commands/SetPickupPosition.h"
+#include "commands/SetForkPosition.h"
 #include "GameEnums.h"
 #include "RobotConstants.h"
 
@@ -35,6 +35,7 @@ public:
 		return !IsFOD(); 
 	}
 	bool IsFOD();
+	static bool isCargoMode;
 };
 
 }//namespace

@@ -6,39 +6,40 @@
 /*----------------------------------------------------------------------------*/
 
 #include "subsystems/Wrist.h"
+#include "RobotConstants.h"
+#include "TalonConfig.h"
 
 namespace frc2019 {
 
-Wrist::Wrist() : Subsystem("Wrist"), wristMC(2) {
-  wristMC.SetSelectedSensorPosition(wristMC.GetSelectedSensorPosition());
+Wrist::Wrist() : Subsystem("Wrist"), wristMC(WRIST_ID) {
   initialReading = wristMC.GetSelectedSensorPosition();
-  wristMC.ConfigSelectedFeedbackSensor(FeedbackDevice::Analog, 0, 30); //configure the potentiometer connected to the Wrist TalonSRX
+  wristMC.SetSelectedSensorPosition(wristMC.GetSelectedSensorPosition());
+  wristMC.ConfigSelectedFeedbackSensor(FeedbackDevice::Analog, 0, 10);
   wristMC.ConfigNominalOutputForward(0, 30);
-	wristMC.ConfigNominalOutputReverse(0, 30);
-	wristMC.ConfigPeakOutputForward(1, 30);		
+  wristMC.ConfigNominalOutputReverse(0, 30);
+  wristMC.ConfigPeakOutputForward(-1, 30);
   wristMC.ConfigPeakOutputReverse(-1, 30);
-  
-  /* set closed loop gains in slot0 */
-	wristMC.Config_kF(0, 0.0, 30);
-	wristMC.Config_kP(0, 3.0, 30);
-	wristMC.Config_kI(0, 0.0, 30);
-	wristMC.Config_kD(0, 0.0, 30);
+  wristMC.Config_kF(0, 0.0, 30);
+  wristMC.Config_kP(0, 3.0, 30);
+  wristMC.Config_kI(0, 0.0, 0);
+  wristMC.Config_kD(0, 0.0, 0);
 }
 
 void Wrist::InitDefaultCommand() {
   
 }
 
-int Wrist::GetPositionData() {
-  return wristMC.GetSelectedSensorPosition(0); //return the potentiometer reading
+int Wrist::GetWristTalonData(TalonData data) {
+  using namespace talon;
+  return GetTalonData(&wristMC, data);
 }
 
 void Wrist::SetSetpoint(int setpoint) {
   wristMC.Set(ControlMode::Position, initialReading + setpoint);
-  frc::SmartDashboard::PutNumber("Error", wristMC.GetClosedLoopError());
-  frc::SmartDashboard::PutNumber("Target", wristMC.GetClosedLoopTarget());
-  frc::SmartDashboard::PutNumber("trajectory", wristMC.GetActiveTrajectoryPosition());  
+  frc::SmartDashboard::PutNumber("Wrist Target", wristMC.GetClosedLoopTarget());
+  frc::SmartDashboard::PutNumber("Wrist Error", wristMC.GetClosedLoopError());
 }
+
 // Put methods for controlling this subsystem
 // here. Call these from Commands.
 }

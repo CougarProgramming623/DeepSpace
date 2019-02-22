@@ -10,6 +10,7 @@
 #include <frc/commands/Subsystem.h>
 #include <frc/WPILib.h>
 #include <ctre/Phoenix.h>
+#include "GameEnums.h"
 
 namespace frc2019{
 
@@ -23,7 +24,7 @@ class Wrist : public frc::Subsystem {
  public:
   Wrist();
   void InitDefaultCommand() override;
-  void SetSetpoint(int setpoint);
-  int GetPositionData();
+  void SetSetpoint(int);
+  int GetWristTalonData(TalonData);
 };
 }

@@ -3,14 +3,18 @@
 #include "OIConstants.h"
 #include <frc/DriverStation.h>
 #include "commands/PositveAngleTurnTest.h"
+#include "Cob.h"
+#include "commands/SetForkPosition.h"
 #include "commands/Drive.h"
-#include "Robot.h"
+#include "commands/ModeSwitch.h"
 
 namespace frc2019 {
 
 //Instantiate the Joystick and Button Board
 frc::Joystick OI::driverJoystick = frc::Joystick(0);
 frc::Joystick OI::buttonBoard = frc::Joystick(1);
+
+bool OI::isCargoMode;
 
 OI::OI() : 
 	low(&buttonBoard, OI_ARM_POSITION_LOW), 
@@ -26,16 +30,21 @@ OI::OI() :
 	pickup(&buttonBoard, 6)
 	{
 		fodToggle.WhenPressed(new BooleanToggle(&fod, [](bool newValue) {
-			frc::DriverStation::ReportError(std::string("LAMBDA TEST FOD: ") + (newValue ? "true" : "false"));
+			// frc::DriverStation::ReportError(std::string("LAMBDA TEST FOD: ") + (newValue ? "true" : "false"));
+			Cob::PushValue(COB_FIELD_ORIENTED,newValue);
 		}));
+	
+		low.WhenPressed(new SetForkPosition(300));
+		medium.WhenPressed(new SetForkPosition(0));
+		high.WhenPressed(new SetForkPosition(150));
 
-		low.WhenPressed(new SetPickupPosition(150));
-		medium.WhenPressed(new SetPickupPosition(0));
+		cargoHold.WhenPressed(new ModeSwitch(&isCargoMode, true));
+		cargoGround.WhenPressed(new ModeSwitch(&isCargoMode, false));
 	}
 
 
-void OI::Update() {
 
+void OI::Update() {
 }
 
 SliderStatus OI::getSliderMode() {

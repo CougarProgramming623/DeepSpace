@@ -2,6 +2,7 @@
 #include "Cob.h"
 #include <frc/DriverStation.h>
 #include "commands/PositveAngleTurnTest.h"
+#include "commands/Turn.h"
 
 namespace frc2019 {
 
@@ -9,9 +10,9 @@ std::shared_ptr<DriveTrain> Robot::driveTrain;
 std::shared_ptr<AHRS> Robot::navx;
 std::shared_ptr<OI> Robot::oi;
 std::shared_ptr<Arm> Robot::arm;
-std::shared_ptr<Wrist> Robot::wrist;
 std::shared_ptr<Vacuum> Robot::vacuum;
-std::shared_ptr<HatchPickup> Robot::pickup;
+std::shared_ptr<HatchPickup> Robot::fork;
+std::shared_ptr<Wrist> Robot::wrist;
 
 void Robot::RobotInit() {
 	Cob::InitBoard();
@@ -20,8 +21,8 @@ void Robot::RobotInit() {
 	arm.reset(new Arm());
 	wrist.reset(new Wrist());
 	vacuum.reset(new Vacuum());
-	pickup.reset(new HatchPickup());
 	oi.reset(new OI());
+	fork.reset(new HatchPickup());
 	try {
 		navx.reset(new AHRS(SPI::Port::kMXP)); //instantiates the gyro
 	} catch (std::exception &ex) {
@@ -40,12 +41,19 @@ void Robot::RobotPeriodic() {
 	Cob::PushValue(COB_X_VEL,Robot::navx->GetVelocityX());
 	Cob::PushValue(COB_Y_VEL,Robot::navx->GetVelocityY());
 	Cob::PushValue(COB_ROTATION,Robot::navx->GetYaw());
-	SmartDashboard::PutNumber("POT", arm->GetPositionData());
 	//Cob::PushValue(COB_MAIN_ARM_ROTATION,Robot::arm->GetPotData());
+	frc::SmartDashboard::PutNumber("Fork Position", fork->GetForkTalonData(TalonData::SENSOR_POSITION));
+	frc::SmartDashboard::PutNumber("Fork Velocity", fork->GetForkTalonData(TalonData::SENSOR_VELOCITY));
+	frc::SmartDashboard::PutNumber("Fork Target", fork->GetForkTalonData(TalonData::TARGET));
+	frc::SmartDashboard::PutNumber("Fork Error", fork->GetForkTalonData(TalonData::ERROR));
+	frc::SmartDashboard::PutNumber("Fork Percent Output", fork->GetForkTalonData(TalonData::PERCENT_OUTPUT));
+
+	frc::DriverStation::ReportError(OI::isCargoMode ? "Cargo Mode" : "Hatch Mode");
 }
 		
 void Robot::AutonomousInit() {
-	autonomousCommand.reset(new PositveAngleTurnTest()); //set the autonomous command or command group here
+	navx->ZeroYaw();
+	autonomousCommand.reset(new Turn(90.0f)); //set the autonomous command or command group here
 	if(autonomousCommand)
 		autonomousCommand->Start();
 }
@@ -65,10 +73,6 @@ void Robot::TestInit() {
 }
 
 void Robot::TestPeriodic() {
-	//DriverStation::ReportError("Right: " + std::to_string(Robot::vD->GetVelocity(false)));
-	frc::SmartDashboard::PutNumber("X", OI::driverJoystick.GetX());
-	frc::SmartDashboard::PutNumber("Y", OI::driverJoystick.GetY());
-	frc::SmartDashboard::PutNumber("Rotation", OI::driverJoystick.GetZ());
 }
 
 } //frc2019

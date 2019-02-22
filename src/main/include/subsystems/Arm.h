@@ -10,15 +10,15 @@
 #include <frc/commands/Subsystem.h>
 #include <frc/WPILib.h>
 #include <ctre/Phoenix.h>
-#include <frc/WPILib.h>
+#include "GameEnums.h"
 
 namespace frc2019 {
 class Arm : public frc::Subsystem {
 public:
   Arm();
   void InitDefaultCommand() override;
-  void SetSetpoint(int setpoint);
-  int GetPositionData();
+  void SetSetpoint(int);
+  int GetArmTalonData(TalonData);
 private:
   TalonSRX armMC;
   int initialReading;
