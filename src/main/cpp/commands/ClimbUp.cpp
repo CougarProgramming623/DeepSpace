@@ -28,7 +28,7 @@ bool ClimbUp::IsFinished() {
 }
 
 void ClimbUp::End() {
-
+	Robot::climb.get()->SetPower(0.0);
 }
 
 void ClimbUp::Interrupted() {

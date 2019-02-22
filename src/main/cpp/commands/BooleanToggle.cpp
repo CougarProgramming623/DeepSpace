@@ -34,4 +34,6 @@ void BooleanToggle::End() {
 void BooleanToggle::Interrupted() {
 
 }
+
+
 }//namespace

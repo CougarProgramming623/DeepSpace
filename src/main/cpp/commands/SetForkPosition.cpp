@@ -9,6 +9,7 @@
 #include "Robot.h"
 
 namespace frc2019 {
+
 SetForkPosition::SetForkPosition(int setpoint) {
   // Use Requires() here to declare subsystem dependencies
   // eg. Requires(Robot::chassis.get());
