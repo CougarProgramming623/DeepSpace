@@ -43,6 +43,7 @@ public: //pointers
 	static std::shared_ptr<OI> oi;
 	static std::shared_ptr<Wrist> wrist;
 	static std::shared_ptr<Vacuum> vacuum;
+	static std::shared_ptr<Climb> climb;
 
 
 };
