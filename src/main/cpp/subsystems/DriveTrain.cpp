@@ -19,9 +19,13 @@ DriveTrain::DriveTrain() : Subsystem("DriveTrain"),
 		m_MecanumDrive.SetSafetyEnabled(false);
 		m_MecanumDrive.SetMaxOutput(1.0);
 		m_MecanumDrive.SetExpiration(0.1);
+
 		m_RightFrontMC.SetInverted(true);
 		m_RightRearMC.SetInverted(true);
+		
+		#ifdef BOT_HAMBONE
 		ConfigureEncoders();
+		#endif
 	}
 
 void DriveTrain::InitDefaultCommand() {
@@ -72,6 +76,7 @@ void DriveTrain::CartesianDrive(double y, double x, double rotation, double angl
 
 	Normalize(wheelSpeeds);
 
+	#ifdef BOT_HAMBONE
 	m_LeftFrontMC.Set(ControlMode::Velocity, wheelSpeeds[kFRONT_LEFT] * kMAX_VELOCITY);
 	m_LeftRearMC.Set(ControlMode::Velocity,wheelSpeeds[kREAR_LEFT] * kMAX_VELOCITY);
 	m_RightFrontMC.Set(ControlMode::Velocity, wheelSpeeds[kFRONT_RIGHT] * kMAX_VELOCITY);
@@ -87,7 +92,12 @@ void DriveTrain::CartesianDrive(double y, double x, double rotation, double angl
 	SmartDashboard::PutNumber("LR", velocities[1]);
 	SmartDashboard::PutNumber("RF", velocities[2]);
 	SmartDashboard::PutNumber("RR", velocities[3]);
-
+	#else
+	m_LeftFrontMC.Set(ControlMode::PercentOutput, wheelSpeeds[kFRONT_LEFT]);
+	m_LeftRearMC.Set(ControlMode::PercentOutput,wheelSpeeds[kREAR_LEFT]);
+	m_RightFrontMC.Set(ControlMode::PercentOutput, wheelSpeeds[kFRONT_RIGHT]);
+	m_RightRearMC.Set(ControlMode::PercentOutput, wheelSpeeds[kREAR_RIGHT]);
+	#endif
 }
 
 int DriveTrain::GetTicks() {

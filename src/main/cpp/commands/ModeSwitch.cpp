@@ -11,11 +11,9 @@
 
 namespace frc2019 {
 
-ModeSwitch::ModeSwitch(bool* pointer, bool mode) {
+ModeSwitch::ModeSwitch(bool* pointer, bool mode) : boolean(pointer), state(mode) {
   // Use Requires() here to declare subsystem dependencies
   // eg. Requires(Robot::chassis.get());
-  boolean = pointer;
-  state = mode;
 }
 
 // Called just before this Command runs the first time

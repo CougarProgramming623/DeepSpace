@@ -69,10 +69,6 @@ void Robot::TestInit() {
 }
 
 void Robot::TestPeriodic() {
-	//DriverStation::ReportError("Right: " + std::to_string(Robot::vD->GetVelocity(false)));
-	frc::SmartDashboard::PutNumber("X", OI::driverJoystick.GetX());
-	frc::SmartDashboard::PutNumber("Y", OI::driverJoystick.GetY());
-	frc::SmartDashboard::PutNumber("Rotation", OI::driverJoystick.GetZ());
 }
 
 } //frc2019
