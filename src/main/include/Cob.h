@@ -23,6 +23,7 @@ public:
   static void InitBoard();
   template<typename T>
   static void PushValue(std::string str,T t);
+  static double GetValue(std::string);
 public: 
   static std::shared_ptr<NetworkTable> table;
   static std::map<std::string,nt::NetworkTableEntry> map;
