@@ -10,7 +10,7 @@
 
 namespace frc2019 {
 Arm::Arm() : Subsystem("Arm"), armMC(ARM_TALON_ID) {
-  armMC.ConfigSelectedFeedbackSensor(FeedbackDevice::Analog, 0, 10); //configure the potentiometer connected to the arm TalonSRX
+  armMC.ConfigSelectedFeedbackSensor(FeedbackDevice::Analog, 0, 30); //configure the potentiometer connected to the arm TalonSRX
 }
 
 

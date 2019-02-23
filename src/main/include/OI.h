@@ -2,6 +2,8 @@
 #include <frc/WPILib.h>
 #include "commands/BooleanToggle.h"
 #include "GameEnums.h"
+#include "OIConstants.h"
+
 
 namespace frc2019 {
 

@@ -1,8 +1,8 @@
 #include "Robot.h"
 #include "Cob.h"
 #include <frc/DriverStation.h>
-#include "commands/PositveAngleTurnTest.h"
 #include "commands/Turn.h"
+
 
 namespace frc2019 {
 
@@ -38,13 +38,14 @@ void Robot::RobotPeriodic() {
 	Cob::PushValue(COB_Y_VEL,Robot::navx->GetVelocityY());
 	Cob::PushValue(COB_ROTATION,Robot::navx->GetYaw());
 	//Cob::PushValue(COB_MAIN_ARM_ROTATION,Robot::arm->GetPotData());
+	/*
 	frc::SmartDashboard::PutNumber("Fork Position", fork->GetForkTalonData(TalonData::SENSOR_POSITION));
 	frc::SmartDashboard::PutNumber("Fork Velocity", fork->GetForkTalonData(TalonData::SENSOR_VELOCITY));
 	frc::SmartDashboard::PutNumber("Fork Target", fork->GetForkTalonData(TalonData::TARGET));
 	frc::SmartDashboard::PutNumber("Fork Error", fork->GetForkTalonData(TalonData::ERROR));
 	frc::SmartDashboard::PutNumber("Fork Percent Output", fork->GetForkTalonData(TalonData::PERCENT_OUTPUT));
-
-	frc::DriverStation::ReportError(OI::isCargoMode ? "Cargo Mode" : "Hatch Mode");
+	*/
+	//frc::DriverStation::ReportError(OI::isCargoMode ? "Cargo Mode" : "Hatch Mode");
 }
 		
 void Robot::AutonomousInit() {
@@ -62,6 +63,11 @@ void Robot::TeleopInit() {
 }
 
 void Robot::TeleopPeriodic() {
+	frc::SmartDashboard::PutNumber("LF Velocity", driveTrain->GetDriveTalonData(DriveTalon::LEFT_FRONT, TalonData::SENSOR_VELOCITY));
+	frc::SmartDashboard::PutNumber("LR Velocity", driveTrain->GetDriveTalonData(DriveTalon::LEFT_REAR, TalonData::SENSOR_VELOCITY));
+	frc::SmartDashboard::PutNumber("RF Velocity", driveTrain->GetDriveTalonData(DriveTalon::RIGHT_FRONT, TalonData::SENSOR_VELOCITY));
+	frc::SmartDashboard::PutNumber("RR Velocity", driveTrain->GetDriveTalonData(DriveTalon::RIGHT_REAR, TalonData::SENSOR_VELOCITY));
+
 	frc::Scheduler::GetInstance()->Run();
 }
 

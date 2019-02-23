@@ -25,7 +25,6 @@ Turn::Turn(double angle) : frc::Command("Turn") , frc::PIDOutput() {
 }
 
 void Turn::Initialize() {
-  //Robot::navx->ZeroYaw();
   turnController = new PIDController(kP, kI, kD, Robot::navx.get(), this); //initializes a PIDController with a kP, kI, kD, PIDSource, and PIDOuput
   turnController->SetInputRange(-180.0f, 180.0f); //sets input range to an angle
   turnController->SetOutputRange(-1.0, 1.0); //sets output range to a motor power

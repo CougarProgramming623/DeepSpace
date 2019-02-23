@@ -10,18 +10,23 @@
 #include "TalonConfig.h"
 
 namespace frc2019 {
-HatchPickup::HatchPickup() : Subsystem("ExampleSubsystem"), pickupMC(FORK_ID) {
-  pickupMC.SetSelectedSensorPosition(pickupMC.GetSelectedSensorPosition(0));
-  initialReading = pickupMC.GetSelectedSensorPosition(0);
-  pickupMC.ConfigSelectedFeedbackSensor(FeedbackDevice::Analog, 0, 10);
+HatchPickup::HatchPickup() : Subsystem("ExampleSubsystem"), pickupMC(13) {
+  using namespace talon;
+  initialReading = pickupMC.GetSelectedSensorPosition(0); //initialReading = home setting of the fork
+  ConfigurePotentiometer(&pickupMC, 3.0, 0.0, 0.0);
+  /*
+  pickupMC.SetSelectedSensorPosition(pickupMC.GetSelectedSensorPosition()); 
+  pickupMC.ConfigSelectedFeedbackSensor(FeedbackDevice::Analog, 0, 30); //configure potentiometer as a FeedbackDevice on the TalonSRX
   pickupMC.ConfigNominalOutputForward(0, 30);
 	pickupMC.ConfigNominalOutputReverse(0, 30);
-	pickupMC.ConfigPeakOutputForward(1, 30);		
-  pickupMC.ConfigPeakOutputReverse(-1, 30);
-  pickupMC.Config_kF(0, 0.0, 30);
-  pickupMC.Config_kP(0, 2.0, 30);
+	pickupMC.ConfigPeakOutputForward(1.0, 30); //set the peak output in the forward direction
+  pickupMC.ConfigPeakOutputReverse(-1.0, 30); //set the peak output in the reverse direction
+  //configure PID values for the TalonSRX
+  pickupMC.Config_kF(0, 0.0, 30); 
+  pickupMC.Config_kP(0, 3.0, 30);
   pickupMC.Config_kI(0, 0.0, 30);
   pickupMC.Config_kD(0, 0.0, 30);
+  */
 }
 
 void HatchPickup::InitDefaultCommand() {
@@ -35,11 +40,9 @@ int HatchPickup::GetForkTalonData(TalonData data) {
 }
 
 void HatchPickup::SetSetpoint(int setpoint) {
-  pickupMC.Set(ControlMode::Position, initialReading + setpoint);
-  frc::SmartDashboard::PutNumber("Target", pickupMC.GetClosedLoopTarget());
-  frc::SmartDashboard::PutNumber("Error", pickupMC.GetClosedLoopError());
+  pickupMC.Set(ControlMode::Position, setpoint); //set the target position of the potentiometer
+  frc::SmartDashboard::PutNumber("Target", GetForkTalonData(TalonData::TARGET));
+  frc::SmartDashboard::PutNumber("Error", GetForkTalonData(TalonData::ERROR));
 }
+} //namespace
 
-}
-// Put methods for controlling this subsystem
-// here. Call these from Commands.

@@ -1,8 +1,6 @@
 
 #include "OI.h"
-#include "OIConstants.h"
 #include <frc/DriverStation.h>
-#include "commands/PositveAngleTurnTest.h"
 #include "Cob.h"
 #include "commands/SetForkPosition.h"
 #include "commands/Drive.h"
@@ -31,9 +29,9 @@ OI::OI() :
 			Cob::PushValue(COB_FIELD_ORIENTED,newValue);
 		}));
 	
-		low.WhenPressed(new SetForkPosition(300));
-		medium.WhenPressed(new SetForkPosition(0));
-		high.WhenPressed(new SetForkPosition(150));
+		low.WhenPressed(new SetForkPosition(1453));
+		medium.WhenPressed(new SetForkPosition(1122));
+		high.WhenPressed(new SetForkPosition((1453+1122)/2));
 
 		cargoHold.WhenPressed(new ModeSwitch(&isCargoMode, true));
 		cargoGround.WhenPressed(new ModeSwitch(&isCargoMode, false));

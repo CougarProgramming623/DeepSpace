@@ -23,10 +23,10 @@ void AutoDrive::Initialize() {
 
 void AutoDrive::Execute() {
 	if (isStrafing) {
-		Robot::driveTrain->FODDrive(0.0, 0.5, 0.0, Robot::navx->GetYaw()); //input power to the x parameter
+		Robot::driveTrain->CartesianDrive(0.0, 0.5, 0.0, Robot::navx->GetYaw()); //input power to the x parameter
 	}
 	else {
-		Robot::driveTrain->FODDrive(0.5, 0.0, 0.0, Robot::navx->GetYaw()); //input power to the y parameter
+		Robot::driveTrain->CartesianDrive(0.5, 0.0, 0.0, Robot::navx->GetYaw()); //input power to the y parameter
 	}
 } //Execute()
 

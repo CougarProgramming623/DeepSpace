@@ -22,24 +22,11 @@ void Drive::Execute() {
 	double y = -OI::driverJoystick.GetY(); 
 	double x = OI::driverJoystick.GetX();
 	double rot = OI::driverJoystick.GetZ();
-
-	if(abs(y) <= 0.075f) {
-		y = 0;
-	}
-	if(abs(x) <= 0.075f) {
-		x = 0;
-	}
-	if(abs(rot) <= 0.05f) {
-		rot = 0;
-	}
-	/*
-	y *= kMAX_VELOCITY;
-	x *= kMAX_VELOCITY;
-	rot *= kMAX_VELOCITY;
-	*/
 	double gyro = Robot::navx->GetYaw();
 
-	SmartDashboard::PutNumber("angle", gyro);
+	y = abs(y) <= 0.075f ? 0 : y;
+	x = abs(x) <= 0.075f ? 0 : x;
+	rot = abs(rot) <= 0.05f ? 0 : rot;
 
 	if (Robot::oi->IsFOD()) {
 		//Robot::driveTrain->FODDrive(y, x, rot, gyro);

@@ -27,8 +27,8 @@ void ConfigurePotentiometer(TalonSRX* talonMC, double kP, double kI, double kD) 
     talonMC->ConfigSelectedFeedbackSensor(FeedbackDevice::Analog, 0, kTIMEOUT_MS);
     talonMC->ConfigNominalOutputForward(0, kTIMEOUT_MS);
 	talonMC->ConfigNominalOutputReverse(0, kTIMEOUT_MS);
-	talonMC->ConfigPeakOutputForward(1.0, kTIMEOUT_MS);		
-    talonMC->ConfigPeakOutputReverse(-1.0, kTIMEOUT_MS);
+	talonMC->ConfigPeakOutputForward(0.25, kTIMEOUT_MS);		
+    talonMC->ConfigPeakOutputReverse(-0.35, kTIMEOUT_MS);
     talonMC->Config_kF(kPID_LOOP_IDX, 0.0, kTIMEOUT_MS);
     talonMC->Config_kP(kPID_LOOP_IDX, kP, kTIMEOUT_MS);
     talonMC->Config_kI(kPID_LOOP_IDX, kI, kTIMEOUT_MS);

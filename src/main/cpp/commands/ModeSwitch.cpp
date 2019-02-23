@@ -18,7 +18,7 @@ ModeSwitch::ModeSwitch(bool* pointer, bool mode) : boolean(pointer), state(mode)
 
 // Called just before this Command runs the first time
 void ModeSwitch::Initialize() {
-  *boolean = state;
+  *boolean = state; //make pointer equal to a certain value
   Cob::PushValue(COB_HATCH, state);
 }
 

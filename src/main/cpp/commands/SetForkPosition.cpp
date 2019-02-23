@@ -18,16 +18,20 @@ SetForkPosition::SetForkPosition(int setpoint) {
 
 // Called just before this Command runs the first time
 void SetForkPosition::Initialize() {
-  //SetTimeout(10);
+
 }
 
 // Called repeatedly when this Command is scheduled to run
 void SetForkPosition::Execute() {
   Robot::fork->SetSetpoint(m_setpoint);
+  frc::SmartDashboard::PutNumber("fork position", Robot::fork->GetForkTalonData(TalonData::SENSOR_POSITION));
+  frc::SmartDashboard::PutNumber("fork error", Robot::fork->GetForkTalonData(TalonData::ERROR));
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool SetForkPosition::IsFinished() { return true; }
+bool SetForkPosition::IsFinished() { 
+  return true; 
+}
 
 // Called once after isFinished returns true
 void SetForkPosition::End() {}

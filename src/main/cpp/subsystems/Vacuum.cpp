@@ -13,7 +13,7 @@
 
 namespace frc2019 {
 
-Vacuum::Vacuum() : Subsystem("ExampleSubsystem"), vacuumMC(VACUUM_ID) {
+Vacuum::Vacuum() : Subsystem("Vacuum"), vacuumMC(VACUUM_ID) {
 }
 
 void Vacuum::InitDefaultCommand() {
