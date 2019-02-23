@@ -19,7 +19,7 @@ public:
 	void End() override;
 	void Interrupted() override;
 private:
-	int currentTicks;
+	int initialTicks, maxTicks;
 	double m_distance;
 	bool isStrafing;
 }; //AutoDrive

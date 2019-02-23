@@ -9,15 +9,11 @@
 #include "RobotConstants.h"
 
 namespace frc2019 {
-
 Wrist::Wrist() : Subsystem("Wrist"), wristMC(WRIST_ID) {
   wristMC.ConfigSelectedFeedbackSensor(FeedbackDevice::Analog, 0, 30);
-}
+} //Wrist()
 
 void Wrist::InitDefaultCommand() {
   
-}
-
-// Put methods for controlling this subsystem
-// here. Call these from Commands.
-}
+} //InitDefaultCommand()
+} //frc2019

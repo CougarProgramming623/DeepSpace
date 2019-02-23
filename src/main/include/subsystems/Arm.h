@@ -9,14 +9,15 @@
 
 #include <frc/commands/Subsystem.h>
 #include <ctre/Phoenix.h>
+#include "GameEnums.h"
 
 namespace frc2019 {
 class Arm : public frc::Subsystem {
 public:
   Arm();
   void InitDefaultCommand() override;
-  int GetPotData();
+  int GetArmTalonData(TalonData data);
 private:
   TalonSRX armMC;
 };
-}
+} //frc2019

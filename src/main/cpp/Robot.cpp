@@ -30,7 +30,7 @@ void Robot::RobotInit() {
 	Robot::navx.get()->ZeroYaw(); //makes it so whatever start position the robot is facing is 0 degrees
 	std::string color = frc::DriverStation::GetInstance().GetAlliance() == frc::DriverStation::Alliance::kRed ? "red" : "blue"; //determine alliance color as a string
 	Cob::PushValue(COB_ALLIANCE_COLOR, color); //push the alliance color as a string
-}
+} //RobotInit()
 
 void Robot::RobotPeriodic() {
 	//pushed during robot periodic because these values constantly change
@@ -38,29 +38,23 @@ void Robot::RobotPeriodic() {
 	Cob::PushValue(COB_Y_VEL,Robot::navx->GetVelocityY());
 	Cob::PushValue(COB_ROTATION,Robot::navx->GetYaw());
 	//Cob::PushValue(COB_MAIN_ARM_ROTATION,Robot::arm->GetPotData());
-	/*
-	frc::SmartDashboard::PutNumber("Fork Position", fork->GetForkTalonData(TalonData::SENSOR_POSITION));
-	frc::SmartDashboard::PutNumber("Fork Velocity", fork->GetForkTalonData(TalonData::SENSOR_VELOCITY));
-	frc::SmartDashboard::PutNumber("Fork Target", fork->GetForkTalonData(TalonData::TARGET));
-	frc::SmartDashboard::PutNumber("Fork Error", fork->GetForkTalonData(TalonData::ERROR));
-	frc::SmartDashboard::PutNumber("Fork Percent Output", fork->GetForkTalonData(TalonData::PERCENT_OUTPUT));
-	*/
 	//frc::DriverStation::ReportError(OI::isCargoMode ? "Cargo Mode" : "Hatch Mode");
-}
+} //RobotPeriodic()
 		
 void Robot::AutonomousInit() {
 	navx->ZeroYaw();
 	autonomousCommand.reset(new Turn(90.0f)); //set the autonomous command or command group here
 	if(autonomousCommand)
 		autonomousCommand->Start();
-}
+} //AutonomousInit()
 
 void Robot::AutonomousPeriodic() {
 	frc::Scheduler::GetInstance()->Run();
-}
+} //AutonomousPeriodic()
 
 void Robot::TeleopInit() {
-}
+
+} //TeleopInit()
 
 void Robot::TeleopPeriodic() {
 	frc::SmartDashboard::PutNumber("LF Velocity", driveTrain->GetDriveTalonData(DriveTalon::LEFT_FRONT, TalonData::SENSOR_VELOCITY));
@@ -69,19 +63,20 @@ void Robot::TeleopPeriodic() {
 	frc::SmartDashboard::PutNumber("RR Velocity", driveTrain->GetDriveTalonData(DriveTalon::RIGHT_REAR, TalonData::SENSOR_VELOCITY));
 
 	frc::Scheduler::GetInstance()->Run();
-}
+} //TeleopPeriodic
 
 void Robot::TestInit() {
-}
+
+} //TestInit()
 
 void Robot::TestPeriodic() {
-}
 
+} //TestPeriodic()
 } //frc2019
 
 #ifndef RUNNING_FRC_TESTS
 int main() { 
 	using namespace frc2019;
 	return frc::StartRobot<Robot>();
-}
+} //main()
 #endif

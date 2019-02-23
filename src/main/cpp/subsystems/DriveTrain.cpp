@@ -23,11 +23,11 @@ DriveTrain::DriveTrain() : Subsystem("DriveTrain"),
 		#ifdef BOT_HAMBONE
 		ConfigureEncoders();
 		#endif
-	}
+} //DriveTrain()
 
 void DriveTrain::InitDefaultCommand() {
 	SetDefaultCommand(new Drive());
-}
+} //InitDefaultCommand()
 
 void DriveTrain::ConfigureEncoders() {
 	//configure all four encoders as feedback devices
@@ -58,7 +58,7 @@ void DriveTrain::ConfigureEncoders() {
 	m_RightRearMC.Config_kP(0, 2.58, 30);
 	m_RightRearMC.Config_kI(0, 0.0, 30);
 	m_RightRearMC.Config_kD(0, 40.0, 30);
-}
+} //ConfigureEncoders()
 
 void DriveTrain::CartesianDrive(double y, double x, double rotation, double angle) {
 	//source: WPILib
@@ -98,7 +98,7 @@ void DriveTrain::CartesianDrive(double y, double x, double rotation, double angl
 	m_RightFrontMC.Set(ControlMode::PercentOutput, wheelSpeeds[kFRONT_RIGHT]);
 	m_RightRearMC.Set(ControlMode::PercentOutput, wheelSpeeds[kREAR_RIGHT]);
 	#endif
-}
+} //CartesianDrive()
 
 void DriveTrain::Normalize(wpi::MutableArrayRef<double> wheelSpeeds) {
   double maxMagnitude = std::abs(wheelSpeeds[0]);
@@ -113,7 +113,7 @@ void DriveTrain::Normalize(wpi::MutableArrayRef<double> wheelSpeeds) {
       wheelSpeeds[i] = wheelSpeeds[i] / maxMagnitude;
     }
   }
-}
+} //Normalize()
 
 int DriveTrain::GetDriveTalonData(DriveTalon driveTalon, TalonData data) {
 	using namespace talon;
@@ -129,9 +129,5 @@ int DriveTrain::GetDriveTalonData(DriveTalon driveTalon, TalonData data) {
 		default:
 			return 0;
 	};
-}
-
-int DriveTrain::GetTicks() {
-	return m_LeftRearMC.GetSelectedSensorPosition(); //return the number of ticks the encoder returns
-}
+} //GetDriveTalonData()
 }//namespace

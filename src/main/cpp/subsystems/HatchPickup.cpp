@@ -10,39 +10,23 @@
 #include "TalonConfig.h"
 
 namespace frc2019 {
-HatchPickup::HatchPickup() : Subsystem("ExampleSubsystem"), pickupMC(13) {
+HatchPickup::HatchPickup() : Subsystem("ExampleSubsystem"), pickupMC(FORK_ID) {
   using namespace talon;
-  initialReading = pickupMC.GetSelectedSensorPosition(0); //initialReading = home setting of the fork
   ConfigurePotentiometer(&pickupMC, 3.0, 0.0, 0.0);
-  /*
-  pickupMC.SetSelectedSensorPosition(pickupMC.GetSelectedSensorPosition()); 
-  pickupMC.ConfigSelectedFeedbackSensor(FeedbackDevice::Analog, 0, 30); //configure potentiometer as a FeedbackDevice on the TalonSRX
-  pickupMC.ConfigNominalOutputForward(0, 30);
-	pickupMC.ConfigNominalOutputReverse(0, 30);
-	pickupMC.ConfigPeakOutputForward(1.0, 30); //set the peak output in the forward direction
-  pickupMC.ConfigPeakOutputReverse(-1.0, 30); //set the peak output in the reverse direction
-  //configure PID values for the TalonSRX
-  pickupMC.Config_kF(0, 0.0, 30); 
-  pickupMC.Config_kP(0, 3.0, 30);
-  pickupMC.Config_kI(0, 0.0, 30);
-  pickupMC.Config_kD(0, 0.0, 30);
-  */
-}
+} //HatchPickup()
 
 void HatchPickup::InitDefaultCommand() {
   // Set the default command for a subsystem here.
   // SetDefaultCommand(new MySpecialCommand());
-}
+} //InitDefaultCommand()
 
 int HatchPickup::GetForkTalonData(TalonData data) {
   using namespace talon;
   return GetTalonData(&pickupMC, data);
-}
+} //GetForkTalonData()
 
 void HatchPickup::SetSetpoint(int setpoint) {
   pickupMC.Set(ControlMode::Position, setpoint); //set the target position of the potentiometer
-  frc::SmartDashboard::PutNumber("Target", GetForkTalonData(TalonData::TARGET));
-  frc::SmartDashboard::PutNumber("Error", GetForkTalonData(TalonData::ERROR));
-}
-} //namespace
+} //SetSetpoint()
+} //frc2019
 

@@ -28,26 +28,29 @@ OI::OI() :
 			// frc::DriverStation::ReportError(std::string("LAMBDA TEST FOD: ") + (newValue ? "true" : "false"));
 			Cob::PushValue(COB_FIELD_ORIENTED,newValue);
 		}));
-	
+
 		low.WhenPressed(new SetForkPosition(1453));
 		medium.WhenPressed(new SetForkPosition(1122));
 		high.WhenPressed(new SetForkPosition((1453+1122)/2));
 
-		cargoHold.WhenPressed(new ModeSwitch(&isCargoMode, true));
-		cargoGround.WhenPressed(new ModeSwitch(&isCargoMode, false));
-	}
+		cargoHold.WhenPressed(new ModeSwitch(&isCargoMode, true, [](bool newValue) {
+			Cob::PushValue(COB_HATCH, newValue);
+		}));
 
-
+		cargoGround.WhenPressed(new ModeSwitch(&isCargoMode, false, [](bool newValue) {
+			Cob::PushValue(COB_HATCH, newValue);
+		}));
+} //OI()
 
 void OI::Update() {
-}
 
-SliderStatus OI::getSliderMode() {
+} //Update()
+
+SliderStatus OI::GetSliderMode() {
 	return sliderMode;
-}
+} //GetSliderMode()
 
 bool OI::IsFOD() {
 	return fod;
-}
-
+} //IsFOD()
 }//namespace

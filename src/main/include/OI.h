@@ -27,7 +27,7 @@ private:
 public:
 	OI();
 	void Update();
-	SliderStatus getSliderMode();
+	SliderStatus GetSliderMode();
 	inline bool IsAlignmentMode() { 
 		return !IsFOD(); 
 	}

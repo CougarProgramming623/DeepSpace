@@ -14,6 +14,7 @@ Turn::Turn(double angle) : frc::Command("Turn") , frc::PIDOutput() {
   Requires(Robot::driveTrain.get()); //dependent on the Drivetrain subsystem
   rotateToAngleRate = 0.0;
   m_angle = angle;
+  //used Robot Preferences table to set P, I, and D values for the PID Controller
   prefs = frc::Preferences::GetInstance();
   kP = prefs->GetDouble("Turn kP", 0.051);
   kI = prefs->GetDouble("Turn kI", 0.0);
@@ -22,7 +23,7 @@ Turn::Turn(double angle) : frc::Command("Turn") , frc::PIDOutput() {
   prefs->PutDouble("Turn kI", kI);
   prefs->PutDouble("Turn kD", kD);
   SetTimeout(2); //sets how long the command is allowed to run for
-}
+} //Turn()
 
 void Turn::Initialize() {
   turnController = new PIDController(kP, kI, kD, Robot::navx.get(), this); //initializes a PIDController with a kP, kI, kD, PIDSource, and PIDOuput
@@ -32,28 +33,27 @@ void Turn::Initialize() {
   turnController->SetSetpoint(m_angle); //sets target angle
   turnController->SetContinuous(true);
   turnController->Enable();
-
-}
+} //Initialize()
 
 void Turn::Execute() {
   frc::DriverStation::ReportError(std::to_string(Robot::navx->GetYaw()));
-  Robot::driveTrain->CartesianDrive(0, 0, rotateToAngleRate / 2, Robot::navx.get()->GetYaw());
-}
+  Robot::driveTrain->CartesianDrive(0, 0, rotateToAngleRate / 2, Robot::navx.get()->GetYaw()); //rotate the robot
+} //Execute()
 
 bool Turn::IsFinished() { 
   return IsTimedOut(); //command ends when timeout is reached
-}
+} //IsFinished()
 
 void Turn::End() {
   DriverStation::ReportError("Finished turn");
-}
+} //End()
 
 void Turn::Interrupted() {
 
-}
+} //Interrupted()
 
 void Turn::PIDWrite(double output)
 {
   rotateToAngleRate = output; //sets rotateToAngleRate to output from the PID loop running in the background
-}
-} //namespace
+} //PIDWrite()
+} //frc2019
