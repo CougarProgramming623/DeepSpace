@@ -53,4 +53,4 @@ SliderStatus OI::GetSliderMode() {
 bool OI::IsFOD() {
 	return fod;
 } //IsFOD()
-}//namespace
+}//frc2019

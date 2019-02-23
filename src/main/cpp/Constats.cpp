@@ -12,4 +12,4 @@ double ReduceValue(double original, double exponent) {
 	}
 	return result;
 }
-}//namespace
+}//frc2019
