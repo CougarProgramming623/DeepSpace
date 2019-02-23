@@ -8,6 +8,8 @@
 #include "subsystems/Vacuum.h"
 #include "RobotConstants.h"
 
+#define SUCK_SPEED 0.5
+
 namespace frc2019 {
 Vacuum::Vacuum() : Subsystem("Vacuum"), vacuumMC(VACUUM_ID) {
 
