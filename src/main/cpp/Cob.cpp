@@ -26,13 +26,9 @@ void Cob::InitValue(std::string str){
   }
 }
 
-<<<<<<< Updated upstream
-}//namespace
-=======
 double Cob::GetValue(std::string str){
 	Cob::InitValue(str)
 	return map[str].GetDouble(-1.0);
 }
 
 }//frc2019
->>>>>>> Stashed changes
