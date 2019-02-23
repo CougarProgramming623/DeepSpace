@@ -4,6 +4,7 @@
 #include <frc/DriverStation.h>
 #include "commands/PositveAngleTurnTest.h"
 #include "Cob.h"
+#include "commands/SetForkPosition.h"
 
 namespace frc2019 {
 
@@ -25,13 +26,15 @@ OI::OI() :
 			// frc::DriverStation::ReportError(std::string("LAMBDA TEST FOD: ") + (newValue ? "true" : "false"));
 			Cob::PushValue(COB_FIELD_ORIENTED,newValue);
 		}));
-
-		vMode.WhenPressed(new PositveAngleTurnTest());
+	
+		low.WhenPressed(new SetForkPosition(300));
+		medium.WhenPressed(new SetForkPosition(0));
+		high.WhenPressed(new SetForkPosition(150));
 	}
 
 
-void OI::Update() {
 
+void OI::Update() {
 }
 
 SliderStatus OI::getSliderMode() {

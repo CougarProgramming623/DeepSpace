@@ -3,6 +3,7 @@
 #include "Robot.h"
 #include "OI.h"
 #include "Constants.h"
+#include "RobotConstants.h"
 
 
 namespace frc2019 {
@@ -21,16 +22,34 @@ void Drive::Execute() {
 	double y = -OI::driverJoystick.GetY(); 
 	double x = OI::driverJoystick.GetX();
 	double rot = OI::driverJoystick.GetZ();
-	
-	//get the angle reading fromt the gyro
-	double angle = Robot::navx->GetYaw();
+
+	if(abs(y) <= 0.075f) {
+		y = 0;
+	}
+	if(abs(x) <= 0.075f) {
+		x = 0;
+	}
+	if(abs(rot) <= 0.05f) {
+		rot = 0;
+	}
+	/*
+	y *= kMAX_VELOCITY;
+	x *= kMAX_VELOCITY;
+	rot *= kMAX_VELOCITY;
+	*/
+	double gyro = Robot::navx->GetYaw();
+
+	SmartDashboard::PutNumber("angle", gyro);
+
 	if (Robot::oi->IsFOD()) {
-		Robot::driveTrain->FODDrive(y, x, rot, angle); //used when we are in Field Oriented Driving Mode
+		//Robot::driveTrain->FODDrive(y, x, rot, gyro);
+		Robot::driveTrain->CartesianDrive(y, x, rot/2, gyro);
 	} else {// Is alignment
 		// Disabled for now - dims down the effect of x and rot
 		//x = ReduceValue(x, 3.0);
 		//rot = ReduceValue(rot, 2.0);
-		Robot::driveTrain->FODDrive(y, x, rot, 0.0); //used when we are in Robot Oriented Drivng Mode
+		//Robot::driveTrain->FODDrive(y, x, rot, 0.0);
+		Robot::driveTrain->CartesianDrive(y, x, rot/2, 0.0);
 	}
 }
 
