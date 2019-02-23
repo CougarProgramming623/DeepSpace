@@ -11,17 +11,8 @@
 
 namespace frc2019 {
 Arm::Arm() : Subsystem("Arm"), armMC(ARM_TALON_ID) {
-  initialReading = armMC.GetSelectedSensorPosition();
-  armMC.SetSelectedSensorPosition(armMC.GetSelectedSensorPosition());
-  armMC.ConfigSelectedFeedbackSensor(FeedbackDevice::Analog, 0, 30); //configure the potentiometer connected to the arm TalonSRX
-  armMC.ConfigNominalOutputForward(0, 30);
-	armMC.ConfigNominalOutputReverse(0, 30);
-	armMC.ConfigPeakOutputForward(1, 30);		
-  armMC.ConfigPeakOutputReverse(-1, 30);
-	armMC.Config_kF(0, 0.0, 30);
-	armMC.Config_kP(0, 3.0, 30);
-	armMC.Config_kI(0, 0.0, 30);
-	armMC.Config_kD(0, 0.0, 30);
+  using namespace talon;
+  ConfigurePotentiometer(&armMC, 1.5, 0.0, 0.0);
 }
 
 void Arm::InitDefaultCommand() {
@@ -36,7 +27,7 @@ double Arm::GetArmTalonData(TalonData data) {
 }
 
 void Arm::SetSetpoint(int setpoint) {
-  armMC.Set(ControlMode::Position, initialReading + setpoint);
+  armMC.Set(ControlMode::Position, setpoint);
   frc::SmartDashboard::PutNumber("Arm Target", armMC.GetClosedLoopTarget());
   frc::SmartDashboard::PutNumber("Arm Error", armMC.GetClosedLoopError());
 }
