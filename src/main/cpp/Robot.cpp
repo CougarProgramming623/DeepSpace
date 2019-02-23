@@ -1,8 +1,8 @@
 #include "Robot.h"
 #include "Cob.h"
 #include <frc/DriverStation.h>
-#include "commands/PositveAngleTurnTest.h"
 #include "commands/Turn.h"
+
 
 namespace frc2019 {
 
@@ -36,7 +36,7 @@ void Robot::RobotInit() {
 	Robot::navx.get()->ZeroYaw(); //makes it so whatever start position the robot is facing is 0 degrees
 	std::string color = frc::DriverStation::GetInstance().GetAlliance() == frc::DriverStation::Alliance::kRed ? "red" : "blue"; //determine alliance color as a string
 	Cob::PushValue(COB_ALLIANCE_COLOR, color); //push the alliance color as a string
-}
+} //RobotInit()
 
 void Robot::RobotPeriodic() {
 	//pushed during robot periodic because these values constantly change
@@ -58,30 +58,37 @@ void Robot::AutonomousInit() {
 	autonomousCommand.reset(new Turn(90.0f)); //set the autonomous command or command group here
 	if(autonomousCommand)
 		autonomousCommand->Start();
-}
+} //AutonomousInit()
 
 void Robot::AutonomousPeriodic() {
 	frc::Scheduler::GetInstance()->Run();
-}
+} //AutonomousPeriodic()
 
 void Robot::TeleopInit() {
-}
+
+} //TeleopInit()
 
 void Robot::TeleopPeriodic() {
+	frc::SmartDashboard::PutNumber("LF Velocity", driveTrain->GetDriveTalonData(DriveTalon::LEFT_FRONT, TalonData::SENSOR_VELOCITY));
+	frc::SmartDashboard::PutNumber("LR Velocity", driveTrain->GetDriveTalonData(DriveTalon::LEFT_REAR, TalonData::SENSOR_VELOCITY));
+	frc::SmartDashboard::PutNumber("RF Velocity", driveTrain->GetDriveTalonData(DriveTalon::RIGHT_FRONT, TalonData::SENSOR_VELOCITY));
+	frc::SmartDashboard::PutNumber("RR Velocity", driveTrain->GetDriveTalonData(DriveTalon::RIGHT_REAR, TalonData::SENSOR_VELOCITY));
+
 	frc::Scheduler::GetInstance()->Run();
-}
+} //TeleopPeriodic
 
 void Robot::TestInit() {
-}
+
+} //TestInit()
 
 void Robot::TestPeriodic() {
-}
 
+} //TestPeriodic()
 } //frc2019
 
 #ifndef RUNNING_FRC_TESTS
 int main() { 
 	using namespace frc2019;
 	return frc::StartRobot<Robot>();
-}
+} //main()
 #endif

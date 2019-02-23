@@ -1,8 +1,6 @@
 
 #include "OI.h"
-#include "OIConstants.h"
 #include <frc/DriverStation.h>
-#include "commands/PositveAngleTurnTest.h"
 #include "Cob.h"
 #include "commands/SetForkPosition.h"
 #include "commands/Drive.h"
@@ -32,26 +30,29 @@ OI::OI() :
 		fodToggle.WhenPressed(new BooleanToggle(&fod, [](bool newValue) {
 			Cob::PushValue(COB_FIELD_ORIENTED, newValue);
 		}));
-	
-		low.WhenPressed(new SetForkPosition(300));
-		medium.WhenPressed(new SetForkPosition(0));
-		high.WhenPressed(new SetForkPosition(150));
 
-		cargoHold.WhenPressed(new ModeSwitch(&isCargoMode, true));
-		cargoGround.WhenPressed(new ModeSwitch(&isCargoMode, false));
-	}
+		low.WhenPressed(new SetForkPosition(1453));
+		medium.WhenPressed(new SetForkPosition(1122));
+		high.WhenPressed(new SetForkPosition((1453+1122)/2));
 
+		cargoHold.WhenPressed(new ModeSwitch(&isCargoMode, true, [](bool newValue) {
+			Cob::PushValue(COB_HATCH, newValue);
+		}));
 
+		cargoGround.WhenPressed(new ModeSwitch(&isCargoMode, false, [](bool newValue) {
+			Cob::PushValue(COB_HATCH, newValue);
+		}));
+} //OI()
 
 void OI::Update() {
-}
 
-SliderStatus OI::getSliderMode() {
+} //Update()
+
+SliderStatus OI::GetSliderMode() {
 	return sliderMode;
-}
+} //GetSliderMode()
 
 bool OI::IsFOD() {
 	return fod;
-}
-
-}//namespace
+} //IsFOD()
+}//frc2019

@@ -12,9 +12,10 @@
 namespace frc2019 {
 AutoDrive::AutoDrive(double distance, bool strafe) {
 	Requires(Robot::driveTrain.get()); //requires the Drivetrain subsystem to function
-	currentTicks = abs(Robot::driveTrain->GetTicks()); // saves the inital tick count because it does not reset
+	initialTicks = abs(Robot::driveTrain->GetDriveTalonData(DriveTalon::LEFT_REAR, TalonData::SENSOR_POSITION)); // saves the inital tick count because it does not reset
 	m_distance = distance;
 	isStrafing = strafe;
+	maxTicks = m_distance * (strafe ? S_TICKS_PER_INCH : TICKS_PER_INCH);
 } //AutoDrive()
 
 void AutoDrive::Initialize() {
@@ -23,27 +24,22 @@ void AutoDrive::Initialize() {
 
 void AutoDrive::Execute() {
 	if (isStrafing) {
-		Robot::driveTrain->FODDrive(0.0, 0.5, 0.0, Robot::navx->GetYaw()); //input power to the x parameter
+		Robot::driveTrain->CartesianDrive(0.0, 0.5, 0.0, Robot::navx->GetYaw()); //input power to the x parameter
 	}
 	else {
-		Robot::driveTrain->FODDrive(0.5, 0.0, 0.0, Robot::navx->GetYaw()); //input power to the y parameter
+		Robot::driveTrain->CartesianDrive(0.5, 0.0, 0.0, Robot::navx->GetYaw()); //input power to the y parameter
 	}
 } //Execute()
 
 bool AutoDrive::IsFinished() { 
-	double maxTicks;
-	if (isStrafing){
-		maxTicks = m_distance * S_TICKS_PER_INCH;
-	}
-	else {
-		maxTicks = m_distance * TICKS_PER_INCH;
-	}
-	int ticks = abs(Robot::driveTrain->GetTicks() - currentTicks);
-	return maxTicks <= ticks;
- }
+	int ticks = abs(Robot::driveTrain->GetDriveTalonData(DriveTalon::LEFT_REAR, TalonData::SENSOR_POSITION) - initialTicks);
+	return ticks >= maxTicks; //finish command if ticks driven is greater than max ticks
+} //IsFinished()
 
 void AutoDrive::End() {
-}
+} //End()
 
-void AutoDrive::Interrupted() {}
-}
+void AutoDrive::Interrupted() {
+
+} //Interrupted()
+} //frc2019
