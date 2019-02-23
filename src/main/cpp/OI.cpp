@@ -30,8 +30,7 @@ OI::OI() :
 	pickup(&buttonBoard, 6)
 	{
 		fodToggle.WhenPressed(new BooleanToggle(&fod, [](bool newValue) {
-			// frc::DriverStation::ReportError(std::string("LAMBDA TEST FOD: ") + (newValue ? "true" : "false"));
-			Cob::PushValue(COB_FIELD_ORIENTED,newValue);
+			Cob::PushValue(COB_FIELD_ORIENTED, newValue);
 		}));
 	
 		low.WhenPressed(new SetForkPosition(300));

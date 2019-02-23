@@ -12,7 +12,10 @@
 
 
 namespace frc2019 {
-
+/* 
+ * This command runs the climb motor backwards in order to either bring the prg leg back up (if we climbed all the way), 
+ * or to bring the peg legs back down if we climbed early and the peg legs didnt buckle
+ */
 class ClimbDown : public frc::Command {
 
 public:
@@ -23,8 +26,8 @@ public:
 	void End() override;
 	void Interrupted() override;
 private:
-	frc::Timer m_Timer;
-	double m_LastTime = 0.0;
+	frc::Timer m_Timer;// Counts how long we've been climbing down for
+	double m_LastTime = -1.0;//The value from the timer from the last call to Execute() (used for finding delta time)
 };
 
 

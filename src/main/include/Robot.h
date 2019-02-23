@@ -15,6 +15,7 @@
 #include "subsystems/Vacuum.h"
 #include "subsystems/Wrist.h"
 #include "subsystems/HatchPickup.h"
+#include "subsystems/Climb.h"
 #include "AHRS.h"
 #include "OI.h"
 

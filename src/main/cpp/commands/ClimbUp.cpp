@@ -19,8 +19,8 @@ void ClimbUp::Initialize() {
 }
 
 void ClimbUp::Execute() {
-	Robot::climb.get()->SetPower(1.0);
-	Robot::climb.get()->SetClimbTime(m_Timer.Get());//Count the time we climbed for
+	Robot::climb->SetPower(1.0);
+	Robot::climb->SetClimbTime(m_Timer.Get());//Count the time we climbed for
 }
 
 bool ClimbUp::IsFinished() {
@@ -28,7 +28,7 @@ bool ClimbUp::IsFinished() {
 }
 
 void ClimbUp::End() {
-	Robot::climb.get()->SetPower(0.0);
+	Robot::climb->SetPower(0.0);
 }
 
 void ClimbUp::Interrupted() {
