@@ -4,7 +4,7 @@
 #define kTIMEOUT_MS 30
 
 namespace talon {
-int GetTalonData(TalonSRX* talonMC, TalonData data){
+double GetTalonData(TalonSRX* talonMC, TalonData data){
     //based on the value of the data parameter, the corresponding data value is returned
     switch(data){
         case TalonData::SENSOR_POSITION:

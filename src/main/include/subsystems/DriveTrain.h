@@ -22,6 +22,6 @@ public:
 	void ConfigureEncoders();
 	void CartesianDrive(double y, double x, double rotation, double angle);
 	void Normalize(wpi::MutableArrayRef<double> wheelSpeeds);
-	int GetDriveTalonData(DriveTalon driveTalon, TalonData data);
+	double GetDriveTalonData(DriveTalon driveTalon, TalonData data);
 };
 }//frc2019

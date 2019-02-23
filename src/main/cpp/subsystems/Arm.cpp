@@ -30,7 +30,7 @@ void Arm::InitDefaultCommand() {
   //SetDefaultCommand(new SetArmPosition(0));
 }
 
-int Arm::GetArmTalonData(TalonData data) {
+double Arm::GetArmTalonData(TalonData data) {
   using namespace talon;
   return GetTalonData(&armMC, data);
 }

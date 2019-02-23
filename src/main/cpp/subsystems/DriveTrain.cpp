@@ -115,7 +115,7 @@ void DriveTrain::Normalize(wpi::MutableArrayRef<double> wheelSpeeds) {
   }
 } //Normalize()
 
-int DriveTrain::GetDriveTalonData(DriveTalon driveTalon, TalonData data) {
+double DriveTrain::GetDriveTalonData(DriveTalon driveTalon, TalonData data) {
 	using namespace talon;
 	switch(driveTalon) {
 		case DriveTalon::LEFT_FRONT:

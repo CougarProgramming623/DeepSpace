@@ -18,7 +18,7 @@ public:
   Arm();
   void InitDefaultCommand() override;
   void SetSetpoint(int);
-  int GetArmTalonData(TalonData);
+  double GetArmTalonData(TalonData);
 private:
   TalonSRX armMC;
   int initialReading;

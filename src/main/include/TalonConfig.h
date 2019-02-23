@@ -4,6 +4,6 @@
 #include "GameEnums.h"
 
 namespace talon {
-    int GetTalonData(TalonSRX* talonMC, TalonData data);
+    double GetTalonData(TalonSRX* talonMC, TalonData data);
     void ConfigurePotentiometer(TalonSRX* talonMC, double kP, double kI, double kD);
 }
