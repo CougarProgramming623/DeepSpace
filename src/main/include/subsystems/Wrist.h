@@ -10,6 +10,7 @@
 #include <frc/commands/Subsystem.h>
 #include <frc/WPILib.h>
 #include <ctre/Phoenix.h>
+#include "GameEnums.h"
 
 namespace frc2019{
 
@@ -18,9 +19,12 @@ class Wrist : public frc::Subsystem {
   // It's desirable that everything possible under private except
   // for methods that implement subsystem capabilities
   TalonSRX wristMC;
+  int initialReading;
 
  public:
   Wrist();
   void InitDefaultCommand() override;
+  void SetSetpoint(int);
+  int GetWristTalonData(TalonData);
 };
 }

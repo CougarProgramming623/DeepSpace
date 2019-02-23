@@ -11,8 +11,8 @@
 
 namespace frc2019 {
 HatchPickup::HatchPickup() : Subsystem("ExampleSubsystem"), pickupMC(FORK_ID) {
-  pickupMC.SetSelectedSensorPosition(pickupMC.GetSelectedSensorPosition(0));
   initialReading = pickupMC.GetSelectedSensorPosition(0);
+  pickupMC.SetSelectedSensorPosition(pickupMC.GetSelectedSensorPosition(0));
   pickupMC.ConfigSelectedFeedbackSensor(FeedbackDevice::Analog, 0, 10);
   pickupMC.ConfigNominalOutputForward(0, 30);
 	pickupMC.ConfigNominalOutputReverse(0, 30);
@@ -36,8 +36,8 @@ int HatchPickup::GetForkTalonData(TalonData data) {
 
 void HatchPickup::SetSetpoint(int setpoint) {
   pickupMC.Set(ControlMode::Position, initialReading + setpoint);
-  frc::SmartDashboard::PutNumber("Target", pickupMC.GetClosedLoopTarget());
-  frc::SmartDashboard::PutNumber("Error", pickupMC.GetClosedLoopError());
+  frc::SmartDashboard::PutNumber("Fork Target", pickupMC.GetClosedLoopTarget());
+  frc::SmartDashboard::PutNumber("Fork Error", pickupMC.GetClosedLoopError());
 }
 
 }

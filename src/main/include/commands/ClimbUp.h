@@ -5,12 +5,30 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/Climb.h"
-#include "Robot.h"
+#pragma once
+
+#include <frc/commands/Command.h>
+#include <frc/Timer.h>
+
+#include "GameEnums.h"
+
 
 namespace frc2019 {
 
-Climb::Climb(ClimbHeight height) : frc::CommandGroup(), m_Height(height) {
-	//Add other commands here
-}
+/*
+ * Runs the climb motor forward so that the peg legs deploy
+ */
+class ClimbUp : public frc::Command {
+public:
+	ClimbUp();
+	void Initialize() override;
+	void Execute() override;
+	bool IsFinished() override;
+	void End() override;
+	void Interrupted() override;
+private:
+	frc::Timer m_Timer;
+};
+
+
 }//namespace

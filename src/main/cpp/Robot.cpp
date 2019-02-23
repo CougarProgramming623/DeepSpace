@@ -10,15 +10,21 @@ std::shared_ptr<DriveTrain> Robot::driveTrain;
 std::shared_ptr<AHRS> Robot::navx;
 std::shared_ptr<OI> Robot::oi;
 std::shared_ptr<Arm> Robot::arm;
+std::shared_ptr<Vacuum> Robot::vacuum;
 std::shared_ptr<HatchPickup> Robot::fork;
+std::shared_ptr<Wrist> Robot::wrist;
+std::shared_ptr<Climb> Robot::climb;
 
 void Robot::RobotInit() {
 	Cob::InitBoard();
 	driveTrain.reset(new DriveTrain());
 	DriverStation::ReportError("constructed drivetrain");
 	arm.reset(new Arm());
+	wrist.reset(new Wrist());
+	vacuum.reset(new Vacuum());
 	oi.reset(new OI());
 	fork.reset(new HatchPickup());
+	climb.reset(new Climb());
 	try {
 		navx.reset(new AHRS(SPI::Port::kMXP)); //instantiates the gyro
 	} catch (std::exception &ex) {
@@ -46,7 +52,7 @@ void Robot::RobotPeriodic() {
 
 	frc::DriverStation::ReportError(OI::isCargoMode ? "Cargo Mode" : "Hatch Mode");
 }
-		
+
 void Robot::AutonomousInit() {
 	navx->ZeroYaw();
 	autonomousCommand.reset(new Turn(90.0f)); //set the autonomous command or command group here

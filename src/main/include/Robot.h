@@ -12,6 +12,10 @@
 #include "subsystems/DriveTrain.h"
 #include "subsystems/Arm.h"
 #include "subsystems/HatchPickup.h"
+#include "subsystems/Vacuum.h"
+#include "subsystems/Wrist.h"
+#include "subsystems/HatchPickup.h"
+#include "subsystems/Climb.h"
 #include "AHRS.h"
 #include "OI.h"
 
@@ -38,6 +42,10 @@ public: //pointers
 	static std::shared_ptr<HatchPickup> fork;
 	static std::shared_ptr<AHRS> navx;
 	static std::shared_ptr<OI> oi;
-	static Joystick* joystick, buttonboard;
+	static std::shared_ptr<Wrist> wrist;
+	static std::shared_ptr<Vacuum> vacuum;
+	static std::shared_ptr<Climb> climb;
+
+
 };
 }//frc2019

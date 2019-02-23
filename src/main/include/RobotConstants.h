@@ -85,7 +85,7 @@
 
 #define normalize(min, max, value) (value - min) / (max - min)
 
-#define map(value, sourceMin, sourceMax, destMin, destMax) lerp(destMin, destMax, normalize(sourceMin, sourceMax, value))
+//#define map(value, sourceMin, sourceMax, destMin, destMax) lerp(destMin, destMax, normalize(sourceMin, sourceMax, value))
 
 #ifdef BOT_SAMUS
 
