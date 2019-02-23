@@ -21,6 +21,5 @@ public:
   int GetArmTalonData(TalonData);
 private:
   TalonSRX armMC;
-  int initialReading;
 };
 } //frc2019
