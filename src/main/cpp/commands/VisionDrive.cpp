@@ -147,6 +147,7 @@ void VisionDrive::Execute() {
   DriverStation::ReportError("   yPower:      " + std::to_string(yPower));
   DriverStation::ReportError("      zPower:         " + std::to_string(zPower));
   Robot::driveTrain->RODrive(yPower,xPower,zPower);
+}
 //Finish if all 3 PIDs are on target, if no target found, or if robot reaches timeout
 bool VisionDrive::IsFinished() { 
   return correctIndex == -1 || 
