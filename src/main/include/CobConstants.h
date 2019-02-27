@@ -17,3 +17,4 @@
 #define COB_FIELD_ORIENTED "robot/is-field-oriented"
 #define COB_TIME "fms/time-left"
 #define COB_RED "fms/is-red" 
+#define COB_HATCH_PRESSED "ak/is-pressed"

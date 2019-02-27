@@ -5,6 +5,7 @@
 #include "commands/SetForkPosition.h"
 #include "commands/Drive.h"
 #include "commands/ModeSwitch.h"
+#include "commands/ReadDIO.h"
 
 namespace frc2019 {
 
@@ -25,7 +26,8 @@ OI::OI() :
 	fodToggle(&driverJoystick, 1), 
 	arm(&buttonBoard, 4),
 	wrist(&buttonBoard, 5),
-	pickup(&buttonBoard, 6)
+	pickup(&buttonBoard, 7),
+	dioButton(&buttonBoard, 6)
 	{
 		fodToggle.WhenPressed(new BooleanToggle(&fod, [](bool newValue) {
 			Cob::PushValue(COB_FIELD_ORIENTED, newValue);
@@ -35,6 +37,8 @@ OI::OI() :
 		medium.WhenPressed(new SetForkPosition(1122));
 		high.WhenPressed(new SetForkPosition((1453+1122)/2));
 
+		dioButton.WhenPressed(new ReadDIO());
+
 		cargoHold.WhenPressed(new ModeSwitch(&isCargoMode, true, [](bool newValue) {
 			Cob::PushValue(COB_HATCH, newValue);
 		}));
@@ -42,6 +46,7 @@ OI::OI() :
 		cargoGround.WhenPressed(new ModeSwitch(&isCargoMode, false, [](bool newValue) {
 			Cob::PushValue(COB_HATCH, newValue);
 		}));
+
 } //OI()
 
 void OI::Update() {
