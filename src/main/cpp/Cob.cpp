@@ -27,7 +27,7 @@ void Cob::InitValue(std::string str){
 }
 
 double Cob::GetValue(std::string str){
-	Cob::InitValue(str)
+	Cob::InitValue(str);
 	return map[str].GetDouble(-1.0);
 }
 
