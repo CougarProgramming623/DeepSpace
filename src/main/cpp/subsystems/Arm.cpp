@@ -12,7 +12,7 @@
 namespace frc2019 {
 Arm::Arm() : Subsystem("Arm"), armMC(ARM_TALON_ID) {
   using namespace talon;
-  ConfigurePotentiometer(&armMC, 1.5, 0.0, 0.0);
+  ConfigurePotentiometer(&armMC, 1.5, 0.0, 0.0, 0.5, -0.3);
 }
 
 void Arm::InitDefaultCommand() {

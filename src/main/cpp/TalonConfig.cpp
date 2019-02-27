@@ -22,15 +22,15 @@ double GetTalonData(TalonSRX* talonMC, TalonData data){
     };
 } //GetTalonData()
 
-void ConfigurePotentiometer(TalonSRX* talonMC, double kP, double kI, double kD) {
+void ConfigurePotentiometer(TalonSRX* talonMC, double kP, double kI, double kD, double peakForward, double peakReverse) {
     //configures a potentiometer on the designmated TalonSRX
     //talonMC->SetSelectedSensorPosition(talonMC->GetSelectedSensorPosition());
     talonMC->SetSelectedSensorPosition(0); //set the position as 0
     talonMC->ConfigSelectedFeedbackSensor(FeedbackDevice::Analog, 0, kTIMEOUT_MS); //configure FeedbackDevice as Analog
     talonMC->ConfigNominalOutputForward(0, kTIMEOUT_MS);
 	talonMC->ConfigNominalOutputReverse(0, kTIMEOUT_MS);
-	talonMC->ConfigPeakOutputForward(0.25, kTIMEOUT_MS); //configure the peak output forward	
-    talonMC->ConfigPeakOutputReverse(-0.35, kTIMEOUT_MS); //configure the peak output reverse
+	talonMC->ConfigPeakOutputForward(peakForward, kTIMEOUT_MS); //configure the peak output forward	
+    talonMC->ConfigPeakOutputReverse(peakReverse, kTIMEOUT_MS); //configure the peak output reverse
     //configure P I D values for the potentiometer
     talonMC->Config_kF(kPID_LOOP_IDX, 0.0, kTIMEOUT_MS);
     talonMC->Config_kP(kPID_LOOP_IDX, kP, kTIMEOUT_MS);
