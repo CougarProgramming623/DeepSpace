@@ -59,6 +59,9 @@
   "tuple": "cpp",
   "typeinfo": "cpp",
   "utility": "cpp",
-  "algorithm": "cpp"
+  "bitset": "cpp",
+  "complex": "cpp",
+  "numeric": "cpp"
 },
+"C_Cpp.errorSquiggles": "Disabled",
 }

@@ -1,6 +1,6 @@
 
-//#define BOT_SAMUS
-#define BOT_HAMBONE
+#define BOT_SAMUS
+//#define BOT_HAMBONE
 //#define BOT_RAFIKI
 
 #define SAMUS_LEFT_FRONT_ID  15
@@ -43,6 +43,11 @@
 #define LEFT_BACK_ID SAMUS_LEFT_BACK_ID
 #define RIGHT_BACK_ID SAMUS_RIGHT_BACK_ID
 #define ARM_TALON_ID SAMUS_ARM_TALON_ID
+#define FORK_ID 0
+#define CLIMB_ID 0
+#define WRIST_ID 0
+#define VACUUM_ID 0
+
 #define BOT_NAME SAMUS_BOT_NAME
 
 #elif defined(BOT_HAMBONE)
@@ -80,7 +85,7 @@
 
 #define normalize(min, max, value) (value - min) / (max - min)
 
-#define map(value, sourceMin, sourceMax, destMin, destMax) lerp(destMin, destMax, normalize(sourceMin, sourceMax, value))
+//#define map(value, sourceMin, sourceMax, destMin, destMax) lerp(destMin, destMax, normalize(sourceMin, sourceMax, value))
 
 #ifdef BOT_SAMUS
 

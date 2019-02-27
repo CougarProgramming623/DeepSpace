@@ -7,15 +7,21 @@
 
 #pragma once
 
-#include <frc/commands/CommandGroup.h>
-#include "GameEnums.h"
+#include <frc/commands/Command.h>
 
-namespace frc2019 {
-
-class Climb : public frc::CommandGroup {
-public:
-	Climb(ClimbHeight height);
-private:
-	ClimbHeight m_Height;
+namespace frc2019{ 
+  
+class ModeSwitch : public frc::Command {
+ public:
+  ModeSwitch(bool*, bool, std::function<void(bool newValue)> onSwitch);
+  void Initialize() override;
+  void Execute() override;
+  bool IsFinished() override;
+  void End() override;
+  void Interrupted() override;
+ private:
+  bool* boolean;
+  bool state;
+  std::function<void(bool newValue)> onSwitch;
 };
-}//namespace
+}

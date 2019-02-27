@@ -5,43 +5,41 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/SetForkPosition.h"
-#include "Robot.h"
+#include "commands/ModeSwitch.h"
+#include "Cob.h"
+#include "CobConstants.h"
 
 namespace frc2019 {
 
-SetForkPosition::SetForkPosition(int setpoint) {
+ModeSwitch::ModeSwitch(bool* pointer, bool mode, std::function<void(bool newValue)> onSwitch) : boolean(pointer), state(mode), onSwitch(onSwitch) {
   // Use Requires() here to declare subsystem dependencies
   // eg. Requires(Robot::chassis.get());
-  Requires(Robot::fork.get());
-  m_setpoint = setpoint;
-} //SetForkPosition()
+} //ModeSwitch()
 
 // Called just before this Command runs the first time
-void SetForkPosition::Initialize() {
-
+void ModeSwitch::Initialize() {
+  *boolean = state; //make pointer equal to a certain value
+  onSwitch(*boolean); //defined function called after boolean set
 } //Initialize()
 
 // Called repeatedly when this Command is scheduled to run
-void SetForkPosition::Execute() {
-  Robot::fork->SetSetpoint(m_setpoint); //set setpoint of fork subsystem
-  frc::SmartDashboard::PutNumber("fork position", Robot::fork->GetForkTalonData(TalonData::SENSOR_POSITION));
-  frc::SmartDashboard::PutNumber("fork error", Robot::fork->GetForkTalonData(TalonData::ERROR));
+void ModeSwitch::Execute() {
+
 } //Execute()
 
 // Make this return true when this Command no longer needs to run execute()
-bool SetForkPosition::IsFinished() { 
+bool ModeSwitch::IsFinished() { 
   return true; 
 } //IsFinished()
 
 // Called once after isFinished returns true
-void SetForkPosition::End() {
+void ModeSwitch::End() {
 
 } //End()
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void SetForkPosition::Interrupted() {
+void ModeSwitch::Interrupted() {
 
-} //Interrupted
+} //Interrupted()
 } //frc2019

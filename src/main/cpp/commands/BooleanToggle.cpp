@@ -10,28 +10,32 @@
 namespace frc2019 {
 BooleanToggle::BooleanToggle(bool* ptr, std::function<void(bool newValue)> onFlip) : boolean(ptr), onFlip(onFlip) {
 
-}
+} //BooleanToggle()
 
 void BooleanToggle::Initialize() {
 	if(*boolean) {
-		*boolean = false;
+		*boolean = false; //if pointer is true switch it to false
 	} else {
-		*boolean = true;
+		*boolean = true; //if pointer is false switch it to true
 	}
 	onFlip(*boolean);
-}
+} //Initialize()
 
 void BooleanToggle::Execute() {
 
-}
+} //Execute()
 
-bool BooleanToggle::IsFinished() { return true; }
+bool BooleanToggle::IsFinished() { 
+	return true; 
+} //IsFinished()
 
 void BooleanToggle::End() {
 
-}
+} //End()
 
 void BooleanToggle::Interrupted() {
 
 }
+
+
 }//namespace

@@ -14,3 +14,7 @@ enum SliderStatus {
 enum TalonData {
 	SENSOR_POSITION, SENSOR_VELOCITY, TARGET, ERROR, PERCENT_OUTPUT
 };
+
+enum DriveTalon {
+	LEFT_FRONT, LEFT_REAR, RIGHT_FRONT, RIGHT_REAR
+};
