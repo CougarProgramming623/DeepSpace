@@ -7,6 +7,7 @@
 
 #include "commands/ClimbDown.h"
 #include "Robot.h"
+#include <frc/WPILib.h>
 
 namespace frc2019 {
 
@@ -18,6 +19,9 @@ void ClimbDown::Initialize() {
 	m_Timer.Start();
 	if(Robot::climb->IsLimitHit()) {
 		Robot::climb->SetClimbTime(CLIMB_REVERSE_TIME);
+		frc::DriverStation::ReportError("CLimb down hit limit");
+	} else {
+		frc::DriverStation::ReportError("Climb down non limit...");
 	}
 }
 
@@ -32,7 +36,7 @@ void ClimbDown::Execute() {
 		}
 	}
 	m_LastTime = time;
-
+	frc::DriverStation::ReportError("Executing Climb down...");
 }
 
 bool ClimbDown::IsFinished() {

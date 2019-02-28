@@ -26,6 +26,7 @@ private:
 	frc::JoystickButton arm;
 	frc::JoystickButton wrist;
 	frc::JoystickButton pickup;
+	frc::JoystickButton climb;
 	
 public:
 	OI();

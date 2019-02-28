@@ -14,6 +14,9 @@ public:
 	inline bool IsLimitHit() const {
 		return m_HitLimit;
 	}
+	inline bool SetLimitHit(bool limit) {
+		m_HitLimit = limit;
+	}
 	inline void SetPower(double power) {
 		m_ClimbMotor.Set(power);
 	}

@@ -13,3 +13,5 @@
 
 #define OI_ARM_POSITION_SLIDER 1
 #define OI_WRIST_POSITION_SLIDER 2
+
+#define OI_CLIMB 0

@@ -7,6 +7,8 @@
 #include "commands/SetForkPosition.h"
 #include "commands/Drive.h"
 #include "commands/ModeSwitch.h"
+#include "commands/ClimbUp.h"
+#include "commands/ClimbDown.h"
 
 namespace frc2019 {
 
@@ -27,7 +29,8 @@ OI::OI() :
 	fodToggle(&driverJoystick, 1), 
 	arm(&buttonBoard, 4),
 	wrist(&buttonBoard, 5),
-	pickup(&buttonBoard, 6)
+	pickup(&buttonBoard, 6),
+	climb(&buttonBoard, OI_CLIMB)
 	{
 		fodToggle.WhenPressed(new BooleanToggle(&fod, [](bool newValue) {
 			Cob::PushValue(COB_FIELD_ORIENTED, newValue);
@@ -39,8 +42,10 @@ OI::OI() :
 
 		cargoHold.WhenPressed(new ModeSwitch(&isCargoMode, true));
 		cargoGround.WhenPressed(new ModeSwitch(&isCargoMode, false));
-	}
 
+		climb.WhileHeld(new ClimbUp());
+		climb.WhenReleased(new ClimbDown());
+	}
 
 
 void OI::Update() {
