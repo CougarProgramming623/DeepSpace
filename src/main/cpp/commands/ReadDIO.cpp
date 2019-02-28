@@ -18,12 +18,11 @@ ReadDIO::ReadDIO() : dioInput(0) {
 
 // Called just before this Command runs the first time
 void ReadDIO::Initialize() {
-  timer.Start();
 }
 
 // Called repeatedly when this Command is scheduled to run
 void ReadDIO::Execute() {
-  //DriverStation::ReportError(std::to_string(dioInput.Get()));
+  DriverStation::ReportError(std::to_string(dioInput.Get()));
   Cob::PushValue(COB_HATCH_PRESSED, dioInput.Get());//return boolean (force sensor triggered)
 }
 
