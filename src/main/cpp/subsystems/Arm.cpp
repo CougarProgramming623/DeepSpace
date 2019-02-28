@@ -12,7 +12,7 @@
 namespace frc2019 {
 Arm::Arm() : Subsystem("Arm"), armMC(ARM_TALON_ID) {
   using namespace talon;
-  ConfigurePotentiometer(&armMC, 1.5, 0.0, 0.0, 0.5, -0.3);
+  ConfigurePotentiometer(&armMC, 10, 0.0, 0.0, 0.5, -0.3);
 }
 
 void Arm::InitDefaultCommand() {
@@ -32,5 +32,7 @@ void Arm::SetSetpoint(int setpoint) {
   frc::SmartDashboard::PutNumber("Arm Error", armMC.GetClosedLoopError());
 }
 
-
+void Arm::SetP(double kP) {
+  armMC.Config_kP(0, kP, 30);
+}
 }//namespace

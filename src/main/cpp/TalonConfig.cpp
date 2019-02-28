@@ -33,7 +33,7 @@ void ConfigurePotentiometer(TalonSRX* talonMC, double kP, double kI, double kD, 
     talonMC->ConfigPeakOutputReverse(peakReverse, kTIMEOUT_MS); //configure the peak output reverse
     //configure P I D values for the potentiometer
     talonMC->Config_kF(kPID_LOOP_IDX, 0.0, kTIMEOUT_MS);
-    talonMC->Config_kP(kPID_LOOP_IDX, kP, kTIMEOUT_MS);
+    //talonMC->Config_kP(kPID_LOOP_IDX, kP, kTIMEOUT_MS);
     talonMC->Config_kI(kPID_LOOP_IDX, kI, kTIMEOUT_MS);
     talonMC->Config_kD(kPID_LOOP_IDX, kD, kTIMEOUT_MS);
 } //ConfigurePotentiometer()

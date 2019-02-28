@@ -5,23 +5,20 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "subsystems/Wrist.h"
+#pragma once
+
+#include <frc/commands/Command.h>
 
 namespace frc2019 {
-Wrist::Wrist() : Subsystem("Wrist"), wristMC(WRIST_ID) {
-  using namespace talon;
-  ConfigurePotentiometer(&wristMC, 5.0, 0.0, 0.0, 1.0, -1.0);
-} //Wrist()
-
-void Wrist::InitDefaultCommand() {
-  
-} //InitDefaultCommand()
-
-void Wrist::SetSetpoint(int setpoint) {
-  wristMC.Set(ControlMode::Position, setpoint);
+class SetServo : public frc::Command {
+ public:
+  SetServo(double);
+  void Initialize() override;
+  void Execute() override;
+  bool IsFinished() override;
+  void End() override;
+  void Interrupted() override;
+  private:
+    double m_position;
+};
 }
-
-double Wrist::GetWristTalonData(TalonData data) {
-  return 0.0;
-}
-} //frc2019
