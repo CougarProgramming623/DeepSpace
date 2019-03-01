@@ -7,8 +7,8 @@ namespace frc2019 {
 
 //For indexing the array in OI
 
-#define ARM_MEKANISM_TYPE_COUNT 2
-enum ArmMekanismType {
+#define ARM_MECHANISM_TYPE_COUNT 2
+enum ArmMechanismType {
 	MAIN_ARM, WRIST
 };
 

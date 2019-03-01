@@ -31,10 +31,10 @@ Arm::Arm() : Subsystem("Arm"), armMC(ARM_TALON_ID) {
 		fread(m_Setpoints, sizeof(m_Setpoints), 1, file);
 		fclose(file);
 	}
-	for(int armI = 0; armI < ARM_MEKANISM_TYPE_COUNT; armI++) {
+	for(int armI = 0; armI < ARM_MECHANISM_TYPE_COUNT; armI++) {
 		for(int cargoI = 0; cargoI < CARGO_OR_HATCH_COUNT; cargoI++) {
 			for(int positionI = 0; positionI < DIAL_POSITION_COUNT; positionI++) {
-				ArmMekanismType arm = static_cast<ArmMekanismType>(armI);
+				ArmMechanismType arm = static_cast<ArmMechanismType>(armI);
 				CargoOrHatch cargo = static_cast<CargoOrHatch>(cargoI);
 				DialPosition position = static_cast<DialPosition>(positionI);
 				Cob::PushValue(MakeCOBAddress(arm, cargo, position), m_Setpoints[arm][cargo][position]);
@@ -47,10 +47,10 @@ Arm::Arm() : Subsystem("Arm"), armMC(ARM_TALON_ID) {
 }
 
 void Arm::PullSetpoints() {
-	for(int armI = 0; armI < ARM_MEKANISM_TYPE_COUNT; armI++) {
+	for(int armI = 0; armI < ARM_MECHANISM_TYPE_COUNT; armI++) {
 		for(int cargoI = 0; cargoI < CARGO_OR_HATCH_COUNT; cargoI++) {
 			for(int positionI = 0; positionI < DIAL_POSITION_COUNT; positionI++) {
-				std::string address = MakeCOBAddress(static_cast<ArmMekanismType>(armI), static_cast<CargoOrHatch>(cargoI), static_cast<DialPosition>(positionI));
+				std::string address = MakeCOBAddress(static_cast<ArmMechanismType>(armI), static_cast<CargoOrHatch>(cargoI), static_cast<DialPosition>(positionI));
 				int newValue = Cob::GetValue<int>(address);
 				DriverStation::ReportError("Setting address: " + address + " to " + std::to_string(newValue));
 				m_Setpoints[armI][cargoI][positionI] = newValue;
@@ -71,11 +71,11 @@ void Arm::SaveSetpoints() {
 	}
 }
 
-std::string Arm::MakeCOBAddress(ArmMekanismType arm, CargoOrHatch cargoOrHatch, DialPosition position) {
+std::string Arm::MakeCOBAddress(ArmMechanismType arm, CargoOrHatch cargoOrHatch, DialPosition position) {
 	std::string result;
-	if(arm == ArmMekanismType::MAIN_ARM) {
+	if(arm == ArmMechanismType::MAIN_ARM) {
 		result += "arm-position/";
-	} else if(arm == ArmMekanismType::WRIST) {
+	} else if(arm == ArmMechanismType::WRIST) {
 		result += "wrist-position/";
 	} else { frc::DriverStation::ReportError("Unhandled condition at line " + std::to_string(__LINE__) + " in file " + __FILE__); }
 	
