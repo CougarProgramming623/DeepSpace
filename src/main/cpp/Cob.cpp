@@ -26,4 +26,4 @@ void Cob::InitValue(std::string str){
     map[str] = table->GetEntry(str);
   }
 }
-
+} //namespace
