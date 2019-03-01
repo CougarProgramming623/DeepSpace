@@ -18,7 +18,6 @@
 #define COB_TIME "fms/time-left"
 #define COB_RED "fms/is-red" 
 
-//arm
 #define COB_ARM_CARGO_ROCKET_HIGH "/cob/arm-position/rocket-high"
 #define COB_ARM_CARGO_ROCKERT_MID "/cob/arm-position/rocket-mid"
 #define COB_ARM_CARGO_ROCKET_LOW "/cob/arm-position/rocket-low"

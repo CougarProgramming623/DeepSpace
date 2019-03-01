@@ -27,5 +27,3 @@ void Cob::InitValue(std::string str){
   }
 }
 
-
-}//frc2019
