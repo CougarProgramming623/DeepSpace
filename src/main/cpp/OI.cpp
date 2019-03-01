@@ -1,14 +1,17 @@
 
 #include "OI.h"
-#include "OIConstants.h"
 #include <frc/DriverStation.h>
-#include "commands/PositveAngleTurnTest.h"
 #include "Cob.h"
 #include "commands/SetForkPosition.h"
 #include "commands/Drive.h"
 #include "commands/ModeSwitch.h"
+
 #include "commands/ClimbUp.h"
 #include "commands/ClimbDown.h"
+
+#include "commands/SetArmPosition.h"
+#include "commands/SetWristPosition.h"
+#include "commands/SetServo.h"
 
 namespace frc2019 {
 
@@ -35,28 +38,42 @@ OI::OI() :
 		fodToggle.WhenPressed(new BooleanToggle(&fod, [](bool newValue) {
 			Cob::PushValue(COB_FIELD_ORIENTED, newValue);
 		}));
-	
-		low.WhenPressed(new SetForkPosition(300));
-		medium.WhenPressed(new SetForkPosition(0));
-		high.WhenPressed(new SetForkPosition(150));
 
-		cargoHold.WhenPressed(new ModeSwitch(&isCargoMode, true));
-		cargoGround.WhenPressed(new ModeSwitch(&isCargoMode, false));
+		low.WhenPressed(new SetArmPosition(0));
+		
+		medium.WhenPressed(new SetWristPosition(0));
+		
+		cargoHold.WhenPressed(new SetArmPosition(445/2));
+
+		arm.WhenPressed(new SetWristPosition(556/2));
+		
+		wrist.WhenPressed(new SetArmPosition(445));
+		
+		pickup.WhenPressed(new SetWristPosition(556));
 
 		climb.WhileHeld(new ClimbUp());
 		climb.WhenReleased(new ClimbDown());
-	}
+		//arm limit 445
+		//wrist limit 555
 
+		wrist.WhenPressed(new SetServo(0.5));
+		pickup.WhenPressed(new SetServo(1.0));
+
+
+		cargoGround.WhenPressed(new ModeSwitch(&isCargoMode, false, [](bool newValue) {
+			Cob::PushValue(COB_HATCH, newValue);
+		}));
+} //OI()
 
 void OI::Update() {
-}
 
-SliderStatus OI::getSliderMode() {
+} //Update()
+
+SliderStatus OI::GetSliderMode() {
 	return sliderMode;
-}
+} //GetSliderMode()
 
 bool OI::IsFOD() {
 	return fod;
-}
-
-}//namespace
+} //IsFOD()
+}//frc2019

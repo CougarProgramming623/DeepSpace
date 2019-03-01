@@ -5,41 +5,40 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/ModeSwitch.h"
-#include "Cob.h"
-#include "CobConstants.h"
+#include "commands/SetArmPosition.h"
+#include "Robot.h"
 
 namespace frc2019 {
-
-ModeSwitch::ModeSwitch(bool* pointer, bool mode, std::function<void(bool newValue)> onSwitch) : boolean(pointer), state(mode), onSwitch(onSwitch) {
+SetArmPosition::SetArmPosition(int setpoint) {
   // Use Requires() here to declare subsystem dependencies
   // eg. Requires(Robot::chassis.get());
-} //ModeSwitch()
+  Requires(Robot::arm.get());
+  m_setpoint = setpoint;
+}
 
 // Called just before this Command runs the first time
-void ModeSwitch::Initialize() {
-  *boolean = state; //make pointer equal to a certain value
-  onSwitch(*boolean); //defined function called after boolean set
-} //Initialize()
+void SetArmPosition::Initialize() {
+  if(Robot::arm->GetArmTalonData(TalonData::SENSOR_POSITION) < m_setpoint) {
+    Robot::arm->SetP(UP_kP);
+  } else {
+    Robot::arm->SetP(DOWN_kP);
+  }
+}
 
 // Called repeatedly when this Command is scheduled to run
-void ModeSwitch::Execute() {
-
-} //Execute()
+void SetArmPosition::Execute() {
+  Robot::arm->SetSetpoint(m_setpoint); //set setpoint of arm subsystem
+  frc::SmartDashboard::PutNumber("arm position", Robot::arm->GetArmTalonData(TalonData::SENSOR_POSITION));
+  frc::SmartDashboard::PutNumber("arm error", Robot::arm->GetArmTalonData(TalonData::ERROR));
+}
 
 // Make this return true when this Command no longer needs to run execute()
-bool ModeSwitch::IsFinished() { 
-  return true; 
-} //IsFinished()
+bool SetArmPosition::IsFinished() { return true; }
 
 // Called once after isFinished returns true
-void ModeSwitch::End() {
-
-} //End()
+void SetArmPosition::End() {}
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void ModeSwitch::Interrupted() {
-
-} //Interrupted()
-} //frc2019
+void SetArmPosition::Interrupted() {}
+}

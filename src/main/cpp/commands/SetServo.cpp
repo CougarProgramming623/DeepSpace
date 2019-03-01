@@ -5,41 +5,32 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/ModeSwitch.h"
-#include "Cob.h"
-#include "CobConstants.h"
+#include "commands/SetServo.h"
+#include "Robot.h"
 
 namespace frc2019 {
-
-ModeSwitch::ModeSwitch(bool* pointer, bool mode, std::function<void(bool newValue)> onSwitch) : boolean(pointer), state(mode), onSwitch(onSwitch) {
+SetServo::SetServo(double pos) {
   // Use Requires() here to declare subsystem dependencies
   // eg. Requires(Robot::chassis.get());
-} //ModeSwitch()
+  Requires(Robot::vacuum.get());
+  m_position = pos;
+}
 
 // Called just before this Command runs the first time
-void ModeSwitch::Initialize() {
-  *boolean = state; //make pointer equal to a certain value
-  onSwitch(*boolean); //defined function called after boolean set
-} //Initialize()
+void SetServo::Initialize() {
+  Robot::vacuum->SetServoPosition(m_position);
+}
 
 // Called repeatedly when this Command is scheduled to run
-void ModeSwitch::Execute() {
-
-} //Execute()
+void SetServo::Execute() {}
 
 // Make this return true when this Command no longer needs to run execute()
-bool ModeSwitch::IsFinished() { 
-  return true; 
-} //IsFinished()
+bool SetServo::IsFinished() { return true; }
 
 // Called once after isFinished returns true
-void ModeSwitch::End() {
-
-} //End()
+void SetServo::End() {}
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void ModeSwitch::Interrupted() {
-
-} //Interrupted()
-} //frc2019
+void SetServo::Interrupted() {}
+}

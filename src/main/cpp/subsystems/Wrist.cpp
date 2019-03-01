@@ -6,40 +6,27 @@
 /*----------------------------------------------------------------------------*/
 
 #include "subsystems/Wrist.h"
-#include "RobotConstants.h"
-#include "TalonConfig.h"
 
 namespace frc2019 {
-
 Wrist::Wrist() : Subsystem("Wrist"), wristMC(WRIST_ID) {
-  initialReading = wristMC.GetSelectedSensorPosition();
-  wristMC.SetSelectedSensorPosition(wristMC.GetSelectedSensorPosition());
-  wristMC.ConfigSelectedFeedbackSensor(FeedbackDevice::Analog, 0, 10);
-  wristMC.ConfigNominalOutputForward(0, 30);
-  wristMC.ConfigNominalOutputReverse(0, 30);
-  wristMC.ConfigPeakOutputForward(-1, 30);
-  wristMC.ConfigPeakOutputReverse(-1, 30);
-  wristMC.Config_kF(0, 0.0, 30);
-  wristMC.Config_kP(0, 3.0, 30);
-  wristMC.Config_kI(0, 0.0, 0);
-  wristMC.Config_kD(0, 0.0, 0);
-}
+  using namespace talon;
+  ConfigurePotentiometer(&wristMC, 9.0, 0.0, 0.0, 0.3, -0.3);
+} //Wrist()
 
 void Wrist::InitDefaultCommand() {
   
-}
+} //InitDefaultCommand()
 
-int Wrist::GetWristTalonData(TalonData data) {
-  using namespace talon;
-  return GetTalonData(&wristMC, data);
+void Wrist::SetP(double kP) {
+  wristMC.Config_kP(0, kP, 30);
 }
 
 void Wrist::SetSetpoint(int setpoint) {
-  wristMC.Set(ControlMode::Position, initialReading + setpoint);
-  frc::SmartDashboard::PutNumber("Wrist Target", wristMC.GetClosedLoopTarget());
-  frc::SmartDashboard::PutNumber("Wrist Error", wristMC.GetClosedLoopError());
+  wristMC.Set(ControlMode::Position, setpoint);
 }
 
-// Put methods for controlling this subsystem
-// here. Call these from Commands.
+double Wrist::GetWristTalonData(TalonData data) {
+  using namespace talon;
+  return GetTalonData(&wristMC, data);
 }
+} //frc2019

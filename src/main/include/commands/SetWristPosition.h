@@ -7,11 +7,18 @@
 
 #pragma once
 
-#include <frc/commands/CommandGroup.h>
-
-namespace frc2019 {
-class PositveAngleTurnTest : public frc::CommandGroup {
+#include <frc/commands/Command.h>
+namespace frc2019{
+class SetWristPosition : public frc::Command {
  public:
-  PositveAngleTurnTest();
+  SetWristPosition(int);
+  void Initialize() override;
+  void Execute() override;
+  bool IsFinished() override;
+  void End() override;
+  void Interrupted() override;
+  private:
+  int m_setpoint;
+
 };
-}//namespace
+}

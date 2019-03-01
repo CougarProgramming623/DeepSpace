@@ -11,35 +11,22 @@
 
 namespace frc2019 {
 HatchPickup::HatchPickup() : Subsystem("ExampleSubsystem"), pickupMC(FORK_ID) {
-  initialReading = pickupMC.GetSelectedSensorPosition(0);
-  pickupMC.SetSelectedSensorPosition(pickupMC.GetSelectedSensorPosition(0));
-  pickupMC.ConfigSelectedFeedbackSensor(FeedbackDevice::Analog, 0, 10);
-  pickupMC.ConfigNominalOutputForward(0, 30);
-	pickupMC.ConfigNominalOutputReverse(0, 30);
-	pickupMC.ConfigPeakOutputForward(1, 30);		
-  pickupMC.ConfigPeakOutputReverse(-1, 30);
-  pickupMC.Config_kF(0, 0.0, 30);
-  pickupMC.Config_kP(0, 2.0, 30);
-  pickupMC.Config_kI(0, 0.0, 30);
-  pickupMC.Config_kD(0, 0.0, 30);
-}
+  using namespace talon;
+  ConfigurePotentiometer(&pickupMC, 3.0, 0.0, 0.0, 1.0, -1.0);
+} //HatchPickup()
 
 void HatchPickup::InitDefaultCommand() {
   // Set the default command for a subsystem here.
   // SetDefaultCommand(new MySpecialCommand());
-}
+} //InitDefaultCommand()
 
 int HatchPickup::GetForkTalonData(TalonData data) {
   using namespace talon;
   return GetTalonData(&pickupMC, data);
-}
+} //GetForkTalonData()
 
 void HatchPickup::SetSetpoint(int setpoint) {
-  pickupMC.Set(ControlMode::Position, initialReading + setpoint);
-  frc::SmartDashboard::PutNumber("Fork Target", pickupMC.GetClosedLoopTarget());
-  frc::SmartDashboard::PutNumber("Fork Error", pickupMC.GetClosedLoopError());
-}
+  pickupMC.Set(ControlMode::Position, setpoint); //set the target position of the potentiometer
+} //SetSetpoint()
+} //frc2019
 
-}
-// Put methods for controlling this subsystem
-// here. Call these from Commands.

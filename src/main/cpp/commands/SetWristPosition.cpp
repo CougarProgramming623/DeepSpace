@@ -5,41 +5,38 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/ModeSwitch.h"
-#include "Cob.h"
-#include "CobConstants.h"
-
-namespace frc2019 {
-
-ModeSwitch::ModeSwitch(bool* pointer, bool mode, std::function<void(bool newValue)> onSwitch) : boolean(pointer), state(mode), onSwitch(onSwitch) {
+#include "commands/SetWristPosition.h"
+#include "Robot.h"
+namespace frc2019{
+SetWristPosition::SetWristPosition(int setpoint) {
   // Use Requires() here to declare subsystem dependencies
   // eg. Requires(Robot::chassis.get());
-} //ModeSwitch()
+  Requires(Robot::wrist.get());
+  m_setpoint = setpoint;
+}
 
 // Called just before this Command runs the first time
-void ModeSwitch::Initialize() {
-  *boolean = state; //make pointer equal to a certain value
-  onSwitch(*boolean); //defined function called after boolean set
-} //Initialize()
+void SetWristPosition::Initialize() {
+    if(m_setpoint > Robot::wrist->GetWristTalonData(TalonData::SENSOR_POSITION))
+      Robot::wrist->SetP(UP_kP_WRIST);
+    else
+      Robot::wrist->SetP(DOWN_kP_WRIST);
+    
+    Robot::wrist->SetSetpoint(m_setpoint);
+}
 
 // Called repeatedly when this Command is scheduled to run
-void ModeSwitch::Execute() {
-
-} //Execute()
+void SetWristPosition::Execute() {
+  SmartDashboard::PutNumber("wrist error", Robot::wrist->GetWristTalonData(TalonData::ERROR));
+}
 
 // Make this return true when this Command no longer needs to run execute()
-bool ModeSwitch::IsFinished() { 
-  return true; 
-} //IsFinished()
+bool SetWristPosition::IsFinished() { return true; }
 
 // Called once after isFinished returns true
-void ModeSwitch::End() {
-
-} //End()
+void SetWristPosition::End() {}
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void ModeSwitch::Interrupted() {
-
-} //Interrupted()
-} //frc2019
+void SetWristPosition::Interrupted() {}
+}

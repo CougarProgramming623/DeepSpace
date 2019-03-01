@@ -19,6 +19,7 @@ class Arm : public frc::Subsystem {
 public:
 	Arm();
 	void InitDefaultCommand() override;
+	void SetP(double);
 	void SetSetpoint(int);
 	int GetArmTalonData(TalonData);
 

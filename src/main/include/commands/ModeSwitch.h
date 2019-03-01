@@ -13,7 +13,7 @@ namespace frc2019{
   
 class ModeSwitch : public frc::Command {
  public:
-  ModeSwitch(bool*, bool);
+  ModeSwitch(bool*, bool, std::function<void(bool newValue)> onSwitch);
   void Initialize() override;
   void Execute() override;
   bool IsFinished() override;
@@ -22,5 +22,6 @@ class ModeSwitch : public frc::Command {
  private:
   bool* boolean;
   bool state;
+  std::function<void(bool newValue)> onSwitch;
 };
 }

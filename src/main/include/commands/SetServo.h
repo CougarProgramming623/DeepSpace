@@ -10,17 +10,15 @@
 #include <frc/commands/Command.h>
 
 namespace frc2019 {
-class AutoDrive : public frc::Command {
-public:
-	AutoDrive(double, bool);
-	void Initialize() override;
-	void Execute() override;
-	bool IsFinished() override;
-	void End() override;
-	void Interrupted() override;
-private:
-	int initialTicks, maxTicks;
-	double m_distance;
-	bool isStrafing;
-}; //AutoDrive
-} //frc2019
+class SetServo : public frc::Command {
+ public:
+  SetServo(double);
+  void Initialize() override;
+  void Execute() override;
+  bool IsFinished() override;
+  void End() override;
+  void Interrupted() override;
+  private:
+    double m_position;
+};
+}

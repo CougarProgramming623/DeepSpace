@@ -36,4 +36,8 @@ enum TalonData {
 };
 
 
+enum DriveTalon {
+	LEFT_FRONT, LEFT_REAR, RIGHT_FRONT, RIGHT_REAR
+};
+
 }//namespace

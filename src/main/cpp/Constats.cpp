@@ -12,21 +12,4 @@ double ReduceValue(double original, double exponent) {
 	}
 	return result;
 }
-
-void Normalize(wpi::MutableArrayRef<double> wheelSpeeds) {
-  double maxMagnitude = std::abs(wheelSpeeds[0]);
-  for (size_t i = 1; i < wheelSpeeds.size(); i++) {
-    double temp = std::abs(wheelSpeeds[i]);
-    if (maxMagnitude < temp) {
-      maxMagnitude = temp;
-    }
-  }
-  if (maxMagnitude > 1) {
-    for (size_t i = 0; i < wheelSpeeds.size(); i++) {
-      wheelSpeeds[i] = wheelSpeeds[i] / maxMagnitude;
-    }
-  }
-}
-
-
-}//namespace
+}//frc2019

@@ -4,6 +4,8 @@
 #include "commands/SetForkPosition.h"
 #include "GameEnums.h"
 #include "RobotConstants.h"
+#include "OIConstants.h"
+
 
 namespace frc2019 {
 
@@ -31,7 +33,7 @@ private:
 public:
 	OI();
 	void Update();
-	SliderStatus getSliderMode();
+	SliderStatus GetSliderMode();
 	inline bool IsAlignmentMode() { 
 		return !IsFOD(); 
 	}
@@ -39,4 +41,4 @@ public:
 	static bool isCargoMode;
 };
 
-}//namespace
+}//frc2019

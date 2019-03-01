@@ -59,5 +59,5 @@ inline void Cob::PushValue<std::string>(std::string str, std::string val) {
   InitValue(str);
   map.at(str).SetString(val);
 }
-}//namespace
+}//frc2019
 

@@ -7,6 +7,8 @@
 #include <wpi/ArrayRef.h>
 #include <wpi/raw_ostream.h>
 #include <frc/commands/Subsystem.h>
+#include "TalonConfig.h"
+#include "GameEnums.h"
 
 namespace frc2019 {
 
@@ -14,16 +16,12 @@ class DriveTrain : public frc::Subsystem {
 private:
 	WPI_TalonSRX m_LeftFrontMC, m_RightFrontMC;
 	WPI_TalonSRX m_LeftRearMC, m_RightRearMC;
-	frc::MecanumDrive m_MecanumDrive;
-
 public:
 	DriveTrain();
 	void InitDefaultCommand() override;
 	void ConfigureEncoders();
-	void FODDrive(double y, double x, double rotation, double gyroAngle);
 	void CartesianDrive(double y, double x, double rotation, double angle);
-	int GetTicks();
-	double GetLeftVelocity();
-	double GetRightVelocity();
+	void Normalize(wpi::MutableArrayRef<double> wheelSpeeds);
+	double GetDriveTalonData(DriveTalon driveTalon, TalonData data);
 };
 }//frc2019
