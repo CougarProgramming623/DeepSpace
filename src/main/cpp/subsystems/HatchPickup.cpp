@@ -12,7 +12,7 @@
 namespace frc2019 {
 HatchPickup::HatchPickup() : Subsystem("ExampleSubsystem"), pickupMC(FORK_ID) {
   using namespace talon;
-  ConfigurePotentiometer(&pickupMC, 3.0, 0.0, 0.0);
+  ConfigurePotentiometer(&pickupMC, 3.0, 0.0, 0.0, 1.0, -1.0);
 } //HatchPickup()
 
 void HatchPickup::InitDefaultCommand() {

@@ -7,6 +7,7 @@
 #include "Cob.h"
 
 namespace frc2019 {
+
 std::shared_ptr<nt::NetworkTable> Cob::table;
 std::map<std::string,nt::NetworkTableEntry> Cob::map;
 
@@ -26,9 +27,3 @@ void Cob::InitValue(std::string str){
   }
 }
 
-double Cob::GetValue(std::string str){
-	Cob::InitValue(str);
-	return map[str].GetDouble(-1.0);
-}
-
-}//frc2019

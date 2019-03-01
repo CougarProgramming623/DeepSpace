@@ -7,22 +7,18 @@
 
 #pragma once
 
-#include <frc/commands/Subsystem.h>
-#include <frc/WPILib.h>
-#include <ctre/Phoenix.h>
+#include <frc/commands/Command.h>
 
 namespace frc2019 {
-
-class Vacuum : public frc::Subsystem {
- private:
-  // It's desirable that everything possible under private except
-  // for methods that implement subsystem capabilities
-  TalonSRX vacuumMC;
-  frc::Servo servo;
+class SetServo : public frc::Command {
  public:
-  Vacuum();
-  void InitDefaultCommand() override;
-  void SetVacuumSpeed();
-  void SetServoPosition(double);
+  SetServo(double);
+  void Initialize() override;
+  void Execute() override;
+  bool IsFinished() override;
+  void End() override;
+  void Interrupted() override;
+  private:
+    double m_position;
 };
 }

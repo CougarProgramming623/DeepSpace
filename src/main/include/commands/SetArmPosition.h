@@ -7,26 +7,20 @@
 
 #pragma once
 
-#include <frc/commands/Subsystem.h>
-#include <frc/WPILib.h>
-#include <ctre/Phoenix.h>
-#include "GameEnums.h"
+#include <frc/commands/Command.h>
 #include "RobotConstants.h"
-#include "TalonConfig.h"
 
+namespace frc2019 {
 
-namespace frc2019{
-
-class Wrist : public frc::Subsystem {
-public:
-  Wrist();
-  void InitDefaultCommand() override;
-  void SetP(double);
-  void SetSetpoint(int);
-  double GetWristTalonData(TalonData);
-private:
-  // It's desirable that everything possible under private except
-  // for methods that implement subsystem capabilities
-  TalonSRX wristMC;
+class SetArmPosition : public frc::Command {
+ public:
+  SetArmPosition(int);
+  void Initialize() override;
+  void Execute() override;
+  bool IsFinished() override;
+  void End() override;
+  void Interrupted() override;
+ private:
+  int m_setpoint;
 };
 }

@@ -6,6 +6,13 @@
 #include "commands/Drive.h"
 #include "commands/ModeSwitch.h"
 
+#include "commands/ClimbUp.h"
+#include "commands/ClimbDown.h"
+
+#include "commands/SetArmPosition.h"
+#include "commands/SetWristPosition.h"
+#include "commands/SetServo.h"
+
 namespace frc2019 {
 
 //Instantiate the Joystick and Button Board
@@ -25,19 +32,33 @@ OI::OI() :
 	fodToggle(&driverJoystick, 1), 
 	arm(&buttonBoard, 4),
 	wrist(&buttonBoard, 5),
-	pickup(&buttonBoard, 6)
+	pickup(&buttonBoard, 6),
+	climb(&buttonBoard, OI_CLIMB)
 	{
 		fodToggle.WhenPressed(new BooleanToggle(&fod, [](bool newValue) {
 			Cob::PushValue(COB_FIELD_ORIENTED, newValue);
 		}));
 
-		low.WhenPressed(new SetForkPosition(1453));
-		medium.WhenPressed(new SetForkPosition(1122));
-		high.WhenPressed(new SetForkPosition((1453+1122)/2));
+		low.WhenPressed(new SetArmPosition(0));
+		
+		medium.WhenPressed(new SetWristPosition(0));
+		
+		cargoHold.WhenPressed(new SetArmPosition(445/2));
 
-		cargoHold.WhenPressed(new ModeSwitch(&isCargoMode, true, [](bool newValue) {
-			Cob::PushValue(COB_HATCH, newValue);
-		}));
+		arm.WhenPressed(new SetWristPosition(556/2));
+		
+		wrist.WhenPressed(new SetArmPosition(445));
+		
+		pickup.WhenPressed(new SetWristPosition(556));
+
+		climb.WhileHeld(new ClimbUp());
+		climb.WhenReleased(new ClimbDown());
+		//arm limit 445
+		//wrist limit 555
+
+		wrist.WhenPressed(new SetServo(0.5));
+		pickup.WhenPressed(new SetServo(1.0));
+
 
 		cargoGround.WhenPressed(new ModeSwitch(&isCargoMode, false, [](bool newValue) {
 			Cob::PushValue(COB_HATCH, newValue);
