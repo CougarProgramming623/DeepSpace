@@ -18,3 +18,7 @@ enum TalonData {
 enum DriveTalon {
 	LEFT_FRONT, LEFT_REAR, RIGHT_FRONT, RIGHT_REAR
 };
+
+enum RocketHeight {
+	LOW_HATCH, MEDIUM_HATCH, HIGH_HATCH, LOW_CARGO, MEDIUM_CARGO, HIGH_CARGO
+};

@@ -27,4 +27,9 @@ void Vacuum::SetVacuumSpeed() {
 void Vacuum::SetServoPosition(double pos) {
   servo.SetPosition(pos);
 }
+
+double Vacuum::GetServoPosition() {
+  return servo.Get();
+}
+
 } //frc2019

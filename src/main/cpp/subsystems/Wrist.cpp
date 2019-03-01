@@ -10,7 +10,7 @@
 namespace frc2019 {
 Wrist::Wrist() : Subsystem("Wrist"), wristMC(WRIST_ID) {
   using namespace talon;
-  ConfigurePotentiometer(&wristMC, 9.0, 0.0, 0.0, 0.3, -0.3);
+  ConfigurePotentiometer(&wristMC, 9.0, 0.0, 0.0, 0.2, -0.2);
 } //Wrist()
 
 void Wrist::InitDefaultCommand() {

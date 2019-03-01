@@ -19,6 +19,6 @@ class SetServo : public frc::Command {
   void End() override;
   void Interrupted() override;
   private:
-    double m_position;
+    double m_position, pastPosition;
 };
 }
