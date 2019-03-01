@@ -6,6 +6,7 @@
 #include "commands/Drive.h"
 #include "commands/ModeSwitch.h"
 #include "commands/SetArmPosition.h"
+#include "commands/SetWristPosition.h"
 #include "commands/SetServo.h"
 
 namespace frc2019 {
@@ -34,13 +35,18 @@ OI::OI() :
 		}));
 
 		low.WhenPressed(new SetArmPosition(0));
-		medium.WhenPressed(new SetArmPosition(80));
-		cargoHold.WhenPressed(new SetArmPosition(80*2));
+		
+		medium.WhenPressed(new SetWristPosition(0));
+		
+		cargoHold.WhenPressed(new SetArmPosition(445/2));
 
-		arm.WhenPressed(new SetArmPosition(80*3));
-		//wrist.WhenPressed(new SetArmPosition(80*4));
-		//pickup.WhenPressed(new SetArmPosition(80*5));
-		//max 445
+		arm.WhenPressed(new SetWristPosition(556/2));
+		
+		wrist.WhenPressed(new SetArmPosition(445));
+		
+		pickup.WhenPressed(new SetWristPosition(556));
+		//arm limit 445
+		//wrist limit 555
 
 		wrist.WhenPressed(new SetServo(0.5));
 		pickup.WhenPressed(new SetServo(1.0));

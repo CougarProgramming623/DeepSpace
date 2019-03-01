@@ -107,5 +107,8 @@
 #define UP_kP 50
 #define DOWN_kP 10
 
+#define UP_kP_WRIST 12
+#define DOWN_kP_WRIST 9
+
 
 
