@@ -12,8 +12,6 @@
 #include <ctre/Phoenix.h>
 #include "GameEnums.h"
 
-#define ARM_SETPOINT_FILE_NAME "/home/lvuser/ArmSetpoints.bin"
-
 namespace frc2019 {
 class Arm : public frc::Subsystem {
 public:
@@ -39,6 +37,4 @@ private:
 	int initialReading;
 	int m_Setpoints[ARM_MECHANISM_TYPE_COUNT][CARGO_OR_HATCH_COUNT][DIAL_POSITION_COUNT] {};//Main Arm vs Wrist, Cargo vs Hatch, arm positions
 };
-
-
-}//namespace
+} //frc2019

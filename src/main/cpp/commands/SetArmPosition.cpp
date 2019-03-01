@@ -19,9 +19,9 @@ SetArmPosition::SetArmPosition(int setpoint) {
 // Called just before this Command runs the first time
 void SetArmPosition::Initialize() {
   if(Robot::arm->GetArmTalonData(TalonData::SENSOR_POSITION) < m_setpoint) {
-    Robot::arm->SetP(UP_kP);
+    Robot::arm->SetP(UP_kP_ARM);
   } else {
-    Robot::arm->SetP(DOWN_kP);
+    Robot::arm->SetP(DOWN_kP_ARM);
   }
 }
 

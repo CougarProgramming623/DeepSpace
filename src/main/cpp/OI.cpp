@@ -5,12 +5,9 @@
 #include "commands/SetForkPosition.h"
 #include "commands/Drive.h"
 #include "commands/ModeSwitch.h"
-
-#include "commands/ClimbUp.h"
-#include "commands/ClimbDown.h"
-
 #include "commands/SetArmPosition.h"
 #include "commands/SetWristPosition.h"
+#include "commands/SetArmWristPosition.h"
 #include "commands/SetServo.h"
 
 namespace frc2019 {
@@ -32,33 +29,26 @@ OI::OI() :
 	fodToggle(&driverJoystick, 1), 
 	arm(&buttonBoard, 4),
 	wrist(&buttonBoard, 5),
-	pickup(&buttonBoard, 6),
-	climb(&buttonBoard, OI_CLIMB)
+	pickup(&buttonBoard, 6)
 	{
 		fodToggle.WhenPressed(new BooleanToggle(&fod, [](bool newValue) {
 			Cob::PushValue(COB_FIELD_ORIENTED, newValue);
 		}));
 
-		low.WhenPressed(new SetArmPosition(0));
+		low.WhenPressed(new SetArmWristPosition(RocketHeight::LOW_HATCH));
+		cargoHold.WhenPressed(new SetArmWristPosition(RocketHeight::MEDIUM_HATCH));
+		wrist.WhenPressed(new SetArmWristPosition(RocketHeight::HIGH_HATCH));
+				
+		medium.WhenPressed(new SetServo(AIR_OFF_SERVO));
+		arm.WhenPressed(new SetServo(CARGO_AIR_SERVO));
+		pickup.WhenPressed(new SetServo(HATCH_AIR_SERVO));
 		
-		medium.WhenPressed(new SetWristPosition(0));
-		
-		cargoHold.WhenPressed(new SetArmPosition(445/2));
-
-		arm.WhenPressed(new SetWristPosition(556/2));
-		
-		wrist.WhenPressed(new SetArmPosition(445));
-		
-		pickup.WhenPressed(new SetWristPosition(556));
-
-		climb.WhileHeld(new ClimbUp());
-		climb.WhenReleased(new ClimbDown());
 		//arm limit 445
 		//wrist limit 555
 
-		wrist.WhenPressed(new SetServo(0.5));
-		pickup.WhenPressed(new SetServo(1.0));
-
+		//arm.WhenPressed(new SetServo(0.05));
+		//wrist.WhenPressed(new SetServo(-0.05));
+		//pickup.WhenPressed(new SetServo(1.0));
 
 		cargoGround.WhenPressed(new ModeSwitch(&isCargoMode, false, [](bool newValue) {
 			Cob::PushValue(COB_HATCH, newValue);

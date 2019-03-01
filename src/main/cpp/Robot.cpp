@@ -45,16 +45,8 @@ void Robot::RobotPeriodic() {
 	Cob::PushValue(COB_ROTATION,Robot::navx->GetYaw());
 	Cob::PushValue(COB_MAIN_ARM_ROTATION, arm->GetArmTalonData(TalonData::SENSOR_POSITION));
 	Cob::PushValue(COB_WRIST_ROTATION, wrist->GetWristTalonData(TalonData::SENSOR_POSITION));
+	SmartDashboard::PutNumber("Servo Position", vacuum->GetServoPosition());
 
-	if(Cob::GetValue<bool>(COB_PULL_ARM_SETPOINTS)) {
-		arm->PullSetpoints();
-		Cob::PushValue(COB_PULL_ARM_SETPOINTS, false);
-	}
-
-	if(Cob::GetValue<bool>(COB_SAVE_ARM_SETPOINTS)) {
-		arm->SaveSetpoints();
-		Cob::PushValue(COB_SAVE_ARM_SETPOINTS, false);
-	}
 	//Cob::PushValue(COB_MAIN_ARM_ROTATION,Robot::arm->GetPotData());
 }
 

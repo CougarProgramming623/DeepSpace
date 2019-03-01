@@ -3,7 +3,6 @@
 #define kPID_LOOP_IDX 0
 #define kTIMEOUT_MS 30
 
-using namespace frc2019;
 namespace talon {
 double GetTalonData(TalonSRX* talonMC, TalonData data){
     //based on the value of the data parameter, the corresponding data value is returned
