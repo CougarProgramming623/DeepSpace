@@ -51,6 +51,7 @@ void Robot::RobotPeriodic() {
 	frc::SmartDashboard::PutNumber("Fork Percent Output", fork->GetForkTalonData(TalonData::PERCENT_OUTPUT));
 
 	frc::DriverStation::ReportError(OI::isCargoMode ? "Cargo Mode" : "Hatch Mode");
+	//check for COB_PULL_ARM_POSITION and pull values accordingly
 }
 
 void Robot::AutonomousInit() {

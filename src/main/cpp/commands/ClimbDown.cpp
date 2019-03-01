@@ -26,12 +26,12 @@ void ClimbDown::Initialize() {
 }
 
 void ClimbDown::Execute() {
-	Robot::climb->SetPower(-1.0);
+	Robot::climb->SetClimbDownPower();
 	double time = m_Timer.Get();
 	if(m_LastTime != -1.0) {//If this isnt the first time...
 		double delta = time - m_LastTime;
 		Robot::climb->SubtractClimbTime(delta);
-		if(Robot::climb->GetClimbTime()  < 0.0) {
+		if(Robot::climb->GetClimbTime() < 0.0) {
 			Robot::climb->ResetClimbTime();
 		}
 	}
@@ -44,7 +44,7 @@ bool ClimbDown::IsFinished() {
 }
 
 void ClimbDown::End() {
-	Robot::climb->SetPower(0.0);
+	Robot::climb->StopClimbMotor();
 }
 
 void ClimbDown::Interrupted() {

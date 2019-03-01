@@ -12,15 +12,31 @@
 #include <ctre/Phoenix.h>
 #include "GameEnums.h"
 
+#define ARM_SETPOINT_FILE_NAME "ArmSetpoints.bin"
+
 namespace frc2019 {
 class Arm : public frc::Subsystem {
 public:
-  Arm();
-  void InitDefaultCommand() override;
-  void SetSetpoint(int);
-  int GetArmTalonData(TalonData);
+	Arm();
+	void InitDefaultCommand() override;
+	void SetSetpoint(int);
+	int GetArmTalonData(TalonData);
+
+	inline int GetWristCargoPosition(DialPosition position) { return m_Setpoints[ArmMekanismType::WRIST][CargoOrHatch::CARGO][position]; }
+	inline int GetWristHatchPosition(DialPosition position) { return m_Setpoints[ArmMekanismType::WRIST][CargoOrHatch::HATCH][position]; }
+
+	inline int GetArmCargoPosition(DialPosition position) { return m_Setpoints[ArmMekanismType::MAIN_ARM][CargoOrHatch::CARGO][position]; }
+	inline int GetArmHatchPosition(DialPosition position) { return m_Setpoints[ArmMekanismType::MAIN_ARM][CargoOrHatch::HATCH][position]; }
+	~Arm();//Destructor to save arm values when the program closes
+
 private:
-  TalonSRX armMC;
-  int initialReading;
+	std::string MakeCOBAddress(ArmMekanismType arm, CargoOrHatch cargoOrHatch, DialPosition position);
+
+private:
+	TalonSRX armMC;
+	int initialReading;
+	int m_Setpoints[ARM_MEKANISM_TYPE_COUNT][CARGO_OR_HATCH_COUNT][DIAL_POSITION_COUNT];//Main Arm vs Wrist, Cargo vs Hatch, arm positions
 };
-}
+
+
+}//namespace

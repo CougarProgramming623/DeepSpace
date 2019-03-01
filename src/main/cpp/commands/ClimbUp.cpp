@@ -21,7 +21,7 @@ void ClimbUp::Initialize() {
 }
 
 void ClimbUp::Execute() {
-	Robot::climb->SetPower(1.0);
+	Robot::climb->SetClimbUpPower();
 	Robot::climb->SetClimbTime(m_Timer.Get());//Count the time we climbed for
 	frc::DriverStation::ReportError("Executing Climb up...");
 	//This means that the peg legs have deployed and we can no longer safley climb down
@@ -36,7 +36,7 @@ bool ClimbUp::IsFinished() {
 }
 
 void ClimbUp::End() {
-	Robot::climb->SetPower(0.0);
+	Robot::climb->StopClimbMotor();
 }
 
 void ClimbUp::Interrupted() {
