@@ -1,3 +1,5 @@
+#pragma once
+
 #include <frc/commands/Subsystem.h>
 
 #include <ctre/Phoenix.h>
@@ -5,10 +7,11 @@
 //The number of seconds the motor should be run backward to release the spring that beings the back peg-leg up
 #define CLIMB_REVERSE_TIME 0.5
 
-namespace frc2019 {
-
 #define CLIMB_UP_SPEED -1.0
 #define CLIMB_DOWN_SPEED 0.25
+
+namespace frc2019 {
+
 
 class Climb : public frc::Subsystem {
 public:

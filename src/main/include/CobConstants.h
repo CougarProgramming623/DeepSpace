@@ -43,4 +43,5 @@
 #define COB_WRIST_SECURE "/cob/arm-position/secure"
 #define COB_WRIST_ALLEYOOP "/cob/arm-position/alley-oop"
 
-#define COB_PULL_ARM_POSITION "arm/pull-position"
+#define COB_PULL_ARM_SETPOINTS "arm/pull-setpoints"
+#define COB_SAVE_ARM_SETPOINTS "arm/save-setpoints"

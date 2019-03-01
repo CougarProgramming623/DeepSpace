@@ -30,23 +30,40 @@ Arm::Arm() : Subsystem("Arm"), armMC(ARM_TALON_ID) {
 		frc::DriverStation::ReportError("Arm setpoint file found!");
 		fread(m_Setpoints, sizeof(m_Setpoints), 1, file);
 		fclose(file);
-		for(ArmMekanismType arm = 0; arm < ARM_MEKANISM_TYPE_COUNT; arm++) {
-			for(CargoOrHatch cargo = 0; cargo < CARGO_OR_HATCH_COUNT; cargo++) {
-				for(DialPosition position = 0; position < DIAL_POSITION_COUNT; position++) {
-					Cob::PushValue(MakeCOBAddress(arm, cargo, position), m_Setpoints[arm][cargo][position]);
-				}
+	}
+	for(int armI = 0; armI < ARM_MEKANISM_TYPE_COUNT; armI++) {
+		for(int cargoI = 0; cargoI < CARGO_OR_HATCH_COUNT; cargoI++) {
+			for(int positionI = 0; positionI < DIAL_POSITION_COUNT; positionI++) {
+				ArmMekanismType arm = static_cast<ArmMekanismType>(armI);
+				CargoOrHatch cargo = static_cast<CargoOrHatch>(cargoI);
+				DialPosition position = static_cast<DialPosition>(positionI);
+				Cob::PushValue(MakeCOBAddress(arm, cargo, position), m_Setpoints[arm][cargo][position]);
 			}
 		}
-
 	}
-
-
+	Cob::PushValue(COB_SAVE_ARM_SETPOINTS, false);
+	Cob::PushValue(COB_PULL_ARM_SETPOINTS, false);
+	frc::DriverStation::ReportError("Created inital network tables");
 }
 
-Arm::~Arm() {
+void Arm::PullSetpoints() {
+	for(int armI = 0; armI < ARM_MEKANISM_TYPE_COUNT; armI++) {
+		for(int cargoI = 0; cargoI < CARGO_OR_HATCH_COUNT; cargoI++) {
+			for(int positionI = 0; positionI < DIAL_POSITION_COUNT; positionI++) {
+				std::string address = MakeCOBAddress(static_cast<ArmMekanismType>(armI), static_cast<CargoOrHatch>(cargoI), static_cast<DialPosition>(positionI));
+				int newValue = Cob::GetValue<int>(address);
+				DriverStation::ReportError("Setting address: " + address + " to " + std::to_string(newValue));
+				m_Setpoints[armI][cargoI][positionI] = newValue;
+			}
+		}
+	}
+}
+
+void Arm::SaveSetpoints() {
+	frc::DriverStation::ReportError("Calling SaveSetpoints()");
 	FILE* file = fopen(ARM_SETPOINT_FILE_NAME, "wb");
 	if(file == nullptr) {
-		frc::DriverStation::ReportError("Error creating arm setpoints file!");
+		frc::DriverStation::ReportError("Error creating arm setpoints file: " ARM_SETPOINT_FILE_NAME);
 	} else {
 		fwrite(m_Setpoints, sizeof(m_Setpoints), 1, file);
 		fclose(file);

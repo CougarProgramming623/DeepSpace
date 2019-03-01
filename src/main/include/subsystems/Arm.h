@@ -12,7 +12,7 @@
 #include <ctre/Phoenix.h>
 #include "GameEnums.h"
 
-#define ARM_SETPOINT_FILE_NAME "ArmSetpoints.bin"
+#define ARM_SETPOINT_FILE_NAME "/home/lvuser/ArmSetpoints.bin"
 
 namespace frc2019 {
 class Arm : public frc::Subsystem {
@@ -28,7 +28,8 @@ public:
 
 	inline int GetArmCargoPosition(DialPosition position) { return m_Setpoints[ArmMekanismType::MAIN_ARM][CargoOrHatch::CARGO][position]; }
 	inline int GetArmHatchPosition(DialPosition position) { return m_Setpoints[ArmMekanismType::MAIN_ARM][CargoOrHatch::HATCH][position]; }
-	~Arm();//Destructor to save arm values when the program closes
+	void PullSetpoints();
+	void SaveSetpoints();
 
 private:
 	std::string MakeCOBAddress(ArmMekanismType arm, CargoOrHatch cargoOrHatch, DialPosition position);
@@ -36,7 +37,7 @@ private:
 private:
 	TalonSRX armMC;
 	int initialReading;
-	int m_Setpoints[ARM_MEKANISM_TYPE_COUNT][CARGO_OR_HATCH_COUNT][DIAL_POSITION_COUNT];//Main Arm vs Wrist, Cargo vs Hatch, arm positions
+	int m_Setpoints[ARM_MEKANISM_TYPE_COUNT][CARGO_OR_HATCH_COUNT][DIAL_POSITION_COUNT] {};//Main Arm vs Wrist, Cargo vs Hatch, arm positions
 };
 
 
