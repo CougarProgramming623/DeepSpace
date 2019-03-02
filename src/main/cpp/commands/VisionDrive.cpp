@@ -39,8 +39,9 @@ zOutput VisionDrive::zOut;
 
 double VisionDrive::targetWidth;
 
-//DUMMY CLASSES FOR PID:
+//***********DUMMY CLASSES FOR PID:***********
 
+//Fake PIDSource classes
 double centerX_Source::PIDGet(){
   if(VisionDrive::correctIndex == -1)
     return 0;
@@ -53,6 +54,7 @@ double width_Source::PIDGet(){
   return -(VisionDrive::targetWidth - VisionDrive::getWidth())/VisionDrive::targetWidth; 
 }
 
+//fake PIDOutput classes
 void xOutput::PIDWrite(double output){
   VisionDrive::xPower = output;
 }
@@ -63,8 +65,9 @@ void yOutput::PIDWrite(double output){
 void zOutput::PIDWrite(double output){
   VisionDrive::zPower = output;
 }
+//***********************************
 
-//VISION DRIVE:
+//***********VISION DRIVE:***********
 
 VisionDrive::VisionDrive() : frc::Command() {
   Requires(Robot::driveTrain.get());
@@ -73,6 +76,8 @@ VisionDrive::VisionDrive() : frc::Command() {
   DriverStation::ReportError("Enabled");
   xPower = zPower = yPower = 0;
   correctIndex = 0;
+
+  //Preferences Table + x, y, z PID default values
   prefs = Preferences::GetInstance();
   xP = prefs->GetDouble("xP", .7);
   xI = prefs->GetDouble("xI", 0.0);
@@ -95,6 +100,7 @@ VisionDrive::VisionDrive() : frc::Command() {
   prefs->PutDouble("zD", zD);
 }
 
+//startup the command; create PIDs and PID settings
 void VisionDrive::Initialize() {
   correctIndex = -1;  
   targetWidth = 40;
@@ -125,6 +131,7 @@ void VisionDrive::Initialize() {
   zPID->SetContinuous(true);
 
   findLeftSignature();
+  //Only proceed if signature picks up a target
   if(correctIndex != -1){
     xPID->Enable();
     yPID->Enable();
@@ -133,6 +140,7 @@ void VisionDrive::Initialize() {
 
 }
 
+//Drive the robot according to PID output
 void VisionDrive::Execute() {
   findLeftSignature();
   DriverStation::ReportError("xPower:   " + std::to_string(xPower));
@@ -140,7 +148,7 @@ void VisionDrive::Execute() {
   DriverStation::ReportError("      zPower:         " + std::to_string(zPower));
   Robot::driveTrain->RODrive(yPower,zPower,xPower);
 }
-
+//Finish if all 3 PIDs are on target, if no target found, or if robot reaches timeout
 bool VisionDrive::IsFinished() { 
   return correctIndex == -1 || 
   (xPID->OnTarget() && yPID->OnTarget() && zPID->OnTarget()) ||
@@ -148,6 +156,7 @@ bool VisionDrive::IsFinished() {
   !frc2019::Robot::oi->GetVision();
 }
 
+//Disables PID at the end of the command
 void VisionDrive::End() {
   DriverStation::ReportError("PID Disabled");
   xPID->Disable();
@@ -157,34 +166,39 @@ void VisionDrive::End() {
 
 void VisionDrive::Interrupted() {}
 
+//returns the network table
 std::shared_ptr<nt::NetworkTable> VisionDrive::start_networkTable(){
   auto inst =  nt::NetworkTableInstance::GetDefault();
   return inst.GetTable("vision");
 }
 
+//finds the closes left signature to the robot
 void VisionDrive::findLeftSignature(){
   std::vector<double> defaultVal{0};
-  arrAngle = visionTable->GetNumberArray("angle", defaultVal);
-  arrCenterX = visionTable->GetNumberArray("centerX", defaultVal);
-  double pixelsToCenter = 480.0;
-  correctIndex = -1;
-  for(int i = 0; i < arrAngle.size(); i++){
-    if(arrAngle[i] < -50.0 && abs(arrCenterX[i] - 480.0) < pixelsToCenter){
+  arrAngle = visionTable->GetNumberArray("angle", defaultVal); //array of angles
+  arrCenterX = visionTable->GetNumberArray("centerX", defaultVal); //array of the center X positions of contours
+  double pixelsToCenter = 480.0; //reference point to X
+  for(int i = 0; i < arrAngle.size(); i++){ //cycle through all contours
+    if(arrAngle[i] < -50.0 && abs(arrCenterX[i] - 480.0) < pixelsToCenter){ //if contour is a left contour and is closest left target to robot
+      //set new best values for indexing and center distance
       correctIndex = i;
       pixelsToCenter = abs(arrCenterX[i] - 480.0);
     }
   }
   DriverStation::ReportError("correctIndex: " + std::to_string(correctIndex));
+  //found no targets
   if(correctIndex == -1)
     DriverStation::ReportError("No left targets found");
 }
 
+//finds the center X value of left target closest to robot
 double VisionDrive::getCenterX() {
   std::vector<double> defaultVal{0};
   arrCenterX = visionTable->GetNumberArray("centerX", defaultVal); 
   return arrCenterX[VisionDrive::correctIndex];
 }
 
+//finds the width value of left target closest to robot
 double VisionDrive::getWidth(){
   std::vector<double> defaultVal{0};
   arrWidth = visionTable->GetNumberArray("width", defaultVal); 
