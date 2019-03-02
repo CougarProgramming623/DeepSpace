@@ -23,7 +23,8 @@ public:
   static void InitBoard();
   template<typename T>
   static void PushValue(std::string str,T t);
-  static double GetValue(std::string);
+  template<typename T>
+	static T GetValue(std::string);
 public: 
   static std::shared_ptr<NetworkTable> table;
   static std::map<std::string,nt::NetworkTableEntry> map;
@@ -59,6 +60,36 @@ template<>
 inline void Cob::PushValue<std::string>(std::string str, std::string val) {
   InitValue(str);
   map.at(str).SetString(val);
+}
+
+template<>
+inline double Cob::GetValue(std::string str) {
+	Cob::InitValue(str);
+	return map[str].GetDouble(-1.0);
+}
+
+template<>
+inline bool Cob::GetValue(std::string str) {
+	Cob::InitValue(str);
+	return map[str].GetBoolean(false);
+}
+
+template<>
+inline float Cob::GetValue(std::string str) {
+	Cob::InitValue(str);
+	return (float) map[str].GetDouble(-1.0);
+}
+
+template<>
+inline int Cob::GetValue(std::string str) {
+	Cob::InitValue(str);
+	return (int) map[str].GetDouble(-1.0);
+}
+
+template<>
+inline long Cob::GetValue(std::string str) {
+	Cob::InitValue(str);
+	return (long) map[str].GetDouble(-1.0);
 }
 }//frc2019
 

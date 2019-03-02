@@ -5,6 +5,10 @@
 #include "commands/SetForkPosition.h"
 #include "commands/Drive.h"
 #include "commands/ModeSwitch.h"
+#include "commands/SetArmPosition.h"
+#include "commands/SetWristPosition.h"
+#include "commands/SetArmWristPosition.h"
+#include "commands/SetServo.h"
 
 namespace frc2019 {
 
@@ -31,13 +35,21 @@ OI::OI() :
 			Cob::PushValue(COB_FIELD_ORIENTED, newValue);
 		}));
 
-		low.WhenPressed(new SetForkPosition(1453));
-		medium.WhenPressed(new SetForkPosition(1122));
-		high.WhenPressed(new SetForkPosition((1453+1122)/2));
+		low.WhenPressed(new SetArmWristPosition(RocketHeight::LOW_HATCH));
+		//low.WhenPressed(new SetArmPosition(84))l
+		cargoHold.WhenPressed(new SetArmWristPosition(RocketHeight::MEDIUM_HATCH));
+		wrist.WhenPressed(new SetArmWristPosition(RocketHeight::HIGH_HATCH));
+				
+		medium.WhenPressed(new SetArmWristPosition(RocketHeight::SHIP_CARGO));
+		arm.WhenPressed(new SetArmWristPosition(RocketHeight::MEDIUM_CARGO));
+		pickup.WhenPressed(new SetArmWristPosition(RocketHeight::HIGH_CARGO));
+		
+		//arm limit 445
+		//wrist limit 555
 
-		cargoHold.WhenPressed(new ModeSwitch(&isCargoMode, true, [](bool newValue) {
-			Cob::PushValue(COB_HATCH, newValue);
-		}));
+		//arm.WhenPressed(new SetServo(0.05));
+		//wrist.WhenPressed(new SetServo(-0.05));
+		//pickup.WhenPressed(new SetServo(1.0));
 
 		cargoGround.WhenPressed(new ModeSwitch(&isCargoMode, false, [](bool newValue) {
 			Cob::PushValue(COB_HATCH, newValue);

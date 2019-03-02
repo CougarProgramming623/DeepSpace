@@ -1,6 +1,6 @@
 
-#define BOT_SAMUS
-//#define BOT_HAMBONE
+//#define BOT_SAMUS
+#define BOT_HAMBONE
 //#define BOT_RAFIKI
 
 #define SAMUS_LEFT_FRONT_ID  15
@@ -8,13 +8,15 @@
 #define SAMUS_LEFT_BACK_ID    3
 #define SAMUS_RIGHT_BACK_ID   7
 #define SAMUS_ARM_TALON_ID   17
+#define SAMUS_WRIST_TALON_ID 11
 #define SAMUS_BOT_NAME "Samus"
 
 #define HAMBONE_LEFT_FRONT_ID   6
 #define HAMBONE_RIGHT_FRONT_ID  2
 #define HAMBONE_LEFT_BACK_ID    1
 #define HAMBONE_RIGHT_BACK_ID   5
-#define HAMBONE_ARM_TALON_ID   14
+#define HAMBONE_ARM_TALON_ID   13
+#define HAMBONE_WRIST_TALON_ID 21
 #define HAMBONE_BOT_NAME "Hambone"
 
 #define RAFIKI_LEFT_FRONT_ID  -1
@@ -45,7 +47,7 @@
 #define ARM_TALON_ID SAMUS_ARM_TALON_ID
 #define FORK_ID 0
 #define CLIMB_ID 0
-#define WRIST_ID 0
+#define WRIST_ID SAMUS_WRIST_TALON_ID
 #define VACUUM_ID 0
 
 #define BOT_NAME SAMUS_BOT_NAME
@@ -56,10 +58,10 @@
 #define RIGHT_FRONT_ID HAMBONE_RIGHT_FRONT_ID
 #define LEFT_BACK_ID HAMBONE_LEFT_BACK_ID
 #define RIGHT_BACK_ID HAMBONE_RIGHT_BACK_ID
-#define ARM_TALON_ID 13
+#define ARM_TALON_ID HAMBONE_ARM_TALON_ID
 #define FORK_ID 14
-#define CLIMB_ID 18
-#define WRIST_ID 21
+#define CLIMB_ID 18 
+#define WRIST_ID HAMBONE_WRIST_TALON_ID
 #define VACUUM_ID 16
 #define BOT_NAME HAMBONE_BOT_NAME
 
@@ -102,7 +104,15 @@
 #define kREAR_LEFT 2
 #define kREAR_RIGHT 3
 
+#define UP_kP_ARM 50
+#define DOWN_kP_ARM 10
 
+#define UP_kP_WRIST 12
+#define DOWN_kP_WRIST 6
+
+#define AIR_OFF_SERVO 0.8
+#define HATCH_AIR_SERVO 0.45
+#define CARGO_AIR_SERVO 0.25
 
 
 

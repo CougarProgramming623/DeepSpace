@@ -43,15 +43,23 @@ void Robot::RobotPeriodic() {
 	Cob::PushValue(COB_X_VEL,Robot::navx->GetVelocityX());
 	Cob::PushValue(COB_Y_VEL,Robot::navx->GetVelocityY());
 	Cob::PushValue(COB_ROTATION,Robot::navx->GetYaw());
-	Cob::PushValue(COB_TIME,frc::DriverStation::GetInstance().GetMatchTime());
-	//Cob::PushValue(COB_MAIN_ARM_ROTATION,Robot::arm->GetPotData());
-	frc::SmartDashboard::PutNumber("Fork Position", fork->GetForkTalonData(TalonData::SENSOR_POSITION));
-	frc::SmartDashboard::PutNumber("Fork Velocity", fork->GetForkTalonData(TalonData::SENSOR_VELOCITY));
-	frc::SmartDashboard::PutNumber("Fork Target", fork->GetForkTalonData(TalonData::TARGET));
-	frc::SmartDashboard::PutNumber("Fork Error", fork->GetForkTalonData(TalonData::ERROR));
-	frc::SmartDashboard::PutNumber("Fork Percent Output", fork->GetForkTalonData(TalonData::PERCENT_OUTPUT));
 
-	frc::DriverStation::ReportError(OI::isCargoMode ? "Cargo Mode" : "Hatch Mode");
+	Cob::PushValue(COB_MAIN_ARM_ROTATION, arm->GetArmTalonData(TalonData::SENSOR_POSITION));
+	SmartDashboard::PutNumber("Arm error", arm->GetArmTalonData(TalonData::ERROR));
+	Cob::PushValue(COB_WRIST_ROTATION, wrist->GetWristTalonData(TalonData::SENSOR_POSITION));
+	SmartDashboard::PutNumber("Wrist error", wrist->GetWristTalonData(TalonData::ERROR));
+	SmartDashboard::PutNumber("Servo Position", vacuum->GetServoPosition());
+
+	if(Cob::GetValue<bool>(COB_PULL_ARM_SETPOINTS)) {
+		arm->PullSetpoints();
+		Cob::PushValue(COB_PULL_ARM_SETPOINTS, false);
+	}
+
+	if(Cob::GetValue<bool>(COB_SAVE_ARM_SETPOINTS)) {
+		arm->SaveSetpoints();
+		Cob::PushValue(COB_SAVE_ARM_SETPOINTS, false);
+	}
+	//Cob::PushValue(COB_MAIN_ARM_ROTATION,Robot::arm->GetPotData());
 }
 
 void Robot::AutonomousInit() {
@@ -74,7 +82,6 @@ void Robot::TeleopPeriodic() {
 	frc::SmartDashboard::PutNumber("LR Velocity", driveTrain->GetDriveTalonData(DriveTalon::LEFT_REAR, TalonData::SENSOR_VELOCITY));
 	frc::SmartDashboard::PutNumber("RF Velocity", driveTrain->GetDriveTalonData(DriveTalon::RIGHT_FRONT, TalonData::SENSOR_VELOCITY));
 	frc::SmartDashboard::PutNumber("RR Velocity", driveTrain->GetDriveTalonData(DriveTalon::RIGHT_REAR, TalonData::SENSOR_VELOCITY));
-  
 	frc::Scheduler::GetInstance()->Run();
 } //TeleopPeriodic
 
