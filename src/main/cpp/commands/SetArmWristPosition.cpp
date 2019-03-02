@@ -12,6 +12,8 @@
 
 namespace frc2019 {
 SetArmWristPosition::SetArmWristPosition(RocketHeight height) {
+  Requires(Robot::arm.get());
+  Requires(Robot::wrist.get());
   // Add Commands here:
   // e.g. AddSequential(new Command1());
   //      AddSequential(new Command2());
@@ -28,20 +30,40 @@ SetArmWristPosition::SetArmWristPosition(RocketHeight height) {
   // e.g. if Command1 requires chassis, and Command2 requires arm,
   // a CommandGroup containing them would require both the chassis and the
   // arm.
+  DriverStation::ReportError(std::to_string(height));
   switch(height) {
     case RocketHeight::LOW_HATCH:
-      AddParallel(new SetArmPosition(84));
-      AddSequential(new SetWristPosition(195));
+      armSetpoint = 84;
+      wristSetpoint = 195;
+      break;
     case RocketHeight::MEDIUM_HATCH:
-      AddParallel(new SetArmPosition(203));
-      AddSequential(new SetWristPosition(323));
+      armSetpoint = 203;
+      wristSetpoint = 323;
+      break;
     case RocketHeight::HIGH_HATCH:
-      AddParallel(new SetArmPosition(315));
-      AddSequential(new SetWristPosition(421));
+      armSetpoint = 315;
+      wristSetpoint = 421;
+      break;
+    case RocketHeight::LOW_CARGO:
+      armSetpoint = 61+7;
+      wristSetpoint = 80;
+      break;
+    case RocketHeight::MEDIUM_CARGO:
+      armSetpoint = 177+5;
+      wristSetpoint = 173;
+      break;
+    case RocketHeight::HIGH_CARGO:
+      wristSetpoint = 312;
+      armSetpoint = 316;
+      break;
+    case RocketHeight::SHIP_CARGO:
+      armSetpoint = 203-15;
+      wristSetpoint = 323-25;
     default:
-      AddParallel(new SetArmPosition(Robot::arm->GetArmTalonData(TalonData::SENSOR_POSITION)));
-      AddSequential(new SetWristPosition(Robot::wrist->GetWristTalonData(TalonData::SENSOR_POSITION)));
-
+      break;
   }
+
+  AddParallel(new SetArmPosition(armSetpoint));
+  AddSequential(new SetWristPosition(wristSetpoint));
 }
 }

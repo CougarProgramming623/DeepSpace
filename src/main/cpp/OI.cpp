@@ -36,12 +36,13 @@ OI::OI() :
 		}));
 
 		low.WhenPressed(new SetArmWristPosition(RocketHeight::LOW_HATCH));
+		//low.WhenPressed(new SetArmPosition(84))l
 		cargoHold.WhenPressed(new SetArmWristPosition(RocketHeight::MEDIUM_HATCH));
 		wrist.WhenPressed(new SetArmWristPosition(RocketHeight::HIGH_HATCH));
 				
-		medium.WhenPressed(new SetServo(AIR_OFF_SERVO));
-		arm.WhenPressed(new SetServo(CARGO_AIR_SERVO));
-		pickup.WhenPressed(new SetServo(HATCH_AIR_SERVO));
+		medium.WhenPressed(new SetArmWristPosition(RocketHeight::SHIP_CARGO));
+		arm.WhenPressed(new SetArmWristPosition(RocketHeight::MEDIUM_CARGO));
+		pickup.WhenPressed(new SetArmWristPosition(RocketHeight::HIGH_CARGO));
 		
 		//arm limit 445
 		//wrist limit 555
