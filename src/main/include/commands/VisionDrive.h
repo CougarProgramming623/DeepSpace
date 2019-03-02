@@ -58,9 +58,12 @@ class VisionDrive : public frc::Command {
   double zP, zI, zD;
   static double targetWidth;
 private:
+
   static centerX_Source xSource;
   static width_Source ySource;
   
+  double getClosestTargetAngle();
+
   static xOutput xOut;
   static yOutput yOut;
   static zOutput zOut;
