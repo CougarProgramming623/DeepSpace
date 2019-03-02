@@ -2,7 +2,6 @@
 
 #include <ctre/Phoenix.h>
 #include "GameEnums.h"
-using namespace frc2019;
 
 namespace talon {
     double GetTalonData(TalonSRX* talonMC, TalonData data);

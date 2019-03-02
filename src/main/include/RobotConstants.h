@@ -1,6 +1,6 @@
 
-#define BOT_SAMUS
-//#define BOT_HAMBONE
+//#define BOT_SAMUS
+#define BOT_HAMBONE
 //#define BOT_RAFIKI
 
 #define SAMUS_LEFT_FRONT_ID  15
@@ -15,7 +15,7 @@
 #define HAMBONE_RIGHT_FRONT_ID  2
 #define HAMBONE_LEFT_BACK_ID    1
 #define HAMBONE_RIGHT_BACK_ID   5
-#define HAMBONE_ARM_TALON_ID   14
+#define HAMBONE_ARM_TALON_ID   13
 #define HAMBONE_WRIST_TALON_ID 21
 #define HAMBONE_BOT_NAME "Hambone"
 
@@ -58,9 +58,9 @@
 #define RIGHT_FRONT_ID HAMBONE_RIGHT_FRONT_ID
 #define LEFT_BACK_ID HAMBONE_LEFT_BACK_ID
 #define RIGHT_BACK_ID HAMBONE_RIGHT_BACK_ID
-#define ARM_TALON_ID 13
+#define ARM_TALON_ID HAMBONE_ARM_TALON_ID
 #define FORK_ID 14
-#define CLIMB_ID 18
+#define CLIMB_ID 18 
 #define WRIST_ID HAMBONE_WRIST_TALON_ID
 #define VACUUM_ID 16
 #define BOT_NAME HAMBONE_BOT_NAME
@@ -104,11 +104,15 @@
 #define kREAR_LEFT 2
 #define kREAR_RIGHT 3
 
-#define UP_kP 50
-#define DOWN_kP 10
+#define UP_kP_ARM 50
+#define DOWN_kP_ARM 10
 
 #define UP_kP_WRIST 12
-#define DOWN_kP_WRIST 9
+#define DOWN_kP_WRIST 6
+
+#define AIR_OFF_SERVO 0.8
+#define HATCH_AIR_SERVO 0.45
+#define CARGO_AIR_SERVO 0.25
 
 
 

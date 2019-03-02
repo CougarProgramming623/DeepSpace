@@ -25,6 +25,8 @@ enum DialPosition {
 const constexpr char * const DIAL_POSITION_NAMES[] = {"high", "medium", "low", "ground", "ship", "secure", "alley-oop"};
 
 //Represents the what the sliders control
+
+}//namespace
 enum SliderStatus {
 	DIAL_CONTROL, //The sliders do nothing 
 	MANUAL_PID_CONTROL, //The sliders map to position values [0, 1]
@@ -40,4 +42,6 @@ enum DriveTalon {
 	LEFT_FRONT, LEFT_REAR, RIGHT_FRONT, RIGHT_REAR
 };
 
-}//namespace
+enum RocketHeight {
+	LOW_HATCH, MEDIUM_HATCH, HIGH_HATCH, LOW_CARGO, MEDIUM_CARGO, HIGH_CARGO, SHIP_CARGO
+};

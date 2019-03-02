@@ -42,7 +42,4 @@ void ClimbUp::End() {
 void ClimbUp::Interrupted() {
 
 }
-
-
-
 }//namespace

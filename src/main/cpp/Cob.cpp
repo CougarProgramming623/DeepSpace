@@ -7,7 +7,6 @@
 #include "Cob.h"
 
 namespace frc2019 {
-
 std::shared_ptr<nt::NetworkTable> Cob::table;
 std::map<std::string,nt::NetworkTableEntry> Cob::map;
 
