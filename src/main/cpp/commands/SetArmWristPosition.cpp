@@ -14,35 +14,20 @@ namespace frc2019 {
 SetArmWristPosition::SetArmWristPosition(RocketHeight height) {
   Requires(Robot::arm.get());
   Requires(Robot::wrist.get());
-  // Add Commands here:
-  // e.g. AddSequential(new Command1());
-  //      AddSequential(new Command2());
-  // these will run in order.
-
-  // To run multiple commands at the same time,
-  // use AddParallel()
-  // e.g. AddParallel(new Command1());
-  //      AddSequential(new Command2());
-  // Command1 and Command2 will run in parallel.
-
-  // A command group will require all of the subsystems that each member
-  // would require.
-  // e.g. if Command1 requires chassis, and Command2 requires arm,
-  // a CommandGroup containing them would require both the chassis and the
-  // arm.
-  DriverStation::ReportError(std::to_string(height));
+  
+  //DriverStation::ReportError(std::to_string(height));
   switch(height) {
     case RocketHeight::LOW_HATCH:
       armSetpoint = 84;
-      wristSetpoint = 195;
+      wristSetpoint = 192 - 10;
       break;
     case RocketHeight::MEDIUM_HATCH:
-      armSetpoint = 203;
-      wristSetpoint = 323;
+      armSetpoint = 203+10;
+      wristSetpoint = 323+10-10;
       break;
     case RocketHeight::HIGH_HATCH:
-      armSetpoint = 315;
-      wristSetpoint = 421;
+      armSetpoint = 315+10;
+      wristSetpoint = 421+10-10-10-10;
       break;
     case RocketHeight::LOW_CARGO:
       armSetpoint = 61+7;
@@ -66,9 +51,10 @@ SetArmWristPosition::SetArmWristPosition(RocketHeight height) {
       break;
   }
 
+  //AddSequential(new frc::WaitCommand(0.25)); //to allow for the transition between buttons on the dial
   if(height == RocketHeight::ALL_IN) {
     AddSequential(new SetWristPosition(123 + wristSetpoint));
-    AddSequential(new frc::WaitCommand(2));
+    AddSequential(new frc::WaitCommand(1));
     AddSequential(new SetArmPosition(108 + armSetpoint));
   } else {
     AddParallel(new SetArmPosition(108 + armSetpoint));

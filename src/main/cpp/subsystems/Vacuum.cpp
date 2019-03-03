@@ -22,7 +22,7 @@ void Vacuum::InitDefaultCommand() {
 
 void Vacuum::Suck() {
   vacuumMC.Set(ControlMode::PercentOutput, 1.0);
-} //SetVacuumSpeed()
+} //Suck()
 
 void Vacuum::Stop() {
   vacuumMC.Set(ControlMode::PercentOutput, 0.0);

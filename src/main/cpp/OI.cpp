@@ -64,7 +64,7 @@ fodToggle(&driverJoystick, 1)
 		//Robot::vacuum->SetServoPosition(1.0);
 	}));
 
-	forkStow.WhenPressed(new SetForkPosition(159));
+	forkStow.WhenPressed(new SetForkPosition(114));
 	forkUp.WhenPressed(new SetForkPosition(267));
 	forkGround.WhenPressed(new SetForkPosition(478));
 	allIn.WhenPressed(new SetArmWristPosition(RocketHeight::ALL_IN));
