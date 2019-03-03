@@ -9,6 +9,8 @@
 
 #include <frc/commands/Command.h>
 #include <frc/Timer.h>
+#include <frc/WPILib.h>
+
 
 #include "GameEnums.h"
 

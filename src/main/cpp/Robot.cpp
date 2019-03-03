@@ -33,13 +33,15 @@ void Robot::RobotInit() {
 		DriverStation::ReportError(err.c_str());
 	}
   
-	Robot::navx.get()->ZeroYaw(); //makes it so whatever start position the robot is facing is 0 degrees
+	navx->ZeroYaw(); //makes it so whatever start position the robot is facing is 0 degrees
 	std::string color = frc::DriverStation::GetInstance().GetAlliance() == frc::DriverStation::Alliance::kRed ? "red" : "blue"; //determine alliance color as a string
 	Cob::PushValue(COB_ALLIANCE_COLOR, color); //push the alliance color as a string
+	vacuum->SetServoPosition(1.0);
 } //RobotInit()
 
 void Robot::RobotPeriodic() {
 	//pushed during robot periodic because these values constantly change
+	Cob::PushValue(COB_TIME, DriverStation::GetInstance().GetMatchTime());
 	Cob::PushValue(COB_X_VEL,Robot::navx->GetVelocityX());
 	Cob::PushValue(COB_Y_VEL,Robot::navx->GetVelocityY());
 	Cob::PushValue(COB_ROTATION,Robot::navx->GetYaw());
@@ -61,13 +63,16 @@ void Robot::RobotPeriodic() {
 		Cob::PushValue(COB_SAVE_ARM_SETPOINTS, false);
 	}
 	//Cob::PushValue(COB_MAIN_ARM_ROTATION,Robot::arm->GetPotData());
+	//vacuum->SetServoPosition(1.0);
 }
 
 void Robot::AutonomousInit() {
 	navx->ZeroYaw();
-	autonomousCommand.reset(new Turn(90.0f)); //set the autonomous command or command group here
+	//autonomousCommand.reset(new Turn(90.0f)); //set the autonomous command or command group here 
+	/*
 	if(autonomousCommand)
 		autonomousCommand->Start();
+		*/
 } //AutonomousInit()
 
 void Robot::AutonomousPeriodic() {
@@ -79,10 +84,6 @@ void Robot::TeleopInit() {
 } //TeleopInit()
 
 void Robot::TeleopPeriodic() {
-	frc::SmartDashboard::PutNumber("LF Velocity", driveTrain->GetDriveTalonData(DriveTalon::LEFT_FRONT, TalonData::SENSOR_VELOCITY));
-	frc::SmartDashboard::PutNumber("LR Velocity", driveTrain->GetDriveTalonData(DriveTalon::LEFT_REAR, TalonData::SENSOR_VELOCITY));
-	frc::SmartDashboard::PutNumber("RF Velocity", driveTrain->GetDriveTalonData(DriveTalon::RIGHT_FRONT, TalonData::SENSOR_VELOCITY));
-	frc::SmartDashboard::PutNumber("RR Velocity", driveTrain->GetDriveTalonData(DriveTalon::RIGHT_REAR, TalonData::SENSOR_VELOCITY));
 	frc::Scheduler::GetInstance()->Run();
 } //TeleopPeriodic
 
@@ -91,7 +92,6 @@ void Robot::TestInit() {
 } //TestInit()
 
 void Robot::TestPeriodic() {
-
 } //TestPeriodic()
 } //frc2019
 

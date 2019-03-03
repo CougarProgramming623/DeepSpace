@@ -22,8 +22,9 @@ class Vacuum : public frc::Subsystem {
  public:
   Vacuum();
   void InitDefaultCommand() override;
-  void SetVacuumSpeed();
+  void Suck();
   void SetServoPosition(double);
+  void Stop();
   double GetServoPosition();
 };
 }

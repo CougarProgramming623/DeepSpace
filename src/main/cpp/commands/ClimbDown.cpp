@@ -16,17 +16,21 @@ ClimbDown::ClimbDown() : m_Timer() {
 }
 
 void ClimbDown::Initialize() {
+	/*
 	m_Timer.Start();
 	if(Robot::climb->IsLimitHit()) {
 		Robot::climb->SetClimbTime(CLIMB_REVERSE_TIME);
-		frc::DriverStation::ReportError("CLimb down hit limit");
+		frc::DriverStation::ReportError("Cimb down hit limit");
 	} else {
 		frc::DriverStation::ReportError("Climb down non limit...");
 	}
+	*/
+	frc::DriverStation::ReportError("Climbing Down");
+	Robot::climb->SetClimbDownPower();
 }
 
 void ClimbDown::Execute() {
-	Robot::climb->SetClimbDownPower();
+	/*
 	double time = m_Timer.Get();
 	if(m_LastTime != -1.0) {//If this isnt the first time...
 		double delta = time - m_LastTime;
@@ -36,21 +40,17 @@ void ClimbDown::Execute() {
 		}
 	}
 	m_LastTime = time;
-	frc::DriverStation::ReportError("Executing Climb down...");
+	*/
 }
 
 bool ClimbDown::IsFinished() {
-	return Robot::climb->GetClimbTime() > 0.0;//We are done once we have reversed the climb time for the length of time we need
+	return false;//We are done once we have reversed the climb time for the length of time we need
 }
 
 void ClimbDown::End() {
-	Robot::climb->StopClimbMotor();
 }
 
 void ClimbDown::Interrupted() {
-
+	Robot::climb->StopClimbMotor();	
 }
-
-
-
 }//namespace

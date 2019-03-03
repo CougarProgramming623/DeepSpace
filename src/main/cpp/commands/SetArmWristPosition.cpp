@@ -59,11 +59,20 @@ SetArmWristPosition::SetArmWristPosition(RocketHeight height) {
     case RocketHeight::SHIP_CARGO:
       armSetpoint = 203-15;
       wristSetpoint = 323-25;
+    case RocketHeight::ALL_IN:
+      armSetpoint = 0;
+      wristSetpoint = 0;
     default:
       break;
   }
 
-  AddParallel(new SetArmPosition(armSetpoint));
-  AddSequential(new SetWristPosition(wristSetpoint));
+  if(height == RocketHeight::ALL_IN) {
+    AddSequential(new SetWristPosition(123 + wristSetpoint));
+    AddSequential(new frc::WaitCommand(2));
+    AddSequential(new SetArmPosition(108 + armSetpoint));
+  } else {
+    AddParallel(new SetArmPosition(108 + armSetpoint));
+    AddSequential(new SetWristPosition(123 + wristSetpoint));
+  }
 }
 }

@@ -19,12 +19,18 @@ SetForkPosition::SetForkPosition(int setpoint) {
 
 // Called just before this Command runs the first time
 void SetForkPosition::Initialize() {
-
+    DriverStation::ReportError("setting fork: " + std::to_string(m_setpoint));
 } //Initialize()
 
 // Called repeatedly when this Command is scheduled to run
 void SetForkPosition::Execute() {
   Robot::fork->SetSetpoint(m_setpoint); //set setpoint of fork subsystem
+  /*
+  if(Robot::oi->UsingForkSlider()) {
+    double slider = OI::buttonBoard.GetRawAxis(1);
+    m_setpoint = mapValues(slider, -1, +1, 0, 313);
+  }
+  */
   frc::SmartDashboard::PutNumber("fork position", Robot::fork->GetForkTalonData(TalonData::SENSOR_POSITION));
   frc::SmartDashboard::PutNumber("fork error", Robot::fork->GetForkTalonData(TalonData::ERROR));
 } //Execute()

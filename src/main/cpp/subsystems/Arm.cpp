@@ -10,6 +10,7 @@
 #include <frc/DriverStation.h>
 
 #include "subsystems/Arm.h"
+#include "commands/SetArmPosition.h"
 #include "RobotConstants.h"
 #include "TalonConfig.h"
 
@@ -44,9 +45,12 @@ Arm::Arm() : Subsystem("Arm"), armMC(ARM_TALON_ID) {
 	Cob::PushValue(COB_SAVE_ARM_SETPOINTS, false);
 	Cob::PushValue(COB_PULL_ARM_SETPOINTS, false);
 	frc::DriverStation::ReportError("Created inital network tables");
+
+	armMC.Set(ControlMode::Position, armMC.GetSelectedSensorPosition());
 }
 
 void Arm::PullSetpoints() {
+    return;
 	for(int armI = 0; armI < ARM_MEKANISM_TYPE_COUNT; armI++) {
 		for(int cargoI = 0; cargoI < CARGO_OR_HATCH_COUNT; cargoI++) {
 			for(int positionI = 0; positionI < DIAL_POSITION_COUNT; positionI++) {
@@ -92,7 +96,6 @@ std::string Arm::MakeCOBAddress(ArmMekanismType arm, CargoOrHatch cargoOrHatch, 
 void Arm::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
 	// SetDefaultCommand(new MySpecialCommand());
-	//SetDefaultCommand(new SetArmPosition(0));
 }
 
 int Arm::GetArmTalonData(TalonData data) {
@@ -101,7 +104,7 @@ int Arm::GetArmTalonData(TalonData data) {
 }
 
 void Arm::SetSetpoint(int setpoint) {
-	armMC.Set(ControlMode::Position, initialReading + setpoint);
+	armMC.Set(ControlMode::Position, setpoint);
 	frc::SmartDashboard::PutNumber("Arm Target", armMC.GetClosedLoopTarget());
 	frc::SmartDashboard::PutNumber("Arm Error", armMC.GetClosedLoopError());
 }

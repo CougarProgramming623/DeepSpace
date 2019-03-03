@@ -7,6 +7,7 @@
 
 #include "commands/SetArmPosition.h"
 #include "Robot.h"
+#include "RobotConstants.h"
 
 namespace frc2019 {
 SetArmPosition::SetArmPosition(int setpoint) {
@@ -18,16 +19,22 @@ SetArmPosition::SetArmPosition(int setpoint) {
 
 // Called just before this Command runs the first time
 void SetArmPosition::Initialize() {
+  DriverStation::ReportError("Arm going to: " + std::to_string(m_setpoint));
   if(Robot::arm->GetArmTalonData(TalonData::SENSOR_POSITION) < m_setpoint) {
     Robot::arm->SetP(UP_kP_ARM);
   } else {
     Robot::arm->SetP(DOWN_kP_ARM);
   }
+  Robot::arm->SetSetpoint(m_setpoint); //set setpoint of arm subsystem
 }
 
 // Called repeatedly when this Command is scheduled to run
 void SetArmPosition::Execute() {
-  Robot::arm->SetSetpoint(m_setpoint); //set setpoint of arm subsystem
+  /*
+  if(Robot::oi->UsingArmSlider()) {
+    double slider = OI::buttonBoard.GetRawAxis(0);
+    m_setpoint = mapValues(slider, -1, +1, 0, 449);
+  } */
   frc::SmartDashboard::PutNumber("arm position", Robot::arm->GetArmTalonData(TalonData::SENSOR_POSITION));
   frc::SmartDashboard::PutNumber("arm error", Robot::arm->GetArmTalonData(TalonData::ERROR));
 }

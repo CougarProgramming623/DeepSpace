@@ -7,7 +7,7 @@
 //The number of seconds the motor should be run backward to release the spring that beings the back peg-leg up
 #define CLIMB_REVERSE_TIME 0.5
 
-#define CLIMB_UP_SPEED -1.0
+#define CLIMB_UP_SPEED -0.75
 #define CLIMB_DOWN_SPEED 0.25
 
 namespace frc2019 {
@@ -31,6 +31,7 @@ public:
 	inline double GetClimbTime() const { return m_ClimbTime; }
 	inline void ResetClimbTime() { m_ClimbTime = 0.0; }
 
+	void InitDefaultCommand() override;
 private:
 	bool m_HitLimit = false;//TODO set this when we detect the limit switch has been triggered
 	WPI_TalonSRX m_ClimbMotor;

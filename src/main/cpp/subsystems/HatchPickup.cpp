@@ -8,16 +8,31 @@
 #include "subsystems/HatchPickup.h"
 #include "RobotConstants.h"
 #include "TalonConfig.h"
+#include "commands/SetForkPosition.h"
+
+#define kPID_LOOP_IDX 0
+#define kTIMEOUT_MS 30
 
 namespace frc2019 {
 HatchPickup::HatchPickup() : Subsystem("ExampleSubsystem"), pickupMC(FORK_ID) {
-  using namespace talon;
-  ConfigurePotentiometer(&pickupMC, 3.0, 0.0, 0.0, 1.0, -1.0);
+  pickupMC.SetSelectedSensorPosition(pickupMC.GetSelectedSensorPosition()); //set the position as 0
+  pickupMC.ConfigSelectedFeedbackSensor(FeedbackDevice::Analog, kPID_LOOP_IDX, kTIMEOUT_MS); //configure FeedbackDevice as Analog
+  pickupMC.ConfigNominalOutputForward(0, kTIMEOUT_MS);
+	pickupMC.ConfigNominalOutputReverse(0, kTIMEOUT_MS);
+	pickupMC.ConfigPeakOutputForward(0.75, kTIMEOUT_MS); //configure the peak output forward	
+  pickupMC.ConfigPeakOutputReverse(-0.5, kTIMEOUT_MS); //configure the peak output reverse
+  //configure P I D values for the potentiometer
+  pickupMC.Config_kF(kPID_LOOP_IDX, 0.0, kTIMEOUT_MS);
+  pickupMC.Config_kP(kPID_LOOP_IDX, 5.0, kTIMEOUT_MS);
+  pickupMC.Config_kI(kPID_LOOP_IDX, 0.0, kTIMEOUT_MS);
+  pickupMC.Config_kD(kPID_LOOP_IDX, 0.0, kTIMEOUT_MS);
+
+  //pickupMC.Set(ControlMode::Position, pickupMC.GetSelectedSensorPosition());
 } //HatchPickup()
 
 void HatchPickup::InitDefaultCommand() {
   // Set the default command for a subsystem here.
-  // SetDefaultCommand(new MySpecialCommand());
+    //SetDefaultCommand(new SetForkPosition(pickupMC.GetSelectedSensorPosition()));
 } //InitDefaultCommand()
 
 int HatchPickup::GetForkTalonData(TalonData data) {

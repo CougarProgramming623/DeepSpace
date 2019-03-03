@@ -7,7 +7,6 @@
 
 #include "commands/ClimbUp.h"
 #include "Robot.h"
-#include <frc/WPILib.h>
 
 namespace frc2019 {
 
@@ -16,14 +15,13 @@ ClimbUp::ClimbUp() : m_Timer() {
 }
 
 void ClimbUp::Initialize() {
-	m_Timer.Start();
-	frc::DriverStation::ReportError("Starting climb up");
+	//m_Timer.Start();
+	frc::DriverStation::ReportError("Climbing Up");
+	Robot::climb->SetClimbUpPower();
 }
 
 void ClimbUp::Execute() {
-	Robot::climb->SetClimbUpPower();
-	Robot::climb->SetClimbTime(m_Timer.Get());//Count the time we climbed for
-	frc::DriverStation::ReportError("Executing Climb up...");
+	//Robot::climb->SetClimbTime(m_Timer.Get());//Count the time we climbed for
 	//This means that the peg legs have deployed and we can no longer safley climb down
 	//We can only run the climb motor backwords to retarct the last peg-leg 
 	//if(m_Timer.Get() > CRITICAL_CLIMB_TIME) {
@@ -40,6 +38,6 @@ void ClimbUp::End() {
 }
 
 void ClimbUp::Interrupted() {
-
+	End();
 }
 }//namespace
