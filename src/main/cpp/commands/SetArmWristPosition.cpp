@@ -15,7 +15,7 @@ SetArmWristPosition::SetArmWristPosition(RocketHeight height) {
   Requires(Robot::arm.get());
   Requires(Robot::wrist.get());
   
-  //DriverStation::ReportError(std::to_string(height));
+  DriverStation::ReportError(std::to_string(height));
   switch(height) {
     case RocketHeight::LOW_HATCH:
       armSetpoint = 84;

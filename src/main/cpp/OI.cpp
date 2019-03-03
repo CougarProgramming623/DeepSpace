@@ -55,6 +55,7 @@ fodToggle(&driverJoystick, 1)
 	turnTo225.WhenPressed(new Turn(-135));
 	turnTo270.WhenPressed(new Turn(-90));
 	turnTo315.WhenPressed(new Turn(-45));
+	/*
 	toggleHatchCargo.WhileHeld(new ModeSwitch(&cargoMode, true, [](bool newValue) {
 		DriverStation::ReportError("Cargo Mode: " + newValue ? "true" : "false");
 		//Robot::vacuum->SetServoPosition(0.0);
@@ -63,15 +64,16 @@ fodToggle(&driverJoystick, 1)
 		DriverStation::ReportError("Cargo Mode: " + newValue ? "true" : "false");
 		//Robot::vacuum->SetServoPosition(1.0);
 	}));
+	*/
 
 	forkStow.WhenPressed(new SetForkPosition(114));
 	forkUp.WhenPressed(new SetForkPosition(267));
 	forkGround.WhenPressed(new SetForkPosition(478));
 	allIn.WhenPressed(new SetArmWristPosition(RocketHeight::ALL_IN));
-	low.WhenPressed(new SetArmWristPosition(cargoMode ? RocketHeight::LOW_CARGO : RocketHeight::LOW_HATCH));
-	medium.WhenPressed(new SetArmWristPosition(cargoMode ? RocketHeight::MEDIUM_CARGO : RocketHeight::MEDIUM_HATCH));
-	high.WhenPressed(new SetArmWristPosition(cargoMode ? RocketHeight::HIGH_CARGO : RocketHeight::HIGH_HATCH));
-	ship.WhenPressed(new SetArmWristPosition(cargoMode ? RocketHeight::SHIP_CARGO : RocketHeight::LOW_HATCH));
+	low.WhileHeld(new SetArmWristPosition(IsCargoMode() ? RocketHeight::LOW_CARGO : RocketHeight::LOW_HATCH));
+	medium.WhileHeld(new SetArmWristPosition(IsCargoMode() ? RocketHeight::MEDIUM_CARGO : RocketHeight::MEDIUM_HATCH));
+	high.WhileHeld(new SetArmWristPosition(IsCargoMode() ? RocketHeight::HIGH_CARGO : RocketHeight::HIGH_HATCH));
+	ship.WhileHeld(new SetArmWristPosition(IsCargoMode() ? RocketHeight::SHIP_CARGO : RocketHeight::LOW_HATCH));
 
 	fodToggle.WhenPressed(new BooleanToggle(&fod, [](bool newValue) {
 		DriverStation::ReportError("FOD: " + newValue ? "true" : "false");
@@ -79,7 +81,7 @@ fodToggle(&driverJoystick, 1)
 } //OI()
 
 void OI::Update() {
-
+	cargoMode = buttonBoard.GetRawButton(19);
 } //Update()
 
 SliderStatus OI::GetSliderMode() {
@@ -104,5 +106,9 @@ bool OI::UsingForkSlider() {
 
 bool OI::UsingWristSlider() {
 	return useWristSlider;
+}
+
+bool OI::IsCargoMode() {
+	return cargoMode;
 }
 }//frc2019

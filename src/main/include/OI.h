@@ -55,6 +55,7 @@ public:
 	bool UsingArmSlider();
 	bool UsingForkSlider();
 	bool UsingWristSlider();
+	bool IsCargoMode();
 };
 
 }//frc2019

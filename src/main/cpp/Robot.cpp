@@ -63,6 +63,7 @@ void Robot::RobotPeriodic() {
 	}
 	//Cob::PushValue(COB_MAIN_ARM_ROTATION,Robot::arm->GetPotData());
 	//vacuum->SetServoPosition(1.0);
+	oi->Update();
 }
 
 void Robot::AutonomousInit() {
