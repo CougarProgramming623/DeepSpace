@@ -4,16 +4,25 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
+#include <stdio.h>
+
+#include <frc/WPILib.h>
+#include <frc/DriverStation.h>
 
 #include "subsystems/Arm.h"
+#include "commands/SetArmPosition.h"
 #include "RobotConstants.h"
 #include "TalonConfig.h"
+
+#include "GameEnums.h"
+#include "Cob.h"
+#include "CobConstants.h"
 
 namespace frc2019 {
 Arm::Arm() : Subsystem("Arm"), armMC(ARM_TALON_ID) {
 
 	using namespace talon;
-	ConfigurePotentiometer(&armMC, 10, 0.0, 0.0, 0.5, -0.3);
+	ConfigurePotentiometer(&armMC, 10, 0.0, 0.0, 0.75, -0.3);
 
 	FILE* file = fopen(ARM_SETPOINT_FILE_NAME, "rb");
 	if(file == nullptr) {
@@ -23,10 +32,10 @@ Arm::Arm() : Subsystem("Arm"), armMC(ARM_TALON_ID) {
 		fread(m_Setpoints, sizeof(m_Setpoints), 1, file);
 		fclose(file);
 	}
-	for(int armI = 0; armI < ARM_MECHANISM_TYPE_COUNT; armI++) {
+	for(int armI = 0; armI < ARM_MEKANISM_TYPE_COUNT; armI++) {
 		for(int cargoI = 0; cargoI < CARGO_OR_HATCH_COUNT; cargoI++) {
 			for(int positionI = 0; positionI < DIAL_POSITION_COUNT; positionI++) {
-				ArmMechanismType arm = static_cast<ArmMechanismType>(armI);
+				ArmMekanismType arm = static_cast<ArmMekanismType>(armI);
 				CargoOrHatch cargo = static_cast<CargoOrHatch>(cargoI);
 				DialPosition position = static_cast<DialPosition>(positionI);
 				Cob::PushValue(MakeCOBAddress(arm, cargo, position), m_Setpoints[arm][cargo][position]);
@@ -36,13 +45,16 @@ Arm::Arm() : Subsystem("Arm"), armMC(ARM_TALON_ID) {
 	Cob::PushValue(COB_SAVE_ARM_SETPOINTS, false);
 	Cob::PushValue(COB_PULL_ARM_SETPOINTS, false);
 	frc::DriverStation::ReportError("Created inital network tables");
+
+	armMC.Set(ControlMode::Position, armMC.GetSelectedSensorPosition());
 }
 
 void Arm::PullSetpoints() {
-	for(int armI = 0; armI < ARM_MECHANISM_TYPE_COUNT; armI++) {
+    return;
+	for(int armI = 0; armI < ARM_MEKANISM_TYPE_COUNT; armI++) {
 		for(int cargoI = 0; cargoI < CARGO_OR_HATCH_COUNT; cargoI++) {
 			for(int positionI = 0; positionI < DIAL_POSITION_COUNT; positionI++) {
-				std::string address = MakeCOBAddress(static_cast<ArmMechanismType>(armI), static_cast<CargoOrHatch>(cargoI), static_cast<DialPosition>(positionI));
+				std::string address = MakeCOBAddress(static_cast<ArmMekanismType>(armI), static_cast<CargoOrHatch>(cargoI), static_cast<DialPosition>(positionI));
 				int newValue = Cob::GetValue<int>(address);
 				DriverStation::ReportError("Setting address: " + address + " to " + std::to_string(newValue));
 				m_Setpoints[armI][cargoI][positionI] = newValue;
@@ -63,11 +75,11 @@ void Arm::SaveSetpoints() {
 	}
 }
 
-std::string Arm::MakeCOBAddress(ArmMechanismType arm, CargoOrHatch cargoOrHatch, DialPosition position) {
+std::string Arm::MakeCOBAddress(ArmMekanismType arm, CargoOrHatch cargoOrHatch, DialPosition position) {
 	std::string result;
-	if(arm == ArmMechanismType::MAIN_ARM) {
+	if(arm == ArmMekanismType::MAIN_ARM) {
 		result += "arm-position/";
-	} else if(arm == ArmMechanismType::WRIST) {
+	} else if(arm == ArmMekanismType::WRIST) {
 		result += "wrist-position/";
 	} else { frc::DriverStation::ReportError("Unhandled condition at line " + std::to_string(__LINE__) + " in file " + __FILE__); }
 	
@@ -82,23 +94,24 @@ std::string Arm::MakeCOBAddress(ArmMechanismType arm, CargoOrHatch cargoOrHatch,
 }
 
 void Arm::InitDefaultCommand() {
-  // Set the default command for a subsystem here.
-  // SetDefaultCommand(new MySpecialCommand());
-  //SetDefaultCommand(new SetArmPosition(0));
+	// Set the default command for a subsystem here.
+	// SetDefaultCommand(new MySpecialCommand());
 }
 
-double Arm::GetArmTalonData(TalonData data) {
-  using namespace talon;
-  return GetTalonData(&armMC, data);
+int Arm::GetArmTalonData(TalonData data) {
+	using namespace talon;
+	return GetTalonData(&armMC, data);
 }
 
 void Arm::SetSetpoint(int setpoint) {
-  armMC.Set(ControlMode::Position, setpoint);
-  frc::SmartDashboard::PutNumber("Arm Target", armMC.GetClosedLoopTarget());
-  frc::SmartDashboard::PutNumber("Arm Error", armMC.GetClosedLoopError());
+	armMC.Set(ControlMode::Position, setpoint);
+	frc::SmartDashboard::PutNumber("Arm Target", armMC.GetClosedLoopTarget());
+	frc::SmartDashboard::PutNumber("Arm Error", armMC.GetClosedLoopError());
 }
 
 void Arm::SetP(double kP) {
   armMC.Config_kP(0, kP, 30);
 }
+
+
 }//namespace

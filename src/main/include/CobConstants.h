@@ -18,7 +18,6 @@
 #define COB_TIME "fms/time-left"
 #define COB_RED "fms/is-red" 
 
-//arm
 #define COB_ARM_CARGO_ROCKET_HIGH "/cob/arm-position/rocket-high"
 #define COB_ARM_CARGO_ROCKERT_MID "/cob/arm-position/rocket-mid"
 #define COB_ARM_CARGO_ROCKET_LOW "/cob/arm-position/rocket-low"
@@ -42,3 +41,6 @@
 #define COB_WRIST_HATCH_HIGH "/cob/arm-position/hatch/high"
 #define COB_WRIST_SECURE "/cob/arm-position/secure"
 #define COB_WRIST_ALLEYOOP "/cob/arm-position/alley-oop"
+
+#define COB_PULL_ARM_SETPOINTS "arm/pull-setpoints"
+#define COB_SAVE_ARM_SETPOINTS "arm/save-setpoints"

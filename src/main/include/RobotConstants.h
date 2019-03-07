@@ -83,9 +83,6 @@
 #error you must specity a robot to compile for!
 #endif
 
-#define lerp(a, b, f) a + f * (b - a)
-
-#define normalize(min, max, value) (value - min) / (max - min)
 
 //#define map(value, sourceMin, sourceMax, destMin, destMax) lerp(destMin, destMax, normalize(sourceMin, sourceMax, value))
 
@@ -107,12 +104,17 @@
 #define UP_kP_ARM 50
 #define DOWN_kP_ARM 10
 
-#define UP_kP_WRIST 12
-#define DOWN_kP_WRIST 9
+#define UP_kP_WRIST 9
+#define DOWN_kP_WRIST 6
 
 #define AIR_OFF_SERVO 0.8
 #define HATCH_AIR_SERVO 0.45
 #define CARGO_AIR_SERVO 0.25
 
+#define lerpValues(a, b, f) a + f * (b - a)
+
+#define normalizeValues(min, max, value) (value - min) / (max - min)
+
+#define mapValues(value, sourceMin, sourceMax, destMin, destMax) lerpValues(destMin, destMax, normalizeValues(sourceMin, sourceMax, value))
 
 

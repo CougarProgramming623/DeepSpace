@@ -25,7 +25,7 @@ double GetTalonData(TalonSRX* talonMC, TalonData data){
 void ConfigurePotentiometer(TalonSRX* talonMC, double kP, double kI, double kD, double peakForward, double peakReverse) {
     //configures a potentiometer on the designmated TalonSRX
     //talonMC->SetSelectedSensorPosition(talonMC->GetSelectedSensorPosition());
-    talonMC->SetSelectedSensorPosition(0); //set the position as 0
+    //talonMC->SetSelectedSensorPosition(talonMC->GetSelectedSensorPosition()); //set the position as 0
     talonMC->ConfigSelectedFeedbackSensor(FeedbackDevice::Analog, 0, kTIMEOUT_MS); //configure FeedbackDevice as Analog
     talonMC->ConfigNominalOutputForward(0, kTIMEOUT_MS);
 	talonMC->ConfigNominalOutputReverse(0, kTIMEOUT_MS);

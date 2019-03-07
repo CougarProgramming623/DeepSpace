@@ -5,52 +5,31 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/SetServo.h"
+#include "commands/TurnOnVacuum.h"
 #include "Robot.h"
 
 namespace frc2019 {
-SetServo::SetServo(double pos) {
+TurnOnVacuum::TurnOnVacuum() {
   // Use Requires() here to declare subsystem dependencies
   // eg. Requires(Robot::chassis.get());
   Requires(Robot::vacuum.get());
-  m_position = pos;
 }
 
 // Called just before this Command runs the first time
-void SetServo::Initialize() {
-    Robot::vacuum->SetServoPosition(m_position);
-}
+void TurnOnVacuum::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
-void SetServo::Execute() {
-  /*
-  DriverStation::ReportError("Servo Position: " + std::to_string(Robot::vacuum->GetServoPosition()));
-  DriverStation::ReportError("Servo Target: " + std::to_string(m_position));
-  
-  if(Robot::vacuum->GetServoPosition() < m_position) {
-    Robot::vacuum->SetServoPosition(Robot::vacuum->GetServoPosition() + 0.1);
-    DriverStation::ReportError("incrementing");
-  }
-  
-  if(Robot::vacuum->GetServoPosition() > m_position) {
-    Robot::vacuum->SetServoPosition(Robot::vacuum->GetServoPosition() - 0.1);
-    DriverStation::ReportError("decrementing");
-  }
-  */
+void TurnOnVacuum::Execute() {
+  Robot::vacuum->Suck();
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool SetServo::IsFinished() { 
-  //return (Robot::vacuum->GetServoPosition() == m_position); 
-  return true;
-}
+bool TurnOnVacuum::IsFinished() { return false; }
 
 // Called once after isFinished returns true
-void SetServo::End() {
-  DriverStation::ReportError("Finished servo set");
-}
+void TurnOnVacuum::End() {}
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void SetServo::Interrupted() {}
+void TurnOnVacuum::Interrupted() {}
 }

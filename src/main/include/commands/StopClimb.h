@@ -7,14 +7,16 @@
 
 #pragma once
 
-#include <frc/commands/CommandGroup.h>
-#include "GameEnums.h"
+#include <frc/commands/Command.h>
 
 namespace frc2019 {
-class SetArmWristPosition : public frc::CommandGroup {
-public:
-  SetArmWristPosition(RocketHeight height);
-private:
-  int armSetpoint, wristSetpoint;
+class StopClimb : public frc::Command {
+ public:
+  StopClimb();
+  void Initialize() override;
+  void Execute() override;
+  bool IsFinished() override;
+  void End() override;
+  void Interrupted() override;
 };
 }
