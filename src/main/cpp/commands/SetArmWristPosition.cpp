@@ -14,36 +14,25 @@ namespace frc2019 {
 SetArmWristPosition::SetArmWristPosition(RocketHeight height) {
   Requires(Robot::arm.get());
   Requires(Robot::wrist.get());
-  
+  bool isCargoMode = Robot::oi->IsCargoMode();
+
   DriverStation::ReportError(std::to_string(height));
   switch(height) {
-    case RocketHeight::LOW_HATCH:
-      armSetpoint = 84;
-      wristSetpoint = 192 - 10;
+    case RocketHeight::LOW:
+      armSetpoint = isCargoMode ? 61+7 : 84;
+      wristSetpoint = isCargoMode ? 80 : 182;
       break;
-    case RocketHeight::MEDIUM_HATCH:
-      armSetpoint = 203+10;
-      wristSetpoint = 323+10-10;
+    case RocketHeight::MEDIUM:
+      armSetpoint = isCargoMode ? 177+5 : 213;
+      wristSetpoint = isCargoMode ? 173 : 323-10+10;
       break;
-    case RocketHeight::HIGH_HATCH:
-      armSetpoint = 315+10;
-      wristSetpoint = 421+10-10-10-10;
+    case RocketHeight::HIGH:
+      armSetpoint = isCargoMode ? 316 : 325;
+      wristSetpoint = isCargoMode ? 312 : 421+10-10-10-10;
       break;
-    case RocketHeight::LOW_CARGO:
-      armSetpoint = 61+7;
-      wristSetpoint = 80;
-      break;
-    case RocketHeight::MEDIUM_CARGO:
-      armSetpoint = 177+5;
-      wristSetpoint = 173;
-      break;
-    case RocketHeight::HIGH_CARGO:
-      wristSetpoint = 312;
-      armSetpoint = 316;
-      break;
-    case RocketHeight::SHIP_CARGO:
-      armSetpoint = 203-15;
-      wristSetpoint = 323-25;
+    case RocketHeight::SHIP:
+      armSetpoint = isCargoMode ? 203-15 : 84;
+      wristSetpoint = isCargoMode ? 323-25 : 182;
     case RocketHeight::ALL_IN:
       armSetpoint = 0;
       wristSetpoint = 0;

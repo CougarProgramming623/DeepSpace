@@ -15,6 +15,8 @@
 #include "commands/TurnOnVacuum.h"
 #include "commands/StopVacuum.h"
 
+#include "commands/SetManipulator.h"
+
 namespace frc2019 {
 
 //Instantiate the Joystick and Button Board
@@ -69,11 +71,11 @@ fodToggle(&driverJoystick, 1)
 	forkStow.WhenPressed(new SetForkPosition(114));
 	forkUp.WhenPressed(new SetForkPosition(267));
 	forkGround.WhenPressed(new SetForkPosition(478));
-	allIn.WhenPressed(new SetArmWristPosition(RocketHeight::ALL_IN));
-	low.WhileHeld(new SetArmWristPosition(IsCargoMode() ? RocketHeight::LOW_CARGO : RocketHeight::LOW_HATCH));
-	medium.WhileHeld(new SetArmWristPosition(IsCargoMode() ? RocketHeight::MEDIUM_CARGO : RocketHeight::MEDIUM_HATCH));
-	high.WhileHeld(new SetArmWristPosition(IsCargoMode() ? RocketHeight::HIGH_CARGO : RocketHeight::HIGH_HATCH));
-	ship.WhileHeld(new SetArmWristPosition(IsCargoMode() ? RocketHeight::SHIP_CARGO : RocketHeight::LOW_HATCH));
+	allIn.WhenPressed(new SetManipulator(new SetArmWristPosition(RocketHeight::ALL_IN), new SetArmWristPosition(RocketHeight::ALL_IN)));
+	low.WhileHeld(new SetManipulator(new SetArmWristPosition(RocketHeight::LOW), new SetArmWristPosition(RocketHeight::LOW)));
+	medium.WhileHeld(new SetManipulator(new SetArmWristPosition(RocketHeight::MEDIUM), new SetArmWristPosition(RocketHeight::MEDIUM)));
+	high.WhileHeld(new SetManipulator(new SetArmWristPosition(RocketHeight::HIGH), new SetArmWristPosition(RocketHeight::HIGH)));
+	ship.WhileHeld(new SetManipulator(new SetArmWristPosition(RocketHeight::SHIP), new SetArmWristPosition(RocketHeight::SHIP)));
 
 	fodToggle.WhenPressed(new BooleanToggle(&fod, [](bool newValue) {
 		DriverStation::ReportError("FOD: " + newValue ? "true" : "false");
