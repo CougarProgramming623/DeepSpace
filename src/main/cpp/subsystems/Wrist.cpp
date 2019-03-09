@@ -31,8 +31,8 @@ void Wrist::SetVelocity(float velocity) {
 	wristMC.Set(ControlMode::PercentOutput, velocity);
 }
 
-void Wrist::GetWristPosition() {
-	wristMC.GetSelectedSensorPosition();
+int Wrist::GetWristPosition() {
+	return wristMC.GetSelectedSensorPosition();
 }
 
 double Wrist::GetWristTalonData(TalonData data) {

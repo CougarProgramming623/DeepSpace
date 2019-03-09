@@ -11,6 +11,8 @@
 #include "subsystems/Wrist.h"
 #include "Robot.h"
 
+namespace frc2019 {
+
 class WristWait : public frc::Command {
 public:
 	WristWait();
@@ -21,3 +23,5 @@ public:
 	void Interrupted() override;
 	
 };
+
+}//namespace

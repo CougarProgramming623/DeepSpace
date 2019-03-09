@@ -7,6 +7,11 @@
 
 #include "commands/WristWait.h"
 
+#include "frc/DriverStation.h"
+#include "Robot.h"
+
+namespace frc2019 {
+
 WristWait::WristWait() {
 	// Use Requires() here to declare subsystem dependencies
 	// eg. Requires(Robot::chassis.get());
@@ -21,7 +26,8 @@ void WristWait::Execute() {}
 
 // Make this return true when this Command no longer needs to run execute()
 bool WristWait::IsFinished() { 
-	return Robot::wrist->GetWristPosition() < 10; 
+	frc::DriverStation::ReportError("Wrist pos: " + std::to_string(Robot::wrist->GetWristPosition()));
+	return Robot::wrist->GetWristPosition() < 10;
 }
 
 // Called once after isFinished returns true
@@ -30,3 +36,6 @@ void WristWait::End() {}
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
 void WristWait::Interrupted() {}
+
+
+}
