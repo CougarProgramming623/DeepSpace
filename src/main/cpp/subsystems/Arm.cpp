@@ -27,15 +27,19 @@ Arm::Arm() : Subsystem("Arm"), armMC(ARM_TALON_ID) {
 	FILE* file = fopen(ARM_SETPOINT_FILE_NAME, "rb");
 	if(file == nullptr) {
 		frc::DriverStation::ReportError("Arm setpoint file doesn't exist! Make sure to se defaults using the COB");
+		m_armOffset = 0;
+		m_wristOffset = 0;
 	} else {
 		frc::DriverStation::ReportError("Arm setpoint file found!");
 		fread(m_Setpoints, sizeof(m_Setpoints), 1, file);
+		fread(&m_armOffset, sizeof(m_armOffset), 1, file);
+		fread(&m_wristOffset, sizeof(m_wristOffset), 1, file);
 		fclose(file);
 	}
-	for(int armI = 0; armI < ARM_MEKANISM_TYPE_COUNT; armI++) {
+	for(int armI = 0; armI < ARM_MECHANISM_TYPE_COUNT; armI++) {
 		for(int cargoI = 0; cargoI < CARGO_OR_HATCH_COUNT; cargoI++) {
 			for(int positionI = 0; positionI < DIAL_POSITION_COUNT; positionI++) {
-				ArmMekanismType arm = static_cast<ArmMekanismType>(armI);
+				ArmMechanismType arm = static_cast<ArmMechanismType>(armI);
 				CargoOrHatch cargo = static_cast<CargoOrHatch>(cargoI);
 				DialPosition position = static_cast<DialPosition>(positionI);
 				Cob::PushValue(MakeCOBAddress(arm, cargo, position), m_Setpoints[arm][cargo][position]);
@@ -44,23 +48,27 @@ Arm::Arm() : Subsystem("Arm"), armMC(ARM_TALON_ID) {
 	}
 	Cob::PushValue(COB_SAVE_ARM_SETPOINTS, false);
 	Cob::PushValue(COB_PULL_ARM_SETPOINTS, false);
+	
+	Cob::PushValue(COB_ARM_OFFSET, m_armOffset);
+	Cob::PushValue(COB_WRIST_OFFSET, m_wristOffset);
 	frc::DriverStation::ReportError("Created inital network tables");
 
 	armMC.Set(ControlMode::Position, armMC.GetSelectedSensorPosition());
 }
 
 void Arm::PullSetpoints() {
-    return;
-	for(int armI = 0; armI < ARM_MEKANISM_TYPE_COUNT; armI++) {
+	for(int armI = 0; armI < ARM_MECHANISM_TYPE_COUNT; armI++) {
 		for(int cargoI = 0; cargoI < CARGO_OR_HATCH_COUNT; cargoI++) {
 			for(int positionI = 0; positionI < DIAL_POSITION_COUNT; positionI++) {
-				std::string address = MakeCOBAddress(static_cast<ArmMekanismType>(armI), static_cast<CargoOrHatch>(cargoI), static_cast<DialPosition>(positionI));
+				std::string address = MakeCOBAddress(static_cast<ArmMechanismType>(armI), static_cast<CargoOrHatch>(cargoI), static_cast<DialPosition>(positionI));
 				int newValue = Cob::GetValue<int>(address);
 				DriverStation::ReportError("Setting address: " + address + " to " + std::to_string(newValue));
 				m_Setpoints[armI][cargoI][positionI] = newValue;
 			}
 		}
 	}
+	m_armOffset = Cob::GetValue<int>(COB_ARM_OFFSET);
+	m_wristOffset = Cob::GetValue<int>(COB_WRIST_OFFSET);
 }
 
 void Arm::SaveSetpoints() {
@@ -70,16 +78,18 @@ void Arm::SaveSetpoints() {
 		frc::DriverStation::ReportError("Error creating arm setpoints file: " ARM_SETPOINT_FILE_NAME);
 	} else {
 		fwrite(m_Setpoints, sizeof(m_Setpoints), 1, file);
+		fwrite(&m_armOffset, sizeof(m_armOffset), 1, file);
+		fwrite(&m_wristOffset, sizeof(m_wristOffset), 1, file);
 		fclose(file);
 		frc::DriverStation::ReportError("Saved arm setpoints successfully!");
 	}
 }
 
-std::string Arm::MakeCOBAddress(ArmMekanismType arm, CargoOrHatch cargoOrHatch, DialPosition position) {
+std::string Arm::MakeCOBAddress(ArmMechanismType arm, CargoOrHatch cargoOrHatch, DialPosition position) {
 	std::string result;
-	if(arm == ArmMekanismType::MAIN_ARM) {
+	if(arm == ArmMechanismType::MAIN_ARM) {
 		result += "arm-position/";
-	} else if(arm == ArmMekanismType::WRIST) {
+	} else if(arm == ArmMechanismType::WRIST) {
 		result += "wrist-position/";
 	} else { frc::DriverStation::ReportError("Unhandled condition at line " + std::to_string(__LINE__) + " in file " + __FILE__); }
 	
@@ -107,6 +117,10 @@ void Arm::SetSetpoint(int setpoint) {
 	armMC.Set(ControlMode::Position, setpoint);
 	frc::SmartDashboard::PutNumber("Arm Target", armMC.GetClosedLoopTarget());
 	frc::SmartDashboard::PutNumber("Arm Error", armMC.GetClosedLoopError());
+}
+
+void Arm::SetVelocity(float velocity) {
+	armMC.Set(ControlMode::PercentOutput, velocity);
 }
 
 void Arm::SetP(double kP) {

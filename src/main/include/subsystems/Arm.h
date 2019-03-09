@@ -21,23 +21,33 @@ public:
 	void InitDefaultCommand() override;
 	void SetP(double);
 	void SetSetpoint(int);
+	void SetVelocity(float);
+
 	int GetArmTalonData(TalonData);
 
-	inline int GetWristCargoPosition(DialPosition position) { return m_Setpoints[ArmMekanismType::WRIST][CargoOrHatch::CARGO][position]; }
-	inline int GetWristHatchPosition(DialPosition position) { return m_Setpoints[ArmMekanismType::WRIST][CargoOrHatch::HATCH][position]; }
+	inline int GetWristCargoPosition(DialPosition position) { return m_Setpoints[ArmMechanismType::WRIST][CargoOrHatch::CARGO][(int) position] + m_wristOffset; }
+	inline int GetWristHatchPosition(DialPosition position) { return m_Setpoints[ArmMechanismType::WRIST][CargoOrHatch::HATCH][(int) position] + m_wristOffset; }
 
-	inline int GetArmCargoPosition(DialPosition position) { return m_Setpoints[ArmMekanismType::MAIN_ARM][CargoOrHatch::CARGO][position]; }
-	inline int GetArmHatchPosition(DialPosition position) { return m_Setpoints[ArmMekanismType::MAIN_ARM][CargoOrHatch::HATCH][position]; }
+	inline int GetArmCargoPosition(DialPosition position) { return m_Setpoints[ArmMechanismType::MAIN_ARM][CargoOrHatch::CARGO][(int) position] + m_armOffset; }
+	inline int GetArmHatchPosition(DialPosition position) { return m_Setpoints[ArmMechanismType::MAIN_ARM][CargoOrHatch::HATCH][(int) position] + m_armOffset; }
+	
+	inline int GetArmPosition(DialPosition position, CargoOrHatch cargo) { return m_Setpoints[ArmMechanismType::MAIN_ARM][(int) cargo][(int) position] +  + m_armOffset; }
+	inline int GetWristPosition(DialPosition position, CargoOrHatch cargo) { return m_Setpoints[ArmMechanismType::WRIST][(int) cargo][(int) position] +  + m_wristOffset; }
+	
 	void PullSetpoints();
 	void SaveSetpoints();
 
+	inline int GetArmOffset() { return m_armOffset; }
+	inline int GetWristOffset() { return m_wristOffset; }
+
 private:
-	std::string MakeCOBAddress(ArmMekanismType arm, CargoOrHatch cargoOrHatch, DialPosition position);
+	std::string MakeCOBAddress(ArmMechanismType arm, CargoOrHatch cargoOrHatch, DialPosition position);
 
 private:
 	TalonSRX armMC;
 	int initialReading;
-	int m_Setpoints[ARM_MEKANISM_TYPE_COUNT][CARGO_OR_HATCH_COUNT][DIAL_POSITION_COUNT] {};//Main Arm vs Wrist, Cargo vs Hatch, arm positions
+	int m_Setpoints[ARM_MECHANISM_TYPE_COUNT][CARGO_OR_HATCH_COUNT][DIAL_POSITION_COUNT] {};//Main Arm vs Wrist, Cargo vs Hatch, arm positions
+	int m_armOffset, m_wristOffset;
 };
 
 

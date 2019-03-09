@@ -15,7 +15,7 @@
 #include "TalonConfig.h"
 
 
-namespace frc2019{
+namespace frc2019 {
 
 class Wrist : public frc::Subsystem {
 public:
@@ -23,6 +23,8 @@ public:
   void InitDefaultCommand() override;
   void SetP(double);
   void SetSetpoint(int);
+  void SetVelocity(float);
+  
   double GetWristTalonData(TalonData);
 private:
   // It's desirable that everything possible under private except

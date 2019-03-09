@@ -7,18 +7,22 @@
 
 #pragma once
 
+#include "GameEnums.h"
+
 #include <frc/commands/Command.h>
 namespace frc2019{
 class SetWristPosition : public frc::Command {
- public:
-  SetWristPosition(int);
-  void Initialize() override;
-  void Execute() override;
-  bool IsFinished() override;
-  void End() override;
-  void Interrupted() override;
-  private:
-  int m_setpoint;
+public:
+	SetWristPosition(int);
+	SetWristPosition(DialPosition);
+	void Initialize() override;
+	void Execute() override;
+	bool IsFinished() override;
+	void End() override;
+	void Interrupted() override;
+private:
+	int m_setpoint;
+	DialPosition m_dialPosition;
 
 };
 }

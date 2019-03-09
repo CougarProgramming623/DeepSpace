@@ -8,32 +8,29 @@
 #include "commands/SetWristPosition.h"
 #include "Robot.h"
 namespace frc2019{
-SetWristPosition::SetWristPosition(int setpoint) {
+SetWristPosition::SetWristPosition(int setpoint) : m_setpoint(setpoint), m_dialPosition(DialPosition::INVALID) {
   // Use Requires() here to declare subsystem dependencies
   // eg. Requires(Robot::chassis.get());
   Requires(Robot::wrist.get());
-  m_setpoint = setpoint;
 }
+
+SetWristPosition::SetWristPosition(DialPosition position) : m_dialPosition(position) {}
 
 // Called just before this Command runs the first time
 void SetWristPosition::Initialize() {
-  DriverStation::ReportError("Wrist going to: " + std::to_string(m_setpoint));
-  if(m_setpoint > Robot::wrist->GetWristTalonData(TalonData::SENSOR_POSITION))
-    Robot::wrist->SetP(UP_kP_WRIST);
-  else
-    Robot::wrist->SetP(DOWN_kP_WRIST);
-  
-  Robot::wrist->SetSetpoint(m_setpoint);
+	if(m_setpoint > Robot::wrist->GetWristTalonData(TalonData::SENSOR_POSITION))
+		Robot::wrist->SetP(UP_kP_WRIST);
+	else
+		Robot::wrist->SetP(DOWN_kP_WRIST);
+	if (m_dialPosition != DialPosition::INVALID) {
+		m_setpoint = Robot::arm->GetWristPosition(m_dialPosition, Robot::oi->IsCargoMode());
+	}
+	DriverStation::ReportError("Wrist going to: " + std::to_string(m_setpoint));
+	Robot::wrist->SetSetpoint(m_setpoint);
 }
 
 // Called repeatedly when this Command is scheduled to run
 void SetWristPosition::Execute() {
-  /*
-    if(Robot::oi->UsingWristSlider()) {
-      double slider = OI::buttonBoard.GetRawAxis(2);
-      m_setpoint = mapValues(slider, -1, +1, 0, 563);
-    }
-    */
     SmartDashboard::PutNumber("wrist error", Robot::wrist->GetWristTalonData(TalonData::ERROR));
 }
 

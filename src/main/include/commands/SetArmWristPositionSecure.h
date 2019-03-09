@@ -5,18 +5,15 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/SetArmWristPosition.h"
-#include "commands/SetArmPosition.h"
-#include "commands/SetWristPosition.h"
-#include "Robot.h"
+#pragma once
+
+#include <frc/commands/CommandGroup.h>
+#include "GameEnums.h"
 
 namespace frc2019 {
-	SetArmWristPosition::SetArmWristPosition(DialPosition position) {
-		Requires(Robot::arm.get());
-		Requires(Robot::wrist.get());
+class SetArmWristPositionSecure : public frc::CommandGroup {
+public:
+	SetArmWristPositionSecure(DialPosition height);
+};
 
-		AddParallel(new SetArmPosition(position));
-		AddSequential(new SetWristPosition(position));
-			
-	}
 }

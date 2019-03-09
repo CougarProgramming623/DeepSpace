@@ -5,18 +5,18 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/SetArmWristPosition.h"
+#include "commands/SetArmWristPositionSecure.h"
 #include "commands/SetArmPosition.h"
 #include "commands/SetWristPosition.h"
 #include "Robot.h"
 
 namespace frc2019 {
-	SetArmWristPosition::SetArmWristPosition(DialPosition position) {
+	SetArmWristPositionSecure::SetArmWristPositionSecure(DialPosition position) {
 		Requires(Robot::arm.get());
 		Requires(Robot::wrist.get());
-
-		AddParallel(new SetArmPosition(position));
+		
 		AddSequential(new SetWristPosition(position));
-			
+		AddSequential(new frc::WaitCommand(1));
+		AddSequential(new SetArmPosition(position));	
 	}
 }

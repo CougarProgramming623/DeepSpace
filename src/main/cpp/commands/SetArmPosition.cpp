@@ -10,22 +10,25 @@
 #include "RobotConstants.h"
 
 namespace frc2019 {
-SetArmPosition::SetArmPosition(int setpoint) {
-  // Use Requires() here to declare subsystem dependencies
-  // eg. Requires(Robot::chassis.get());
-  Requires(Robot::arm.get());
-  m_setpoint = setpoint;
+SetArmPosition::SetArmPosition(int setpoint) : m_setpoint(setpoint), m_dialPosition(DialPosition::INVALID) {
+	Requires(Robot::arm.get());
+}
+
+SetArmPosition::SetArmPosition(DialPosition position) : m_dialPosition(position) {
+	Requires(Robot::arm.get());
 }
 
 // Called just before this Command runs the first time
 void SetArmPosition::Initialize() {
-  DriverStation::ReportError("Arm going to: " + std::to_string(m_setpoint));
-  if(Robot::arm->GetArmTalonData(TalonData::SENSOR_POSITION) < m_setpoint) {
-    Robot::arm->SetP(UP_kP_ARM);
-  } else {
-    Robot::arm->SetP(DOWN_kP_ARM);
-  }
-  Robot::arm->SetSetpoint(m_setpoint); //set setpoint of arm subsystem
+	if(m_setpoint > Robot::arm->GetArmTalonData(TalonData::SENSOR_POSITION))
+		Robot::arm->SetP(UP_kP_ARM);
+	else
+		Robot::arm->SetP(DOWN_kP_ARM);
+	if (m_dialPosition != DialPosition::INVALID) {
+		m_setpoint = Robot::arm->GetArmPosition(m_dialPosition, Robot::oi->IsCargoMode());
+	}
+	DriverStation::ReportError("Arm going to: " + std::to_string(m_setpoint));
+	Robot::arm->SetSetpoint(m_setpoint);
 }
 
 // Called repeatedly when this Command is scheduled to run

@@ -9,18 +9,24 @@
 
 #include <frc/commands/Command.h>
 #include "RobotConstants.h"
+#include "GameEnums.h"
 
 namespace frc2019 {
 
 class SetArmPosition : public frc::Command {
- public:
-  SetArmPosition(int);
-  void Initialize() override;
-  void Execute() override;
-  bool IsFinished() override;
-  void End() override;
-  void Interrupted() override;
+public:
+	SetArmPosition(int);
+	SetArmPosition(DialPosition);
+
+	void Initialize() override;
+	void Execute() override;
+	bool IsFinished() override;
+	void End() override;
+	void Interrupted() override;
  private:
-  int m_setpoint;
+	int m_setpoint;
+	DialPosition m_dialPosition;
 };
+
+
 }
