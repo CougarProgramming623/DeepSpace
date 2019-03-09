@@ -44,6 +44,7 @@ forkGround(&buttonBoard, 20), forkUp(&buttonBoard, 21), forkStow(&buttonBoard, 2
 allIn(&buttonBoard, 24), pickup(&buttonBoard, 25), low(&buttonBoard, 26), ship(&buttonBoard, 27), medium(&buttonBoard, 28), high(&buttonBoard, 29),
 fodToggle(&driverJoystick, 1)
 {
+	cargoMode = false;
 	vacuumToggle.WhileHeld(new TurnOnVacuum());
 	vacuumToggle.WhenReleased(new StopVacuum());
 	climbUp.WhileHeld(new ClimbUp());

@@ -9,8 +9,8 @@
 
 namespace frc2019 {
 Wrist::Wrist() : Subsystem("Wrist"), wristMC(WRIST_ID) {
-	using namespace talon;
-	ConfigurePotentiometer(&wristMC, 9.0, 0.0, 6.0, 0.2, -0.3);
+  using namespace talon;
+  ConfigurePotentiometer(&wristMC, 9.0, 0.0, 25.0, 0.4, -0.6);
 
 	wristMC.Set(ControlMode::Position, wristMC.GetSelectedSensorPosition());
 } //Wrist()

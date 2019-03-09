@@ -23,7 +23,7 @@ private:
 	frc::JoystickButton turnTo0, turnTo45, turnTo90, turnTo135, turnTo180, turnTo225, turnTo270, turnTo315;
 	frc::JoystickButton	toggleHatchCargo;
 	frc::JoystickButton forkGround, forkHerd, forkUp, forkStow;
-	frc::JoystickButton allIn, pickup, low, ship, medium, high;
+	frc::JoystickButton allIn, cargoPickup, low, medium, high, ship;
 	frc::JoystickButton fodToggle;
 	bool fod;
 	bool driveWithPercentOutput;

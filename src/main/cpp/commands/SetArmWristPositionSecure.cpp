@@ -16,7 +16,7 @@ namespace frc2019 {
 		Requires(Robot::wrist.get());
 		
 		AddSequential(new SetWristPosition(position));
-		AddSequential(new frc::WaitCommand(1));
+		AddSequential(new frc::WaitCommand(2.5));
 		AddSequential(new SetArmPosition(position));	
 	}
 }

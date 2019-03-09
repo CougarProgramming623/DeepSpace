@@ -22,7 +22,7 @@ namespace frc2019 {
 Arm::Arm() : Subsystem("Arm"), armMC(ARM_TALON_ID) {
 
 	using namespace talon;
-	ConfigurePotentiometer(&armMC, 10, 0.0, 0.0, 0.75, -0.3);
+	ConfigurePotentiometer(&armMC, 10, 0.0, 25, 0.75, -0.3);
 
 	FILE* file = fopen(ARM_SETPOINT_FILE_NAME, "rb");
 	if(file == nullptr) {
