@@ -15,6 +15,8 @@
 #include "commands/TurnOnVacuum.h"
 #include "commands/StopVacuum.h"
 
+#include "commands/SetManipulator.h"
+
 namespace frc2019 {
 
 //Instantiate the Joystick and Button Board
