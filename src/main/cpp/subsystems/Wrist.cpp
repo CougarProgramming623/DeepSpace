@@ -31,10 +31,13 @@ void Wrist::SetVelocity(float velocity) {
 	wristMC.Set(ControlMode::PercentOutput, velocity);
 }
 
+void Wrist::GetWristPosition() {
+	wristMC.GetSelectedSensorPosition();
+}
+
 double Wrist::GetWristTalonData(TalonData data) {
 	using namespace talon;
 	return GetTalonData(&wristMC, data);
 }
-
 
 } //frc2019

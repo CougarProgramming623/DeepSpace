@@ -24,7 +24,7 @@ public:
   void SetP(double);
   void SetSetpoint(int);
   void SetVelocity(float);
-  
+  void GetWristPosition();
   double GetWristTalonData(TalonData);
 private:
   // It's desirable that everything possible under private except
