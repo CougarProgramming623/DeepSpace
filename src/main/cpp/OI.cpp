@@ -28,9 +28,10 @@ egOverride(&buttonBoard, 4), driveOverride(&buttonBoard, 5), armOverride(&button
 turnTo0(&buttonBoard, 13), turnTo45(&buttonBoard, 14), turnTo90(&buttonBoard, 15), turnTo135(&buttonBoard, 16), turnTo180(&buttonBoard, 9), turnTo225(&buttonBoard, 10), turnTo270(&buttonBoard, 11), turnTo315(&buttonBoard, 12), 
 toggleHatchCargo(&buttonBoard, 19),
 forkGround(&buttonBoard, 20), forkUp(&buttonBoard, 21), forkStow(&buttonBoard, 22), forkHerd(&buttonBoard, 23),
-low(&buttonBoard, 25), medium(&buttonBoard, 26), high(&buttonBoard, 27), ship(&buttonBoard, 28), allIn(&buttonBoard, 24),
+cargoPickup(&buttonBoard, 25), low(&buttonBoard, 26), medium(&buttonBoard, 27), high(&buttonBoard, 28), ship(&buttonBoard, 29), allIn(&buttonBoard, 24),
 fodToggle(&driverJoystick, 1)
 {
+	cargoMode = false;
 	vacuumToggle.WhileHeld(new TurnOnVacuum());
 	vacuumToggle.WhenReleased(new StopVacuum());
 	climbUp.WhileHeld(new ClimbUp());
@@ -70,6 +71,7 @@ fodToggle(&driverJoystick, 1)
 	forkUp.WhenPressed(new SetForkPosition(267));
 	forkGround.WhenPressed(new SetForkPosition(478));
 	allIn.WhenPressed(new SetArmWristPosition(RocketHeight::ALL_IN));
+	cargoPickup.WhileHeld(new SetArmWristPosition(RocketHeight::CARGO_PICKUP));
 	low.WhileHeld(new SetArmWristPosition(IsCargoMode() ? RocketHeight::LOW_CARGO : RocketHeight::LOW_HATCH));
 	medium.WhileHeld(new SetArmWristPosition(IsCargoMode() ? RocketHeight::MEDIUM_CARGO : RocketHeight::MEDIUM_HATCH));
 	high.WhileHeld(new SetArmWristPosition(IsCargoMode() ? RocketHeight::HIGH_CARGO : RocketHeight::HIGH_HATCH));
