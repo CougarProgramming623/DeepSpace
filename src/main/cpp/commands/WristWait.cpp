@@ -26,8 +26,8 @@ void WristWait::Execute() {}
 
 // Make this return true when this Command no longer needs to run execute()
 bool WristWait::IsFinished() { 
-	frc::DriverStation::ReportError("Wrist pos: " + std::to_string(Robot::wrist->GetWristPosition()));
-	return Robot::wrist->GetWristPosition() < 10;
+	frc::DriverStation::ReportError("Wrist pos: " + std::to_string(Robot::wrist->GetWristPosition()) + ", bound " + std::to_string(Robot::arm->GetArmOffset() + 10));
+	return Robot::wrist->GetWristPosition() < (Robot::arm->GetArmOffset() + 30);
 }
 
 // Called once after isFinished returns true
