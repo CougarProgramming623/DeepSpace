@@ -63,7 +63,7 @@ void yOutput::PIDWrite(double output){
 }
 
 void zOutput::PIDWrite(double output){
-  VisionDrive::zPower = output;
+  VisionDrive::zPower = -output;
 }
 //***********************************
 
@@ -146,7 +146,7 @@ void VisionDrive::Execute() {
   DriverStation::ReportError("xPower:   " + std::to_string(xPower));
   DriverStation::ReportError("   yPower:      " + std::to_string(yPower));
   DriverStation::ReportError("      zPower:         " + std::to_string(zPower));
-  Robot::driveTrain->RODrive(yPower,xPower,zPower);
+  Robot::driveTrain->RODrive(yPower,zPower,xPower);
 }
 //Finish if all 3 PIDs are on target, if no target found, or if robot reaches timeout
 bool VisionDrive::IsFinished() { 
