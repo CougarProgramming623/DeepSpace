@@ -27,8 +27,10 @@ public:
   void GetWristPosition();
   double GetWristTalonData(TalonData);
 private:
-  // It's desirable that everything possible under private except
-  // for methods that implement subsystem capabilities
-  TalonSRX wristMC;
+	// It's desirable that everything possible under private except
+	// for methods that implement subsystem capabilities
+	TalonSRX wristMC;
 };
+
+
 }

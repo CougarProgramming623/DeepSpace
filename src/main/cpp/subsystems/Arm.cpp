@@ -27,13 +27,11 @@ Arm::Arm() : Subsystem("Arm"), armMC(ARM_TALON_ID) {
 	FILE* file = fopen(ARM_SETPOINT_FILE_NAME, "rb");
 	if(file == nullptr) {
 		frc::DriverStation::ReportError("Arm setpoint file doesn't exist! Make sure to se defaults using the COB");
-		m_armOffset = 0;
-		m_wristOffset = 0;
+		memset(m_extra, sizeof(m_extra), 0x00);
 	} else {
 		frc::DriverStation::ReportError("Arm setpoint file found!");
-		fread(m_Setpoints, sizeof(m_Setpoints), 1, file);
-		fread(&m_armOffset, sizeof(m_armOffset), 1, file);
-		fread(&m_wristOffset, sizeof(m_wristOffset), 1, file);
+		fread(m_setpoints, sizeof(m_setpoints), 1, file);
+		fread(m_extra, sizeof(m_extra), 1, file);
 		fclose(file);
 	}
 	for(int armI = 0; armI < ARM_MECHANISM_TYPE_COUNT; armI++) {
@@ -42,15 +40,19 @@ Arm::Arm() : Subsystem("Arm"), armMC(ARM_TALON_ID) {
 				ArmMechanismType arm = static_cast<ArmMechanismType>(armI);
 				CargoOrHatch cargo = static_cast<CargoOrHatch>(cargoI);
 				DialPosition position = static_cast<DialPosition>(positionI);
-				Cob::PushValue(MakeCOBAddress(arm, cargo, position), m_Setpoints[arm][cargo][position]);
+				Cob::PushValue(MakeCOBAddress(arm, cargo, position), m_setpoints[arm][cargo][position]);
 			}
 		}
 	}
 	Cob::PushValue(COB_SAVE_ARM_SETPOINTS, false);
 	Cob::PushValue(COB_PULL_ARM_SETPOINTS, false);
+
+	for(int i = 0; i < EXTRA_ARRAY_ACTUAL_LENGTH; i++) {
+		std::string address = EXTRA_NAMES[i];
+		Cob::PushValue(address, m_extra[i]);
+	}
 	
-	Cob::PushValue(COB_ARM_OFFSET, m_armOffset);
-	Cob::PushValue(COB_WRIST_OFFSET, m_wristOffset);
+
 	frc::DriverStation::ReportError("Created inital network tables");
 
 	armMC.Set(ControlMode::Position, armMC.GetSelectedSensorPosition());
@@ -63,12 +65,14 @@ void Arm::PullSetpoints() {
 				std::string address = MakeCOBAddress(static_cast<ArmMechanismType>(armI), static_cast<CargoOrHatch>(cargoI), static_cast<DialPosition>(positionI));
 				int newValue = Cob::GetValue<int>(address);
 				DriverStation::ReportError("Setting address: " + address + " to " + std::to_string(newValue));
-				m_Setpoints[armI][cargoI][positionI] = newValue;
+				m_setpoints[armI][cargoI][positionI] = newValue;
 			}
 		}
 	}
-	m_armOffset = Cob::GetValue<int>(COB_ARM_OFFSET);
-	m_wristOffset = Cob::GetValue<int>(COB_WRIST_OFFSET);
+	for(int i = 0; i < EXTRA_ARRAY_ACTUAL_LENGTH; i++) {
+		std::string address = EXTRA_NAMES[i];
+		m_extra[i] = Cob::GetValue<int>(address);
+	}
 }
 
 void Arm::SaveSetpoints() {
@@ -77,9 +81,8 @@ void Arm::SaveSetpoints() {
 	if(file == nullptr) {
 		frc::DriverStation::ReportError("Error creating arm setpoints file: " ARM_SETPOINT_FILE_NAME);
 	} else {
-		fwrite(m_Setpoints, sizeof(m_Setpoints), 1, file);
-		fwrite(&m_armOffset, sizeof(m_armOffset), 1, file);
-		fwrite(&m_wristOffset, sizeof(m_wristOffset), 1, file);
+		fwrite(m_setpoints, sizeof(m_setpoints), 1, file);
+		fwrite(m_extra, sizeof(m_extra), 1, file);
 		fclose(file);
 		frc::DriverStation::ReportError("Saved arm setpoints successfully!");
 	}

@@ -12,6 +12,14 @@
 #include <ctre/Phoenix.h>
 #include "GameEnums.h"
 
+#define EXTRA_ARRAY_LENGTH 8
+
+#define EXTRA_ARRAY_ACTUAL_LENGTH 2
+const constexpr char * const EXTRA_NAMES[] = {"arm-position/offset", "wrist-position/offset"};
+
+#define ARM_OFFSET_INDEX 0
+#define WRIST_OFFSET_INDEX 1
+
 #define ARM_SETPOINT_FILE_NAME "/home/lvuser/ArmSetpoints.bin"
 
 namespace frc2019 {
@@ -25,20 +33,20 @@ public:
 
 	int GetArmTalonData(TalonData);
 
-	inline int GetWristCargoPosition(DialPosition position) { return m_Setpoints[ArmMechanismType::WRIST][CargoOrHatch::CARGO][(int) position] + m_wristOffset; }
-	inline int GetWristHatchPosition(DialPosition position) { return m_Setpoints[ArmMechanismType::WRIST][CargoOrHatch::HATCH][(int) position] + m_wristOffset; }
+	inline int GetWristCargoPosition(DialPosition position) { return m_setpoints[ArmMechanismType::WRIST][CargoOrHatch::CARGO][(int) position] + GetWristOffset(); }
+	inline int GetWristHatchPosition(DialPosition position) { return m_setpoints[ArmMechanismType::WRIST][CargoOrHatch::HATCH][(int) position] + GetWristOffset(); }
 
-	inline int GetArmCargoPosition(DialPosition position) { return m_Setpoints[ArmMechanismType::MAIN_ARM][CargoOrHatch::CARGO][(int) position] + m_armOffset; }
-	inline int GetArmHatchPosition(DialPosition position) { return m_Setpoints[ArmMechanismType::MAIN_ARM][CargoOrHatch::HATCH][(int) position] + m_armOffset; }
+	inline int GetArmCargoPosition(DialPosition position) { return m_setpoints[ArmMechanismType::MAIN_ARM][CargoOrHatch::CARGO][(int) position] + GetArmOffset(); }
+	inline int GetArmHatchPosition(DialPosition position) { return m_setpoints[ArmMechanismType::MAIN_ARM][CargoOrHatch::HATCH][(int) position] + GetArmOffset(); }
 	
-	inline int GetArmPosition(DialPosition position, CargoOrHatch cargo) { return m_Setpoints[ArmMechanismType::MAIN_ARM][(int) cargo][(int) position] +  + m_armOffset; }
-	inline int GetWristPosition(DialPosition position, CargoOrHatch cargo) { return m_Setpoints[ArmMechanismType::WRIST][(int) cargo][(int) position] +  + m_wristOffset; }
+	inline int GetArmPosition(DialPosition position, CargoOrHatch cargo) { return m_setpoints[ArmMechanismType::MAIN_ARM][(int) cargo][(int) position] +  + GetArmOffset(); }
+	inline int GetWristPosition(DialPosition position, CargoOrHatch cargo) { return m_setpoints[ArmMechanismType::WRIST][(int) cargo][(int) position] +  + GetWristOffset(); }
 	
 	void PullSetpoints();
 	void SaveSetpoints();
 
-	inline int GetArmOffset() { return m_armOffset; }
-	inline int GetWristOffset() { return m_wristOffset; }
+	inline int GetArmOffset() { return m_extra[ARM_OFFSET_INDEX]; }
+	inline int GetWristOffset() { return m_extra[WRIST_OFFSET_INDEX]; }
 
 private:
 	std::string MakeCOBAddress(ArmMechanismType arm, CargoOrHatch cargoOrHatch, DialPosition position);
@@ -46,8 +54,8 @@ private:
 private:
 	TalonSRX armMC;
 	int initialReading;
-	int m_Setpoints[ARM_MECHANISM_TYPE_COUNT][CARGO_OR_HATCH_COUNT][DIAL_POSITION_COUNT] {};//Main Arm vs Wrist, Cargo vs Hatch, arm positions
-	int m_armOffset, m_wristOffset;
+	int m_setpoints[ARM_MECHANISM_TYPE_COUNT][CARGO_OR_HATCH_COUNT][DIAL_POSITION_COUNT] {};//Main Arm vs Wrist, Cargo vs Hatch, arm positions
+	int m_extra[EXTRA_ARRAY_LENGTH];
 };
 
 

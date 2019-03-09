@@ -17,7 +17,7 @@ enum CargoOrHatch {
 	HATCH = 0, CARGO = 1
 };
 
-#define DIAL_POSITION_COUNT 6
+#define DIAL_POSITION_COUNT 10// 10 to allow for adding positions without changing the file structure
 enum DialPosition {
 	ALL_IN, PICKUP, LOW, SHIP, MEDIUM, HIGH, INVALID
 };
