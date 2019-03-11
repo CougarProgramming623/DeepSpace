@@ -1,42 +1,54 @@
 
 #include "commands/Drive.h"
 #include "Robot.h"
-#include "ControlConstants.h"
+#include "OI.h"
+#include "Constants.h"
+#include "RobotConstants.h"
 
 namespace frc2019 {
 
 Drive::Drive() {
-	// Use Requires() here to declare subsystem dependencies
-	// eg. Requires(Robot::chassis.get());
-	Requires(Robot::driveTrain.get());
-}
+	Requires(Robot::driveTrain.get()); //dependent on the Drivetrain Subsystem
+} //Drive()
 
-// Called just before this Command runs the first time
 void Drive::Initialize() {
-	y = x = rot = angle = 0;
-}
+	
+} //Initialize()
 
-// Called repeatedly when this Command is scheduled to run
 void Drive::Execute() {
-	y = -Robot::oi->GetDriverJoystick()->GetY();
-	x = -Robot::oi->GetDriverJoystick()->GetX();
-	rot = Robot::oi->GetDriverJoystick()->GetZ();
-	angle = Robot::navx->GetYaw();
-	Robot::driveTrain->FODDrive(y, x, rot, angle);
-	//frc::DriverStation::ReportError("Ticks: " + std::to_string(Robot::driveTrain->GetTicks()));
-}
+	using namespace ohs623;
+	//get the x, y, and z values from the joystick
+	double y = -OI::driverJoystick.GetY(); 
+	double x = OI::driverJoystick.GetX();
+	double rot = OI::driverJoystick.GetZ();
+	double gyro = Robot::navx->GetYaw();
 
-// Make this return true when this Command no longer needs to run execute()
+	//apply a 0.075 deadband on the x and y axes
+	y = abs(y) <= 0.075f ? 0 : y;
+	x = abs(x) <= 0.075f ? 0 : x;
+	rot = abs(rot) <= 0.05f ? 0 : rot; //0.05 deadband on the z axis
+
+	if (Robot::oi->IsFOD()) {
+		//Robot::driveTrain->FODDrive(y, x, rot, gyro);
+		Robot::driveTrain->CartesianDrive(y, x, rot/2, gyro); //field oriented drive
+	} else {// Is alignment
+		// Disabled for now - dims down the effect of x and rot
+		//x = ReduceValue(x, 3.0);
+		//rot = ReduceValue(rot, 2.0);
+		//Robot::driveTrain->FODDrive(y, x, rot, 0.0);
+		Robot::driveTrain->CartesianDrive(y, x, rot/2, 0.0); //robot oriented drive
+	}
+} //Execute()
+
 bool Drive::IsFinished() { 
 	return false;
-}
+} //IsFinished()
 
-// Called once after isFinished returns true
-void Drive::End() {}
+void Drive::End() {
 
-// Called when another command which requires one or more of the same
-// subsystems is scheduled to run
-void Drive::Interrupted() {}
+} //End()
 
+void Drive::Interrupted() {
 
+} //Interrupted()
 }//frc2019

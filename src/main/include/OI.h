@@ -1,60 +1,60 @@
 #pragma once
+#include <frc/WPILib.h>
+#include "commands/BooleanToggle.h"
+#include "commands/SetForkPosition.h"
+#include "GameEnums.h"
+#include "RobotConstants.h"
+#include "OIConstants.h"
+
+
+namespace frc2019 {
+
+class OI {
+public:
+	static frc::Joystick driverJoystick;
+	static frc::Joystick buttonBoard;
+
+private:
+	SliderStatus sliderMode = SliderStatus::DIAL_CONTROL;
+
+	frc::JoystickButton vacuumToggle;
+	frc::JoystickButton climbUp, climbDown;
+	frc::JoystickButton egOverride, driveOverride, vModeOverride, forkOverride, positionOverride;
+	frc::JoystickButton turnTo0, turnTo45, turnTo90, turnTo135, turnTo180, turnTo225, turnTo270, turnTo315;
+	frc::JoystickButton	toggleHatchCargo;
+	frc::JoystickButton forkGround, forkHerd, forkUp, forkStow;
+	frc::JoystickButton allIn, pickup, low, medium, high, ship;
+	frc::JoystickButton fodToggle;
+	bool fod;
+	bool driveWithPercentOutput;
+	bool useArmSlider, useForkSlider, useWristSlider;
+	/*
+	//Dial buttons
+	frc::JoystickButton low, medium, high, cargoHold, cargoGround;
+	//Arm Control Overrides
+	frc::JoystickButton manualControlOverride, vMode;
+	//Drive Control Overrids
+	frc::JoystickButton fodToggle;
+	//temporary individual motor buttons
+	frc::JoystickButton arm;
+	frc::JoystickButton wrist;
+	frc::JoystickButton pickup;
+	frc::JoystickButton climb;
+	*/
 	
-	#define USE_PREVIOUS_BUTTONS
-	
-	#ifdef USE_PREVIOUS_BUTTONS
-		#define INTAKE_BUTTON 1
-		#define EXPUNGE_BUTTON 2
-		#define TOGGLE_SLIDER_BUTTON 3
-		#define RELEASE_SHAFT_BUTTON 4
-		#define RELEASE_RAMP_BUTTON 9
-		#define TOGGLE_POT_BUTTON 8
-		#define ENDGAME_OVERRIDE_BUTTON 5
-		#define CLIMB_BUTTON 6
-		#define POT_REZERO_BUTTON 7
-	
-		#define CLIMB_LED 1
-		#define ZERO_BOTTOM_LED 2
-	
-		#define TOGGLE_PID_LED 3
-		#define TOGGLE_SLIDER_LED 4
-	#endif
-	
-	
-	#include <frc/WPILib.h>
-	
-	namespace frc2019 {
-	
-	enum SliderStatus {
-		DIAL_CONTROL, MANUAL_PID_CONTROL, VELOCITY_CONTROL
-	};
-	
-	class OI {
-	private:
-		SliderStatus status;
-	
-		std::shared_ptr<frc::Joystick> driverJoystick;
-		std::shared_ptr<frc::Joystick> buttonBoard;
-		std::shared_ptr<frc::JoystickButton> intakeButton;
-		std::shared_ptr<frc::JoystickButton> expungeButton;
-		std::shared_ptr<frc::JoystickButton> toggleSliderControl;
-		std::shared_ptr<frc::JoystickButton> togglePot;
-	
-		std::shared_ptr<frc::JoystickButton> releaseShaftButton;
-		std::shared_ptr<frc::JoystickButton> releaseRampButton;
-	
-		std::shared_ptr<frc::JoystickButton> endgameOverride;
-		std::shared_ptr<frc::JoystickButton> climb;
-		std::shared_ptr<frc::JoystickButton> potRezeroLift;
-	
-	public:
-		OI();
-		void Update();
-		bool GetVision();
-		std::shared_ptr<frc::Joystick> GetDriverJoystick();
-		std::shared_ptr<frc::Joystick> GetButtonBoard();
-	
-	};
-	
-	
-	}//namespace 
+public:
+	OI();
+	void Update();
+	SliderStatus GetSliderMode();
+	inline bool IsAlignmentMode() { 
+		return !IsFOD(); 
+	}
+	bool IsFOD();
+	bool IsPercentOutputMode();
+	bool UsingArmSlider();
+	bool UsingForkSlider();
+	bool UsingWristSlider();
+	CargoOrHatch IsCargoMode();
+};
+
+}//frc2019

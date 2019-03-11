@@ -2,8 +2,6 @@
 #pragma once
 
 #include <frc/commands/Command.h>
-#include <frc/WPILib.h>
-#include "AHRS.h"
 
 namespace frc2019 {
 
@@ -15,9 +13,9 @@ public:
 	bool IsFinished() override;
 	void End() override;
 	void Interrupted() override;
-private:
-	double y, x, rot, angle;
+	void SetAlignDriver();
+	void SetFODDriver();
+private:	
 };
-
 
 }//frc2019

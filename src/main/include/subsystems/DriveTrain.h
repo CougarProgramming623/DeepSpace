@@ -1,29 +1,27 @@
 
 #pragma once
 
-#include "frc/WPILib.h"
-#include "ctre/Phoenix.h"
+#include <frc/WPILib.h>
+#include <ctre/Phoenix.h>
 #include "AHRS.h"
-
+#include <wpi/ArrayRef.h>
+#include <wpi/raw_ostream.h>
 #include <frc/commands/Subsystem.h>
+#include "TalonConfig.h"
+#include "GameEnums.h"
 
 namespace frc2019 {
 
 class DriveTrain : public frc::Subsystem {
 private:
-	// It's desirable that everything possible under private except
-	// for methods that implement subsystem capabilities
-	std::shared_ptr<WPI_TalonSRX> mLeftFrontMC, mRightFrontMC;
-	std::shared_ptr<WPI_TalonSRX> mLeftRearMC, mRightRearMC;
-	std::shared_ptr<frc::MecanumDrive> mMecanumDrive;
-
+	WPI_TalonSRX m_LeftFrontMC, m_RightFrontMC;
+	WPI_TalonSRX m_LeftRearMC, m_RightRearMC;
 public:
 	DriveTrain();
 	void InitDefaultCommand() override;
-	void FODDrive(double x, double y, double rotation, double gyroAngle);
-	void RODrive(double x, double y, double z);
-	//int GetTicks();
+	void ConfigureEncoders();
+	void CartesianDrive(double y, double x, double rotation, double angle);
+	void Normalize(wpi::MutableArrayRef<double> wheelSpeeds);
+	double GetDriveTalonData(DriveTalon driveTalon, TalonData data);
 };
-
-
 }//frc2019

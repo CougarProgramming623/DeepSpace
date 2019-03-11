@@ -74,4 +74,6 @@ private:
   static frc::PIDController* yPID;
   static frc::PIDController* zPID;
 };
-}
+
+} //namespace
+
