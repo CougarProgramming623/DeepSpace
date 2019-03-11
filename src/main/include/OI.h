@@ -24,6 +24,7 @@ private:
 	frc::JoystickButton	toggleHatchCargo;
 	frc::JoystickButton forkGround, forkHerd, forkUp, forkStow;
 	frc::JoystickButton allIn, pickup, low, medium, high, ship;
+	frc::JoystickButton fodToggle;
 
 	bool fod;
 	bool driveWithPercentOutput;
@@ -35,7 +36,6 @@ private:
 	//Arm Control Overrides
 	frc::JoystickButton manualControlOverride, vMode;
 	//Drive Control Overrids
-	frc::JoystickButton fodToggle;
 	//temporary individual motor buttons
 	frc::JoystickButton arm;
 	frc::JoystickButton wrist;
