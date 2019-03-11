@@ -13,8 +13,6 @@
 namespace frc2019 {
 class SetArmWristPosition : public frc::CommandGroup {
 public:
-  SetArmWristPosition(RocketHeight height);
-private:
-  int armSetpoint, wristSetpoint;
+	SetArmWristPosition(DialPosition height);
 };
 }

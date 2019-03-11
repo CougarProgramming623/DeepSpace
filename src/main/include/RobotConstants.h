@@ -1,6 +1,6 @@
 
-//#define BOT_SAMUS
-#define BOT_HAMBONE
+#define BOT_SAMUS
+//#define BOT_HAMBONE
 //#define BOT_RAFIKI
 
 #define SAMUS_LEFT_FRONT_ID  15
@@ -101,11 +101,11 @@
 #define kREAR_LEFT 2
 #define kREAR_RIGHT 3
 
-#define UP_kP_ARM 50
+#define UP_kP_ARM 30
 #define DOWN_kP_ARM 10
 
-#define UP_kP_WRIST 9
-#define DOWN_kP_WRIST 6
+#define UP_kP_WRIST 5
+#define DOWN_kP_WRIST 20
 
 #define AIR_OFF_SERVO 0.8
 #define HATCH_AIR_SERVO 0.45

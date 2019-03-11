@@ -5,18 +5,17 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/SetArmWristPosition.h"
-#include "commands/SetArmPosition.h"
-#include "commands/SetWristPosition.h"
-#include "Robot.h"
+#pragma once
+
+#include <frc/commands/ConditionalCommand.h>
+#include <frc/WPILib.h>
 
 namespace frc2019 {
-	SetArmWristPosition::SetArmWristPosition(DialPosition position) {
-		Requires(Robot::arm.get());
-		Requires(Robot::wrist.get());
 
-		AddParallel(new SetArmPosition(position));
-		AddSequential(new SetWristPosition(position));
-			
-	}
+class SetManipulator : public frc::ConditionalCommand {
+ public:
+  SetManipulator(Command* onTrue, Command* onFalse);
+  bool Condition() override;
+  bool IsFinished() override;
+};
 }

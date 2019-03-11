@@ -19,16 +19,15 @@ private:
 
 	frc::JoystickButton vacuumToggle;
 	frc::JoystickButton climbUp, climbDown;
-	frc::JoystickButton egOverride, driveOverride, armOverride, forkOverride, wristOverride;
+	frc::JoystickButton egOverride, driveOverride, vModeOverride, forkOverride, positionOverride;
 	frc::JoystickButton turnTo0, turnTo45, turnTo90, turnTo135, turnTo180, turnTo225, turnTo270, turnTo315;
 	frc::JoystickButton	toggleHatchCargo;
 	frc::JoystickButton forkGround, forkHerd, forkUp, forkStow;
-	frc::JoystickButton allIn, low, medium, high, ship;
+	frc::JoystickButton allIn, pickup, low, medium, high, ship;
 	frc::JoystickButton fodToggle;
 	bool fod;
 	bool driveWithPercentOutput;
 	bool useArmSlider, useForkSlider, useWristSlider;
-	bool cargoMode = false;
 	/*
 	//Dial buttons
 	frc::JoystickButton low, medium, high, cargoHold, cargoGround;
@@ -55,7 +54,7 @@ public:
 	bool UsingArmSlider();
 	bool UsingForkSlider();
 	bool UsingWristSlider();
-	bool IsCargoMode();
+	CargoOrHatch IsCargoMode();
 };
 
 }//frc2019

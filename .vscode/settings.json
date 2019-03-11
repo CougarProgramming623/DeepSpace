@@ -61,7 +61,8 @@
   "utility": "cpp",
   "bitset": "cpp",
   "complex": "cpp",
-  "numeric": "cpp"
+  "numeric": "cpp",
+  "*.inc": "cpp"
 },
 "C_Cpp.errorSquiggles": "Disabled",
 }

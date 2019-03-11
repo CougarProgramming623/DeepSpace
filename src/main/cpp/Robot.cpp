@@ -8,7 +8,7 @@ namespace frc2019 {
 
 std::shared_ptr<DriveTrain> Robot::driveTrain;
 std::shared_ptr<AHRS> Robot::navx;
-std::shared_ptr<OI> Robot::oi;
+std::shared_ptr<OI> Robot::oi(nullptr);
 std::shared_ptr<Arm> Robot::arm;
 std::shared_ptr<Vacuum> Robot::vacuum;
 std::shared_ptr<HatchPickup> Robot::fork;
@@ -18,8 +18,8 @@ std::shared_ptr<Climb> Robot::climb;
 void Robot::RobotInit() {
 	Cob::InitBoard();
 	driveTrain.reset(new DriveTrain());
-	DriverStation::ReportError("constructed drivetrain");
 	arm.reset(new Arm());
+	DriverStation::ReportError("Finished arm creation");
 	wrist.reset(new Wrist());
 	vacuum.reset(new Vacuum());
 	oi.reset(new OI());
@@ -37,6 +37,7 @@ void Robot::RobotInit() {
 	std::string color = frc::DriverStation::GetInstance().GetAlliance() == frc::DriverStation::Alliance::kRed ? "red" : "blue"; //determine alliance color as a string
 	Cob::PushValue(COB_ALLIANCE_COLOR, color); //push the alliance color as a string
 	//vacuum->SetServoPosition(1.0);
+	DriverStation::ReportError("Finished RobotInit()");
 } //RobotInit()
 
 void Robot::RobotPeriodic() {

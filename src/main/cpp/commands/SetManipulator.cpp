@@ -5,18 +5,20 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/SetArmWristPosition.h"
-#include "commands/SetArmPosition.h"
-#include "commands/SetWristPosition.h"
+#include "commands/SetManipulator.h"
 #include "Robot.h"
 
 namespace frc2019 {
-	SetArmWristPosition::SetArmWristPosition(DialPosition position) {
-		Requires(Robot::arm.get());
-		Requires(Robot::wrist.get());
 
-		AddParallel(new SetArmPosition(position));
-		AddSequential(new SetWristPosition(position));
-			
-	}
+SetManipulator::SetManipulator(Command* onTrue, Command* onFalse) : frc::ConditionalCommand(onTrue, onFalse) {
+  // Use Requires() here to declare subsystem dependencies
+  // eg. Requires(Robot::chassis.get());
+}
+
+bool SetManipulator::Condition() {
+  return Robot::oi->IsCargoMode();
+}
+// Make this return true when this Command no longer needs to run execute()
+bool SetManipulator::IsFinished() { return true; }
+
 }
