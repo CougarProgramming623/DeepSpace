@@ -16,6 +16,8 @@
 #include "commands/TurnOnVacuum.h"
 #include "commands/StopVacuum.h"
 
+#include "commands/VisionDrive.h"
+
 #include "commands/SetManipulator.h"
 
 #include "GameEnums.h"
@@ -81,9 +83,7 @@ fodToggle(&driverJoystick, 1)
 	medium.WhileHeld(new SetArmWristPosition(DialPosition::MEDIUM));
 	high.WhileHeld(new SetArmWristPosition(DialPosition::HIGH));
 
-	fodToggle.WhenPressed(new BooleanToggle(&fod, [](bool newValue) {
-		
-	}));
+	fodToggle.WhenPressed(new VisionDrive());
 	DriverStation::ReportError("OI DOne");
 } //OI()
 
@@ -125,6 +125,10 @@ bool OI::UsingWristSlider() {
 
 CargoOrHatch OI::IsCargoMode() {
 	return (buttonBoard.GetRawButton(CARGO_HATCH_TOGGLE) ? CargoOrHatch::HATCH : CargoOrHatch::CARGO);
+}
+
+bool OI::IsVisionActive(){
+	return driverJoystick.GetRawButton(1);
 }
 
 
