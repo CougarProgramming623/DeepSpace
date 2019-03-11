@@ -73,6 +73,8 @@ private:
   static frc::PIDController* xPID;
   static frc::PIDController* yPID;
   static frc::PIDController* zPID;
+
+  frc::Timer m_timer;
 };
 
 } //namespace

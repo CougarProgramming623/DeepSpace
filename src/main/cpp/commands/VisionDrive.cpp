@@ -69,7 +69,7 @@ void zOutput::PIDWrite(double output){
 
 //***********VISION DRIVE:***********
 
-VisionDrive::VisionDrive() : frc::Command() {
+VisionDrive::VisionDrive() : frc::Command(), m_timer() {
   Requires(Robot::driveTrain.get());
   visionTable = start_networkTable();
   
@@ -102,6 +102,7 @@ VisionDrive::VisionDrive() : frc::Command() {
 
 //startup the command; create PIDs and PID settings
 void VisionDrive::Initialize() {
+  m_timer.Start();
   correctIndex = -1;  
   targetWidth = 40;
 
@@ -142,11 +143,14 @@ void VisionDrive::Initialize() {
 
 //Drive the robot according to PID output
 void VisionDrive::Execute() {
-  findLeftSignature();
-  DriverStation::ReportError("xPower:   " + std::to_string(xPower));
-  DriverStation::ReportError("   yPower:      " + std::to_string(yPower));
-  DriverStation::ReportError("      zPower:         " + std::to_string(zPower));
-  Robot::driveTrain->RODrive(yPower,zPower,xPower);
+  if (m_timer.HasPeriodPassed(.1))
+{ 
+    findLeftSignature();
+    DriverStation::ReportError("xPower:   " + std::to_string(xPower));
+    DriverStation::ReportError("   yPower:      " + std::to_string(yPower));
+    DriverStation::ReportError("      zPower:         " + std::to_string(zPower));
+    Robot::driveTrain->CartesianDrive(yPower,zPower,xPower, Robot::navx->GetYaw());
+ }
 }
 //Finish if all 3 PIDs are on target, if no target found, or if robot reaches timeout
 bool VisionDrive::IsFinished() { 

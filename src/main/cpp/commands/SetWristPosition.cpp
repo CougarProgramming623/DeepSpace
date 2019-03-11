@@ -25,7 +25,7 @@ void SetWristPosition::Initialize() {
 	if (m_dialPosition != DialPosition::INVALID) {
 		m_setpoint = Robot::arm->GetWristPosition(m_dialPosition, Robot::oi->IsCargoMode());
 	}
-	DriverStation::ReportError("Wrist going to: " + std::to_string(m_setpoint));
+	//DriverStation::ReportError("Wrist going to: " + std::to_string(m_setpoint));
 	Robot::wrist->SetSetpoint(m_setpoint);
 }
 

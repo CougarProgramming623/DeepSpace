@@ -28,6 +28,7 @@ private:
 	bool fod;
 	bool driveWithPercentOutput;
 	bool useArmSlider, useForkSlider, useWristSlider;
+	bool lastButtonVal = false;
 	/*
 	//Dial buttons
 	frc::JoystickButton low, medium, high, cargoHold, cargoGround;
@@ -54,6 +55,7 @@ public:
 	bool UsingArmSlider();
 	bool UsingForkSlider();
 	bool UsingWristSlider();
+	bool GetVision();
 	CargoOrHatch IsCargoMode();
 };
 
