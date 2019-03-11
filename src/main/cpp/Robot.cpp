@@ -19,7 +19,6 @@ void Robot::RobotInit() {
 	Cob::InitBoard();
 	driveTrain.reset(new DriveTrain());
 	arm.reset(new Arm());
-	DriverStation::ReportError("Finished arm creation");
 	wrist.reset(new Wrist());
 	vacuum.reset(new Vacuum());
 	oi.reset(new OI());

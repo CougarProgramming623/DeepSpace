@@ -47,7 +47,7 @@ public:
 	void Update();
 	SliderStatus GetSliderMode();
 	inline bool IsAlignmentMode() { 
-		return !IsFOD(); 
+		return !IsFOD();
 	}
 	bool IsFOD();
 	bool IsPercentOutputMode();

@@ -84,7 +84,6 @@ fodToggle(&driverJoystick, 1)
 	fodToggle.WhenPressed(new BooleanToggle(&fod, [](bool newValue) {
 		
 	}));
-	DriverStation::ReportError("OI DOne");
 } //OI()
 
 void OI::Update() {
