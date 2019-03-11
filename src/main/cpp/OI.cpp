@@ -16,6 +16,8 @@
 #include "commands/TurnOnVacuum.h"
 #include "commands/StopVacuum.h"
 
+#include "commands/VisionDrive.h"
+
 #include "commands/SetManipulator.h"
 
 #include "GameEnums.h"
@@ -149,7 +151,8 @@ CargoOrHatch OI::IsCargoMode() {
 	return (buttonBoard.GetRawButton(CARGO_HATCH_TOGGLE) ? CargoOrHatch::HATCH : CargoOrHatch::CARGO);
 }
 
-bool OI::GetVision() {
+bool OI::IsVisionActive(){
 	return driverJoystick.GetRawButton(1);
 }
+
 }//frc2019

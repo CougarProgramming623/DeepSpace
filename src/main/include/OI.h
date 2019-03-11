@@ -58,6 +58,7 @@ public:
 	bool UsingWristSlider();
 	bool GetVision();
 	CargoOrHatch IsCargoMode();
+	bool IsVisionActive();
 };
 
 }//frc2019
