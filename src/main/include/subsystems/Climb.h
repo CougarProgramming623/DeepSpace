@@ -21,15 +21,8 @@ public:
 	inline bool SetLimitHit(bool limit) { m_HitLimit = limit; }
 	
 	inline void StopClimbMotor() { m_ClimbMotor.Set(0.0); }
-	inline void SetClimbUpPower() { m_ClimbMotor.Set(CLIMB_UP_SPEED); }
-	inline void SetClimbDownPower() { m_ClimbMotor.Set(CLIMB_DOWN_SPEED); }
-
-	inline void SetClimbTime(double time) { m_ClimbTime = time; }
-	inline void AddClimbTime(double delta) { m_ClimbTime += delta; }
-	inline void SubtractClimbTime(double delta) { m_ClimbTime += delta; }
-	
-	inline double GetClimbTime() const { return m_ClimbTime; }
-	inline void ResetClimbTime() { m_ClimbTime = 0.0; }
+	void SetClimbUpPower();
+	void SetClimbDownPower();
 
 	void InitDefaultCommand() override;
 private:
