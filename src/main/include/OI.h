@@ -18,13 +18,13 @@ private:
 	SliderStatus sliderMode = SliderStatus::DIAL_CONTROL;
 
 	frc::JoystickButton vacuumToggle;
-	frc::JoystickButton climbUp, climbDown;
-	frc::JoystickButton egOverride, driveOverride, vModeOverride, forkOverride, positionOverride;
+	frc::JoystickButton climbUp, climbDown, endgameOverride, driveOverride;
+	frc::JoystickButton armOverride, forkOverride, wristOverride;
 	frc::JoystickButton turnTo0, turnTo45, turnTo90, turnTo135, turnTo180, turnTo225, turnTo270, turnTo315;
 	frc::JoystickButton	toggleHatchCargo;
 	frc::JoystickButton forkGround, forkHerd, forkUp, forkStow;
 	frc::JoystickButton allIn, pickup, low, medium, high, ship;
-	frc::JoystickButton fodToggle;
+
 	bool fod;
 	bool driveWithPercentOutput;
 	bool useArmSlider, useForkSlider, useWristSlider;
@@ -49,6 +49,7 @@ public:
 	inline bool IsAlignmentMode() { 
 		return !IsFOD();
 	}
+	bool CanClimb();
 	bool IsFOD();
 	bool IsPercentOutputMode();
 	bool UsingArmSlider();
