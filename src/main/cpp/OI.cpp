@@ -26,6 +26,7 @@
 #define FORK_AXIS 2
 #define WRIST_AXIS 3
 
+
 namespace frc2019 {
 
 //Instantiate the Joystick and Button Board
@@ -75,12 +76,15 @@ allIn(&buttonBoard, 24), pickup(&buttonBoard, 25), low(&buttonBoard, 26), ship(&
 	high.WhileHeld(new SetManipulator(new SetArmWristPosition(RocketHeight::HIGH), new SetArmWristPosition(RocketHeight::HIGH)));
 	ship.WhileHeld(new SetManipulator(new SetArmWristPosition(RocketHeight::SHIP), new SetArmWristPosition(RocketHeight::SHIP)));*/
 
+	//allIn.WhileHeld(new SetArmWristPositionSecure(DialPosition::ALL_IN));
 	allIn.WhileHeld(new SetArmWristPositionSecure(DialPosition::ALL_IN));
 	pickup.WhileHeld(new SetArmWristPosition(DialPosition::PICKUP));
 	low.WhileHeld(new SetArmWristPosition(DialPosition::LOW));
 	ship.WhileHeld(new SetArmWristPosition(DialPosition::SHIP));
 	medium.WhileHeld(new SetArmWristPosition(DialPosition::MEDIUM));
 	high.WhileHeld(new SetArmWristPosition(DialPosition::HIGH));
+	fodToggle.WhenPressed(new VisionDrive());
+	DriverStation::ReportError("OI DOne");
 } //OI()
 
 static bool lastButton = false;
@@ -111,7 +115,6 @@ void OI::Update() {
 		}
 		lastButton = currentButton;
 	}
-
 } //Update()
 
 SliderStatus OI::GetSliderMode() {
@@ -146,5 +149,7 @@ CargoOrHatch OI::IsCargoMode() {
 	return (buttonBoard.GetRawButton(CARGO_HATCH_TOGGLE) ? CargoOrHatch::HATCH : CargoOrHatch::CARGO);
 }
 
-
+bool OI::GetVision() {
+	return driverJoystick.GetRawButton(1);
+}
 }//frc2019

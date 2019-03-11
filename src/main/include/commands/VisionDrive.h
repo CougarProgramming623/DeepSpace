@@ -15,17 +15,30 @@
 
 
 namespace frc2019 {
-class geoffrey : public frc::PIDSource {
+
+class centerX_Source : public frc::PIDSource {
+  public:
+    double PIDGet();
+};
+class width_Source : public frc::PIDSource {
   public:
     double PIDGet();
 };
 
-class dummyOutput : public frc::PIDOutput {
+class xOutput : public frc::PIDOutput {
+  public:
+    void PIDWrite(double output);
+};
+class yOutput : public frc::PIDOutput{
+  public:
+    void PIDWrite(double output);
+};
+class zOutput : public frc::PIDOutput{
   public:
     void PIDWrite(double output);
 };
 
-class VisionDrive : public frc::Command, frc::PIDOutput {
+class VisionDrive : public frc::Command {
  public:
   VisionDrive();
   void Initialize() override;
@@ -33,23 +46,36 @@ class VisionDrive : public frc::Command, frc::PIDOutput {
   bool IsFinished() override;
   void End() override;
   void Interrupted() override;
-  void PIDWrite(double output) override;
   std::shared_ptr<nt::NetworkTable> start_networkTable();
   static std::vector<double> arrCenterX, arrAngle, arrHeight, arrWidth;
   static int correctIndex;
   volatile static double xPower, zPower, yPower;
-  static double getPower();
   static double getCenterX();
-  static dummyOutput zOutput;
+  static double getWidth();
+  static frc::Preferences* prefs;
+  double xP, xI, xD;
+  double yP, yI, yD;
+  double zP, zI, zD;
+  static double targetWidth;
 private:
-  static geoffrey geoff;
-  static std::shared_ptr<nt::NetworkTable> visionTable;
 
-	void getZPower(); 
-  void getYPower();
-  bool somethingWrong();
+  static centerX_Source xSource;
+  static width_Source ySource;
+  
+  double getClosestTargetAngle();
+
+  static xOutput xOut;
+  static yOutput yOut;
+  static zOutput zOut;
+
+  static std::shared_ptr<nt::NetworkTable> visionTable;
+  void findLeftSignature();
   static frc::PIDController* xPID;
+  static frc::PIDController* yPID;
   static frc::PIDController* zPID;
-  double rotationRate;
+
+  frc::Timer m_timer;
 };
+
 } //namespace
+
