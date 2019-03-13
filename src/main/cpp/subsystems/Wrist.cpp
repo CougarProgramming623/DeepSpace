@@ -28,6 +28,8 @@ void Wrist::SetSetpoint(int setpoint) {
 }
 
 void Wrist::SetVelocity(float velocity) {
+	wristMC.ConfigPeakOutputForward(.4, 30);
+	wristMC.ConfigPeakOutputReverse(-.6, 30);
 	wristMC.Set(ControlMode::PercentOutput, velocity);
 }
 

@@ -36,7 +36,6 @@ private:
 	//Arm Control Overrides
 	frc::JoystickButton manualControlOverride, vMode;
 	//Drive Control Overrids
-	frc::JoystickButton fodToggle;
 	//temporary individual motor buttons
 	frc::JoystickButton arm;
 	frc::JoystickButton wrist;

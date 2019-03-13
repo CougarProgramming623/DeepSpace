@@ -58,7 +58,7 @@ fodToggle(&driverJoystick, 1)
 	driveOverride.WhenPressed(new BooleanToggle(&driveWithPercentOutput, [](bool newValue) {
 		DriverStation::ReportError("Driving with percent output: " + newValue ? "true" : "false");
 	}));
-	forkOverride.WhenPressed(new BooleanToggle(&useForkSlider, [](bool newValue) {
+	forktOverride.WhenPressed(new BooleanToggle(&useForkSlider, [](bool newValue) {
 		DriverStation::ReportError("Using Fork Slider: " + newValue ? "true" : "false");
 	}));
 	turnTo0.WhenPressed(new Turn(0.0));
@@ -80,12 +80,12 @@ fodToggle(&driverJoystick, 1)
 	ship.WhileHeld(new SetManipulator(new SetArmWristPosition(RocketHeight::SHIP), new SetArmWristPosition(RocketHeight::SHIP)));*/
 
 	//allIn.WhileHeld(new SetArmWristPositionSecure(DialPosition::ALL_IN));
-	allIn.WhileHeld(new SetArmWristPositionSecure(DialPosition::ALL_IN));
-	pickup.WhileHeld(new SetArmWristPosition(DialPosition::PICKUP));
-	low.WhileHeld(new SetArmWristPosition(DialPosition::LOW));
-	ship.WhileHeld(new SetArmWristPosition(DialPosition::SHIP));
-	medium.WhileHeld(new SetArmWristPosition(DialPosition::MEDIUM));
-	high.WhileHeld(new SetArmWristPosition(DialPosition::HIGH));
+	allIn.WhenPressed(new SetArmWristPositionSecure(DialPosition::ALL_IN));
+	pickup.WhenPressed(new SetArmWristPosition(DialPosition::PICKUP));
+	low.WhenPressed(new SetArmWristPosition(DialPosition::LOW));
+	ship.WhenPressed(new SetArmWristPosition(DialPosition::SHIP));
+	medium.WhenPressed(new SetArmWristPosition(DialPosition::MEDIUM));
+	high.WhenPressed(new SetArmWristPosition(DialPosition::HIGH));
 	fodToggle.WhenPressed(new VisionDrive());
 	DriverStation::ReportError("OI DOne");
 } //OI()
@@ -96,10 +96,10 @@ static bool lastButton = false;
 
 void OI::Update() {
 	if (UsingArmSlider()) {
-		Robot::arm->SetVelocity(buttonBoard.GetRawAxis(-1));// The value is already [-1, 1]
+		Robot::arm->SetVelocity(buttonBoard.GetRawAxis(0));// The value is already [-1, 1]
 	}
 	if(UsingWristSlider()) {
-		Robot::wrist->SetVelocity(buttonBoard.GetRawAxis(-1));
+		Robot::wrist->SetVelocity(buttonBoard.GetRawAxis(2));
 	}
 	if(UsingForkSlider()) {
 		//TODO set fork velocity
