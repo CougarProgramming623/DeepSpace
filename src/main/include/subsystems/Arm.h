@@ -54,6 +54,7 @@ private:
 private:
 	TalonSRX armMC;
 	int initialReading;
+	std::string m_CobNames[ARM_MECHANISM_TYPE_COUNT][CARGO_OR_HATCH_COUNT][DIAL_POSITION_COUNT];
 	int m_setpoints[ARM_MECHANISM_TYPE_COUNT][CARGO_OR_HATCH_COUNT][DIAL_POSITION_COUNT] {};//Main Arm vs Wrist, Cargo vs Hatch, arm positions
 	int m_extra[EXTRA_ARRAY_LENGTH];
 };

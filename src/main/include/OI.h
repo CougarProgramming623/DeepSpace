@@ -24,6 +24,7 @@ private:
 	frc::JoystickButton	toggleHatchCargo;
 	frc::JoystickButton forkGround, forkHerd, forkUp, forkStow;
 	frc::JoystickButton allIn, pickup, low, medium, high, ship;
+	frc::JoystickButton fodToggle;
 
 	bool fod;
 	bool driveWithPercentOutput;

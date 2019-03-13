@@ -40,7 +40,7 @@ frc::Joystick OI::buttonBoard = frc::Joystick(1);
 #define WRIST_OVERRIDE 8
 
 #define CARGO_HATCH_TOGGLE 19
-
+	
 OI::OI() : 
 vacuumToggle(&buttonBoard, 1),
 climbUp(&buttonBoard, 2), climbDown(&buttonBoard, 3), endgameOverride(&buttonBoard, 4), driveOverride(&buttonBoard, 5),
@@ -48,7 +48,8 @@ armOverride(&buttonBoard, ARM_OVERRIDE), forkOverride(&buttonBoard, FORK_OVERRID
 turnTo0(&buttonBoard, 13), turnTo45(&buttonBoard, 14), turnTo90(&buttonBoard, 15), turnTo135(&buttonBoard, 16), turnTo180(&buttonBoard, 9), turnTo225(&buttonBoard, 10), turnTo270(&buttonBoard, 11), turnTo315(&buttonBoard, 12), 
 toggleHatchCargo(&buttonBoard, CARGO_HATCH_TOGGLE),
 forkGround(&buttonBoard, 20), forkUp(&buttonBoard, 21), forkStow(&buttonBoard, 22), forkHerd(&buttonBoard, 23),
-allIn(&buttonBoard, 24), pickup(&buttonBoard, 25), low(&buttonBoard, 26), ship(&buttonBoard, 27), medium(&buttonBoard, 28), high(&buttonBoard, 29)
+allIn(&buttonBoard, 24), pickup(&buttonBoard, 25), low(&buttonBoard, 26), ship(&buttonBoard, 27), medium(&buttonBoard, 28), high(&buttonBoard, 29),
+fodToggle(&driverJoystick, 1)
 {
 	vacuumToggle.WhileHeld(new TurnOnVacuum());
 	vacuumToggle.WhenReleased(new StopVacuum());
