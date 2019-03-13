@@ -213,6 +213,7 @@ double VisionDrive::getClosestTargetAngle(){
   for(int i = 1; i < 7; i++){
     if(currentHeading - targets[i] < minError)
       min = i;
+      minError = abs(currentHeading - targets[i]);
   }
   return targets[min];
 }

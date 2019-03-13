@@ -50,6 +50,16 @@
 #define WRIST_ID SAMUS_WRIST_TALON_ID
 #define VACUUM_ID 0
 
+#define XP 0
+#define XI 0
+#define XD 0
+#define YP 0
+#define YI 0
+#define YD 0
+#define ZP 0
+#define ZI 0
+#define ZD 0
+
 #define BOT_NAME SAMUS_BOT_NAME
 
 #elif defined(BOT_HAMBONE)
@@ -64,6 +74,16 @@
 #define WRIST_ID HAMBONE_WRIST_TALON_ID
 #define VACUUM_ID 16
 #define BOT_NAME HAMBONE_BOT_NAME
+
+#define XP 0
+#define XI 0
+#define XD 0
+#define YP 0
+#define YI 0
+#define YD 0
+#define ZP 0
+#define ZI 0
+#define ZD 0
 
 #elif defined(BOT_RAFIKI)
 
