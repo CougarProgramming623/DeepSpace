@@ -58,7 +58,7 @@ fodToggle(&driverJoystick, 1)
 	driveOverride.WhenPressed(new BooleanToggle(&driveWithPercentOutput, [](bool newValue) {
 		DriverStation::ReportError("Driving with percent output: " + newValue ? "true" : "false");
 	}));
-	forkOverride.WhenPressed(new BooleanToggle(&useForkSlider, [](bool newValue) {
+	forktOverride.WhenPressed(new BooleanToggle(&useForkSlider, [](bool newValue) {
 		DriverStation::ReportError("Using Fork Slider: " + newValue ? "true" : "false");
 	}));
 	turnTo0.WhenPressed(new Turn(0.0));
@@ -99,7 +99,7 @@ void OI::Update() {
 		Robot::arm->SetVelocity(buttonBoard.GetRawAxis(0));// The value is already [-1, 1]
 	}
 	if(UsingWristSlider()) {
-		Robot::wrist->SetVelocity(buttonBoard.GetRawAxis(1));
+		Robot::wrist->SetVelocity(buttonBoard.GetRawAxis(2));
 	}
 	if(UsingForkSlider()) {
 		//TODO set fork velocity
