@@ -25,5 +25,4 @@ void Cob::InitValue(std::string str){
     map[str] = table->GetEntry(str);
   }
 }
-
-}//frc2019
+} //namespace

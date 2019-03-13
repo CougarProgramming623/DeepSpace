@@ -5,32 +5,19 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#pragma once
-
-#include <frc/commands/Command.h>
-#include <frc/Timer.h>
-#include <frc/WPILib.h>
-
-
-#include "GameEnums.h"
-
+#include "commands/SetArmWristPositionSecure.h"
+#include "commands/SetArmPosition.h"
+#include "commands/SetWristPosition.h"
+#include "Robot.h"
+#include "commands/WristWait.h"
 
 namespace frc2019 {
-
-/*
- * Runs the climb motor forward so that the peg legs deploy
- */
-class ClimbUp : public frc::Command {
-public:
-	ClimbUp();
-	void Initialize() override;
-	void Execute() override;
-	bool IsFinished() override;
-	void End() override;
-	void Interrupted() override;
-private:
-	frc::Timer m_Timer;
-};
-
-
-}//namespace
+	SetArmWristPositionSecure::SetArmWristPositionSecure(DialPosition position) {
+		Requires(Robot::arm.get());
+		Requires(Robot::wrist.get());
+		
+		AddSequential(new SetWristPosition(position));
+		AddSequential(new WristWait());
+		AddSequential(new SetArmPosition(position));	
+	}
+}

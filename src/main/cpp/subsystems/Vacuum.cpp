@@ -11,7 +11,7 @@
 #define SUCK_SPEED 0.5
 
 namespace frc2019 {
-Vacuum::Vacuum() : Subsystem("Vacuum"), vacuumMC(VACUUM_ID) {
+Vacuum::Vacuum() : Subsystem("Vacuum"), vacuumMC(VACUUM_ID), servo(0) {
 
 } //Vacuum()
 
@@ -20,7 +20,18 @@ void Vacuum::InitDefaultCommand() {
   // SetDefaultCommand(new MySpecialCommand());
 } //InitDefaultCommand()
 
-void Vacuum::SetVacuumSpeed() {
-  vacuumMC.Set(ControlMode::PercentOutput, SUCK_SPEED);
-} //SetVacuumSpeed()
+void Vacuum::Suck() {
+  vacuumMC.Set(ControlMode::PercentOutput, 1.0);
+} //Suck()
+
+void Vacuum::Stop() {
+  vacuumMC.Set(ControlMode::PercentOutput, 0.0);
+}
+void Vacuum::SetServoPosition(double pos) {
+  servo.SetPosition(pos);
+}
+
+double Vacuum::GetServoPosition() {
+  return servo.GetPosition();
+}
 } //frc2019

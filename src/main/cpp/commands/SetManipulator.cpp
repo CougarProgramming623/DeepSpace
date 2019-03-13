@@ -5,32 +5,20 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#pragma once
-
-#include <frc/commands/Command.h>
-#include <frc/Timer.h>
-#include <frc/WPILib.h>
-
-
-#include "GameEnums.h"
-
+#include "commands/SetManipulator.h"
+#include "Robot.h"
 
 namespace frc2019 {
 
-/*
- * Runs the climb motor forward so that the peg legs deploy
- */
-class ClimbUp : public frc::Command {
-public:
-	ClimbUp();
-	void Initialize() override;
-	void Execute() override;
-	bool IsFinished() override;
-	void End() override;
-	void Interrupted() override;
-private:
-	frc::Timer m_Timer;
-};
+SetManipulator::SetManipulator(Command* onTrue, Command* onFalse) : frc::ConditionalCommand(onTrue, onFalse) {
+  // Use Requires() here to declare subsystem dependencies
+  // eg. Requires(Robot::chassis.get());
+}
 
+bool SetManipulator::Condition() {
+  return Robot::oi->IsCargoMode();
+}
+// Make this return true when this Command no longer needs to run execute()
+bool SetManipulator::IsFinished() { return true; }
 
-}//namespace
+}

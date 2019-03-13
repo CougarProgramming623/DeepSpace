@@ -1,0 +1,1 @@
+scp admin@10.6.23.2:/home/lvuser/ArmSetpoints.bin ArmSetpoints.bin

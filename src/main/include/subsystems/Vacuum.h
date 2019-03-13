@@ -18,9 +18,13 @@ class Vacuum : public frc::Subsystem {
   // It's desirable that everything possible under private except
   // for methods that implement subsystem capabilities
   TalonSRX vacuumMC;
+  frc::Servo servo;
  public:
   Vacuum();
   void InitDefaultCommand() override;
-  void SetVacuumSpeed();
+  void Suck();
+  void SetServoPosition(double);
+  void Stop();
+  double GetServoPosition();
 };
 }

@@ -15,12 +15,18 @@ ClimbUp::ClimbUp() : m_Timer() {
 }
 
 void ClimbUp::Initialize() {
-	m_Timer.Start();
+	//m_Timer.Start();
+	frc::DriverStation::ReportError("Climbing Up");
+	Robot::climb->SetClimbUpPower();
 }
 
 void ClimbUp::Execute() {
-	Robot::climb->SetPower(1.0);
-	Robot::climb->SetClimbTime(m_Timer.Get());//Count the time we climbed for
+	//Robot::climb->SetClimbTime(m_Timer.Get());//Count the time we climbed for
+	//This means that the peg legs have deployed and we can no longer safley climb down
+	//We can only run the climb motor backwords to retarct the last peg-leg 
+	//if(m_Timer.Get() > CRITICAL_CLIMB_TIME) {
+	//	Robot::climb->SetLimitHit(true);
+	//}
 }
 
 bool ClimbUp::IsFinished() {
@@ -28,13 +34,10 @@ bool ClimbUp::IsFinished() {
 }
 
 void ClimbUp::End() {
-	Robot::climb->SetPower(0.0);
+	Robot::climb->StopClimbMotor();
 }
 
 void ClimbUp::Interrupted() {
-
+	End();
 }
-
-
-
 }//namespace

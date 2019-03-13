@@ -17,4 +17,33 @@
 #define COB_FIELD_ORIENTED "robot/is-field-oriented"
 #define COB_TIME "fms/time-left"
 #define COB_RED "fms/is-red" 
-#define COB_HATCH_PRESSED "ak/is-pressed"
+
+#define COB_ARM_CARGO_ROCKET_HIGH "arm-position/rocket-high"
+#define COB_ARM_CARGO_ROCKERT_MID "arm-position/rocket-mid"
+#define COB_ARM_CARGO_ROCKET_LOW "arm-position/rocket-low"
+#define COB_ARM_CARGO_GROUND "arm-position/cargo/ground"
+#define COB_ARM_CARGO_SHIP "arm-position/cargo/ship"
+#define COB_ARM_HATCH_LOW "arm-position/hatch/low"
+#define COB_ARM_HATCH_MID "arm-position/hatch/mid"
+#define COB_ARM_HATCH_HIGH  "arm-position/hatch/high"
+#define COB_ARM_SECURE "arm-position/secure"
+#define COB_ARM_ALLEYOOP "arm-position/alley-oop"
+
+
+//wrist
+#define COB_WRIST_CARGO_ROCKET_HIGH "wrist-position/rocket-high"
+#define COB_WRIST_CARGO_ROCKET_MID "wrist-position/rocket-mid"
+#define COB_WRIST_CARGO_ROCKET_LOW "wrist-position/rocket-low"
+#define COB_WRIST_CARGO_GROUND "wrist-position/cargo/ground"
+#define COB_WRIST_CARGO_SHIP "wrist-position/cargo/ship"
+#define COB_WRIST_HATCH_LOW "wrist-position/hatch/low"
+#define COB_WRIST_HATCH_MID "wrist-position/hatch/mid"
+#define COB_WRIST_HATCH_HIGH "wrist-position/hatch/high"
+#define COB_WRIST_SECURE "wrist-position/secure"
+#define COB_WRIST_ALLEYOOP "wrist-position/alley-oop"
+
+#define COB_PULL_ARM_SETPOINTS "pull-setpoints"
+#define COB_SAVE_ARM_SETPOINTS "save-setpoints"
+
+#define COB_ARM_OFFSET "arm-position/offset"
+#define COB_WRIST_OFFSET "wrist-position/offset"

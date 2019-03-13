@@ -6,15 +6,38 @@
 /*----------------------------------------------------------------------------*/
 
 #include "subsystems/Wrist.h"
-#include "RobotConstants.h"
-#include "TalonConfig.h"
 
 namespace frc2019 {
 Wrist::Wrist() : Subsystem("Wrist"), wristMC(WRIST_ID) {
-  wristMC.ConfigSelectedFeedbackSensor(FeedbackDevice::Analog, 0, 30);
+  using namespace talon;
+  ConfigurePotentiometer(&wristMC, 9.0, 0.0, 25.0, 0.4, -0.6);
+	
+	wristMC.Set(ControlMode::Position, wristMC.GetSelectedSensorPosition());
 } //Wrist()
 
 void Wrist::InitDefaultCommand() {
   
 } //InitDefaultCommand()
+
+void Wrist::SetP(double kP) {
+	wristMC.Config_kP(0, kP, 30);
+}
+
+void Wrist::SetSetpoint(int setpoint) {
+	wristMC.Set(ControlMode::Position, setpoint);
+}
+
+void Wrist::SetVelocity(float velocity) {
+	wristMC.Set(ControlMode::PercentOutput, velocity);
+}
+
+int Wrist::GetWristPosition() {
+	return wristMC.GetSelectedSensorPosition();
+}
+
+double Wrist::GetWristTalonData(TalonData data) {
+	using namespace talon;
+	return GetTalonData(&wristMC, data);
+}
+
 } //frc2019

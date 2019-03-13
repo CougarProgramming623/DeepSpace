@@ -8,29 +8,20 @@
 #pragma once
 
 #include <frc/commands/Command.h>
-#include <frc/Timer.h>
-#include <frc/WPILib.h>
-
-
-#include "GameEnums.h"
-
+#include "subsystems/Wrist.h"
+#include "Robot.h"
 
 namespace frc2019 {
 
-/*
- * Runs the climb motor forward so that the peg legs deploy
- */
-class ClimbUp : public frc::Command {
+class WristWait : public frc::Command {
 public:
-	ClimbUp();
+	WristWait();
 	void Initialize() override;
 	void Execute() override;
 	bool IsFinished() override;
 	void End() override;
 	void Interrupted() override;
-private:
-	frc::Timer m_Timer;
+	
 };
-
 
 }//namespace
