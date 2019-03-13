@@ -16,11 +16,15 @@
 #include "commands/TurnOnVacuum.h"
 #include "commands/StopVacuum.h"
 
+#include "commands/VisionDrive.h"
+
 #include "commands/SetManipulator.h"
 
 #include "GameEnums.h"
 #include "Constants.h"
 #include "RobotConstants.h"
+
+#include "commands/VisionDrive.h"
 
 #define V_MODE_OVERRIDE 6
 #define POSITION_OVERRIDE 8
@@ -74,6 +78,7 @@ fodToggle(&driverJoystick, 1)
 	high.WhileHeld(new SetManipulator(new SetArmWristPosition(RocketHeight::HIGH), new SetArmWristPosition(RocketHeight::HIGH)));
 	ship.WhileHeld(new SetManipulator(new SetArmWristPosition(RocketHeight::SHIP), new SetArmWristPosition(RocketHeight::SHIP)));*/
 
+	//allIn.WhileHeld(new SetArmWristPositionSecure(DialPosition::ALL_IN));
 	allIn.WhileHeld(new SetArmWristPositionSecure(DialPosition::ALL_IN));
 	pickup.WhileHeld(new SetArmWristPosition(DialPosition::PICKUP));
 	low.WhileHeld(new SetArmWristPosition(DialPosition::LOW));
@@ -81,9 +86,7 @@ fodToggle(&driverJoystick, 1)
 	medium.WhileHeld(new SetArmWristPosition(DialPosition::MEDIUM));
 	high.WhileHeld(new SetArmWristPosition(DialPosition::HIGH));
 
-	fodToggle.WhenPressed(new BooleanToggle(&fod, [](bool newValue) {
-		
-	}));
+	fodToggle.WhenPressed(new VisionDrive());
 	DriverStation::ReportError("OI DOne");
 } //OI()
 
@@ -97,6 +100,13 @@ void OI::Update() {
 	} else {//Normal dial control
 
 	}
+
+	 if(!driverJoystick.GetRawButton(1) && lastButtonVal) {
+		fod = !fod;
+		DriverStation::ReportError(fod ? "FOD" : "Robot Oriented");
+	}
+	
+	lastButtonVal = driverJoystick.GetRawButton(1);
 } //Update()
 
 SliderStatus OI::GetSliderMode() {
@@ -127,5 +137,8 @@ CargoOrHatch OI::IsCargoMode() {
 	return (buttonBoard.GetRawButton(CARGO_HATCH_TOGGLE) ? CargoOrHatch::HATCH : CargoOrHatch::CARGO);
 }
 
+bool OI::IsVisionActive(){
+	return driverJoystick.GetRawButton(1);
+}
 
 }//frc2019

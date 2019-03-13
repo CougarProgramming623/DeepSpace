@@ -69,7 +69,7 @@ void zOutput::PIDWrite(double output){
 
 //***********VISION DRIVE:***********
 
-VisionDrive::VisionDrive() : frc::Command() {
+VisionDrive::VisionDrive() : frc::Command(), m_timer() {
   Requires(Robot::driveTrain.get());
   visionTable = start_networkTable();
   
@@ -102,6 +102,7 @@ VisionDrive::VisionDrive() : frc::Command() {
 
 //startup the command; create PIDs and PID settings
 void VisionDrive::Initialize() {
+  m_timer.Start();
   correctIndex = -1;  
   targetWidth = 40;
 
@@ -142,18 +143,20 @@ void VisionDrive::Initialize() {
 
 //Drive the robot according to PID output
 void VisionDrive::Execute() {
-  findLeftSignature();
-  DriverStation::ReportError("xPower:   " + std::to_string(xPower));
-  DriverStation::ReportError("   yPower:      " + std::to_string(yPower));
-  DriverStation::ReportError("      zPower:         " + std::to_string(zPower));
-  Robot::driveTrain->RODrive(yPower,zPower,xPower);
+  if (m_timer.HasPeriodPassed(.1)) { 
+    findLeftSignature();
+    DriverStation::ReportError("xPower:   " + std::to_string(xPower));
+    DriverStation::ReportError("   yPower:      " + std::to_string(yPower));
+    DriverStation::ReportError("      zPower:         " + std::to_string(zPower));
+    Robot::driveTrain->CartesianDrive(yPower, zPower, xPower, 0);
+  } 
 }
 //Finish if all 3 PIDs are on target, if no target found, or if robot reaches timeout
 bool VisionDrive::IsFinished() { 
   return correctIndex == -1 || 
   (xPID->OnTarget() && yPID->OnTarget() && zPID->OnTarget()) ||
   IsTimedOut() ||
-  !frc2019::Robot::oi->GetVision();
+  !frc2019::Robot::oi->IsVisionActive();
 }
 
 //Disables PID at the end of the command
@@ -209,12 +212,14 @@ double VisionDrive::getClosestTargetAngle(){
   double targets[] = {0.0, 90.0, -90.0, 30.0, -30.0, 150.0, -150.0};
   int min = 0;
   double currentHeading = Robot::navx->GetYaw();
-  double minError = std::abs(currentHeading - targets[0]);
+  double minError = abs(currentHeading - targets[0]);
   for(int i = 1; i < 7; i++){
-    if(currentHeading - targets[i] < minError)
+    if(abs(currentHeading - targets[i]) < minError){
       min = i;
       minError = abs(currentHeading - targets[i]);
+    }
   }
+  DriverStation::ReportError("Target Angle:" + std::to_string(targets[min]));
   return targets[min];
 }
 
