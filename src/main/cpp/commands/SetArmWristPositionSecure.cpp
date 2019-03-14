@@ -18,6 +18,6 @@ namespace frc2019 {
 		
 		AddSequential(new SetWristPosition(position));
 		AddSequential(new WristWait());
-		AddSequential(new SetArmPosition(position));	
+		AddSequential(new SetArmPosition(position));
 	}
 }

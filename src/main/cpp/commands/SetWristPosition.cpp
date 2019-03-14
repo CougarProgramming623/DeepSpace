@@ -19,12 +19,14 @@ SetWristPosition::SetWristPosition(DialPosition position) : m_dialPosition(posit
 // Called just before this Command runs the first time
 void SetWristPosition::Initialize() {
 	if(m_setpoint > Robot::wrist->GetWristTalonData(TalonData::SENSOR_POSITION))
-		Robot::wrist->SetP(UP_kP_WRIST);
-	else
 		Robot::wrist->SetP(DOWN_kP_WRIST);
+	else
+		Robot::wrist->SetP(UP_kP_WRIST);
 	if (m_dialPosition != DialPosition::INVALID) {
-		m_setpoint = Robot::wrist->GetPosition(m_dialPosition, Robot::oi->IsCargoMode());
+		m_setpoint = Robot::wrist->GetPosition(m_dialPosition, Robot::oi->IsCargoMode());	
 	}
+	if(m_dialPosition == DialPosition::ALL_IN)
+		Robot::wrist->SetP(ALL_IN_kP_WRIST);
 	//DriverStation::ReportError("Wrist going to: " + std::to_string(m_setpoint));
 	Robot::wrist->SetSetpoint(m_setpoint);
 }

@@ -34,6 +34,7 @@ private:
 };
 
 
+
 template<>
 inline void Cob::PushValue<double>(std::string str, double t) {
   InitValue(str);

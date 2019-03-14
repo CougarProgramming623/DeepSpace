@@ -104,8 +104,9 @@
 #define UP_kP_ARM 30
 #define DOWN_kP_ARM 10
 
-#define UP_kP_WRIST 5
-#define DOWN_kP_WRIST 20
+#define DOWN_kP_WRIST 5
+#define UP_kP_WRIST 20
+#define ALL_IN_kP_WRIST 5
 
 #define AIR_OFF_SERVO 0.8
 #define HATCH_AIR_SERVO 0.45
