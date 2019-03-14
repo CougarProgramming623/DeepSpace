@@ -91,7 +91,7 @@ fodToggle(&driverJoystick, 1)
 	ship.WhenPressed(new SetArmWristPosition(DialPosition::SHIP));
 	medium.WhenPressed(new SetArmWristPosition(DialPosition::MEDIUM));
 	high.WhenPressed(new SetArmWristPosition(DialPosition::HIGH));
-	fodToggle.WhenPressed(new VisionDrive());
+	//fodToggle.WhenPressed(new VisionDrive());
 	DriverStation::ReportError("OI DOne");
 } //OI()
 
@@ -109,6 +109,7 @@ void OI::Update() {
 	}
 
 	bool currentButton = driverJoystick.GetRawButton(1);
+	//DriverStation::ReportError(std::string("c: ") + (currentButton ? "true" : "false") + " last " + (lastButton ? "true" : "false"));
 	if (currentButton && !lastButton) {
 		if(fod) {
 			fod = false;
@@ -119,8 +120,8 @@ void OI::Update() {
 			DriverStation::ReportError("FOD Drive On");
 			Cob::PushValue(COB_FIELD_ORIENTED, true);
 		}
-		lastButton = currentButton;
 	}
+	lastButton = currentButton;
 
 	if(buttonBoard.GetRawButton(19)) {
 		Robot::vacuum->SetServoPosition(0.1);
