@@ -11,6 +11,7 @@
 #include <frc/WPILib.h>
 #include <ctre/Phoenix.h>
 #include "GameEnums.h"
+#include "Wrist.h"
 
 #define EXTRA_ARRAY_LENGTH 8
 
@@ -24,6 +25,7 @@ const constexpr char * const EXTRA_NAMES[] = {"arm-position/offset", "wrist-posi
 
 namespace frc2019 {
 class Arm : public frc::Subsystem {
+	friend class Wrist;
 public:
 	Arm();
 	void InitDefaultCommand() override;
@@ -32,21 +34,15 @@ public:
 	void SetVelocity(float);
 
 	int GetArmTalonData(TalonData);
-
-	inline int GetWristCargoPosition(DialPosition position) { return m_setpoints[ArmMechanismType::WRIST][CargoOrHatch::CARGO][(int) position] + GetWristOffset(); }
-	inline int GetWristHatchPosition(DialPosition position) { return m_setpoints[ArmMechanismType::WRIST][CargoOrHatch::HATCH][(int) position] + GetWristOffset(); }
-
-	inline int GetArmCargoPosition(DialPosition position) { return m_setpoints[ArmMechanismType::MAIN_ARM][CargoOrHatch::CARGO][(int) position] + GetArmOffset(); }
-	inline int GetArmHatchPosition(DialPosition position) { return m_setpoints[ArmMechanismType::MAIN_ARM][CargoOrHatch::HATCH][(int) position] + GetArmOffset(); }
+	inline int GetCargoPosition(DialPosition position) { return m_setpoints[ArmMechanismType::MAIN_ARM][CargoOrHatch::CARGO][(int) position] + GetOffset(); }
+	inline int GetHatchPosition(DialPosition position) { return m_setpoints[ArmMechanismType::MAIN_ARM][CargoOrHatch::HATCH][(int) position] + GetOffset(); }
 	
-	inline int GetArmPosition(DialPosition position, CargoOrHatch cargo) { return m_setpoints[ArmMechanismType::MAIN_ARM][(int) cargo][(int) position] +  + GetArmOffset(); }
-	inline int GetWristPosition(DialPosition position, CargoOrHatch cargo) { return m_setpoints[ArmMechanismType::WRIST][(int) cargo][(int) position] +  + GetWristOffset(); }
+	inline int GetPosition(DialPosition position, CargoOrHatch cargo) { return m_setpoints[ArmMechanismType::MAIN_ARM][(int) cargo][(int) position] +  + GetOffset(); }
 	
 	void PullSetpoints();
 	void SaveSetpoints();
 
-	inline int GetArmOffset() { return m_extra[ARM_OFFSET_INDEX]; }
-	inline int GetWristOffset() { return m_extra[WRIST_OFFSET_INDEX]; }
+	inline int GetOffset() { return m_extra[ARM_OFFSET_INDEX]; }
 
 private:
 	std::string MakeCOBAddress(ArmMechanismType arm, CargoOrHatch cargoOrHatch, DialPosition position);

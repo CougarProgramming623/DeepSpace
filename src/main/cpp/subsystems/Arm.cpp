@@ -140,7 +140,7 @@ void Arm::SetVelocity(float velocity) {
 }
 
 void Arm::SetP(double kP) {
-  armMC.Config_kP(0, kP, 30);
+	armMC.Config_kP(0, kP, 30);
 }
 
 

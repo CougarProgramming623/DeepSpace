@@ -19,6 +19,7 @@
 #include "commands/VisionDrive.h"
 
 #include "commands/SetManipulator.h"
+#include "commands/LambdaCommand.h"
 
 #include "GameEnums.h"
 #include "Constants.h"
@@ -40,7 +41,7 @@ frc::Joystick OI::buttonBoard = frc::Joystick(1);
 #define WRIST_OVERRIDE 8
 
 #define CARGO_HATCH_TOGGLE 19
-	
+
 OI::OI() : 
 vacuumToggle(&buttonBoard, 1),
 climbUp(&buttonBoard, 2), climbDown(&buttonBoard, 3), endgameOverride(&buttonBoard, 4), driveOverride(&buttonBoard, 5),
@@ -58,9 +59,6 @@ fodToggle(&driverJoystick, 1)
 	driveOverride.WhenPressed(new BooleanToggle(&driveWithPercentOutput, [](bool newValue) {
 		DriverStation::ReportError("Driving with percent output: " + newValue ? "true" : "false");
 	}));
-	forktOverride.WhenPressed(new BooleanToggle(&useForkSlider, [](bool newValue) {
-		DriverStation::ReportError("Using Fork Slider: " + newValue ? "true" : "false");
-	}));
 	turnTo0.WhenPressed(new Turn(0.0));
 	turnTo45.WhenPressed(new Turn(45));
 	turnTo90.WhenPressed(new Turn(90));
@@ -73,11 +71,16 @@ fodToggle(&driverJoystick, 1)
 	forkStow.WhenPressed(new SetForkPosition(114));
 	forkUp.WhenPressed(new SetForkPosition(267));
 	forkGround.WhenPressed(new SetForkPosition(478));
-	/*allIn.WhenPressed(new SetManipulator(new SetArmWristPosition(RocketHeight::ALL_IN), new SetArmWristPosition(RocketHeight::ALL_IN)));
-	low.WhileHeld(new SetManipulator(new SetArmWristPosition(RocketHeight::LOW), new SetArmWristPosition(RocketHeight::LOW)));
-	medium.WhileHeld(new SetManipulator(new SetArmWristPosition(RocketHeight::MEDIUM), new SetArmWristPosition(RocketHeight::MEDIUM)));
-	high.WhileHeld(new SetManipulator(new SetArmWristPosition(RocketHeight::HIGH), new SetArmWristPosition(RocketHeight::HIGH)));
-	ship.WhileHeld(new SetManipulator(new SetArmWristPosition(RocketHeight::SHIP), new SetArmWristPosition(RocketHeight::SHIP)));*/
+
+	armOverride.WhenReleased(new LambdaCommand([]() {
+		Robot::arm->SetVelocity(0.0f);
+	}));
+	forkOverride.WhenReleased(new LambdaCommand([]() {
+		Robot::fork->SetVelocity(0.0f);
+	}));
+	wristOverride.WhenReleased(new LambdaCommand([]() {
+		Robot::wrist->SetVelocity(0.0f);
+	}));
 
 	//allIn.WhileHeld(new SetArmWristPositionSecure(DialPosition::ALL_IN));
 	allIn.WhenPressed(new SetArmWristPositionSecure(DialPosition::ALL_IN));
@@ -92,17 +95,15 @@ fodToggle(&driverJoystick, 1)
 
 static bool lastButton = false;
 
-
-
 void OI::Update() {
 	if (UsingArmSlider()) {
 		Robot::arm->SetVelocity(buttonBoard.GetRawAxis(0));// The value is already [-1, 1]
 	}
+	if(UsingForkSlider()) {
+		Robot::fork->SetVelocity(buttonBoard.GetRawAxis(1));
+	}
 	if(UsingWristSlider()) {
 		Robot::wrist->SetVelocity(buttonBoard.GetRawAxis(2));
-	}
-	if(UsingForkSlider()) {
-		//TODO set fork velocity
 	}
 
 	bool currentButton = driverJoystick.GetRawButton(1);

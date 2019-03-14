@@ -13,22 +13,25 @@
 #include "GameEnums.h"
 #include "RobotConstants.h"
 #include "TalonConfig.h"
-
-
 namespace frc2019 {
 
 class Wrist : public frc::Subsystem {
 public:
-  Wrist();
-  void InitDefaultCommand() override;
-  void SetP(double);
-  void SetSetpoint(int);
-  void SetVelocity(float);
-  int GetWristPosition();
-  double GetWristTalonData(TalonData);
+	Wrist();
+	void InitDefaultCommand() override;
+	void SetP(double);
+	void SetSetpoint(int);
+	void SetVelocity(float);
+	int GetWristPosition();
+
+	int GetCargoPosition(DialPosition position);
+	int GetHatchPosition(DialPosition position);
+
+	int GetPosition(DialPosition position, CargoOrHatch cargo);
+	int GetOffset();
+
+	double GetWristTalonData(TalonData);
 private:
-	// It's desirable that everything possible under private except
-	// for methods that implement subsystem capabilities
 	TalonSRX wristMC;
 };
 
