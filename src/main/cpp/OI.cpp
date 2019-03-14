@@ -91,7 +91,7 @@ fodToggle(&driverJoystick, 1)
 	ship.WhenPressed(new SetArmWristPosition(DialPosition::SHIP));
 	medium.WhenPressed(new SetArmWristPosition(DialPosition::MEDIUM));
 	high.WhenPressed(new SetArmWristPosition(DialPosition::HIGH));
-	//fodToggle.WhenPressed(new VisionDrive());
+	fodToggle.WhenPressed(new VisionDrive());
 	DriverStation::ReportError("OI DOne");
 } //OI()
 
