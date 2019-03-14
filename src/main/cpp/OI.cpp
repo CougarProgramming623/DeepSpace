@@ -25,6 +25,8 @@
 #include "Constants.h"
 #include "RobotConstants.h"
 
+#include "commands/VisionDrive.h"
+
 #define ARM_AXIS 1
 #define FORK_AXIS 2
 #define WRIST_AXIS 3
@@ -99,11 +101,11 @@ void OI::Update() {
 	if (UsingArmSlider()) {
 		Robot::arm->SetVelocity(buttonBoard.GetRawAxis(0));// The value is already [-1, 1]
 	}
-	if(UsingForkSlider()) {
-		Robot::fork->SetVelocity(buttonBoard.GetRawAxis(1));
-	}
 	if(UsingWristSlider()) {
-		Robot::wrist->SetVelocity(buttonBoard.GetRawAxis(2));
+		Robot::wrist->SetVelocity(buttonBoard.GetRawAxis(1));
+	}
+	if(UsingForkSlider()) {
+		Robot::fork->SetVelocity(buttonBoard.GetRawAxis(2));
 	}
 
 	bool currentButton = driverJoystick.GetRawButton(1);
@@ -118,6 +120,12 @@ void OI::Update() {
 			Cob::PushValue(COB_FIELD_ORIENTED, true);
 		}
 		lastButton = currentButton;
+	}
+
+	if(buttonBoard.GetRawButton(19)) {
+		Robot::vacuum->SetServoPosition(0.1);
+	} else {
+		Robot::vacuum->SetServoPosition(0.65);
 	}
 } //Update()
 

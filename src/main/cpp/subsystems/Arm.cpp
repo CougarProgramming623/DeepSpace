@@ -134,8 +134,8 @@ void Arm::SetSetpoint(int setpoint) {
 }
 
 void Arm::SetVelocity(float velocity) {
-	armMC.ConfigPeakOutputForward(.75, 30);
-	armMC.ConfigPeakOutputReverse(-.3, 30);
+	armMC.ConfigPeakOutputForward(1.0, 30);
+	armMC.ConfigPeakOutputReverse(-1.0, 30);
 	armMC.Set(ControlMode::PercentOutput, velocity);
 }
 

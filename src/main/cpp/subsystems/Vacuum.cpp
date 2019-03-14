@@ -27,6 +27,7 @@ void Vacuum::Suck() {
 void Vacuum::Stop() {
   vacuumMC.Set(ControlMode::PercentOutput, 0.0);
 }
+
 void Vacuum::SetServoPosition(double pos) {
   servo.SetPosition(pos);
 }

@@ -60,5 +60,4 @@ double Wrist::GetWristTalonData(TalonData data) {
 	using namespace talon;
 	return GetTalonData(&wristMC, data);
 }
-
 } //frc2019
