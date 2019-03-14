@@ -14,6 +14,7 @@ std::shared_ptr<Vacuum> Robot::vacuum;
 std::shared_ptr<HatchPickup> Robot::fork;
 std::shared_ptr<Wrist> Robot::wrist;
 std::shared_ptr<Climb> Robot::climb;
+std::shared_ptr<DIO> Robot::dioReader;
 
 void Robot::RobotInit() {
 	Cob::InitBoard();
@@ -24,6 +25,7 @@ void Robot::RobotInit() {
 	oi.reset(new OI());
 	fork.reset(new HatchPickup());
 	climb.reset(new Climb());
+	dioReader.reset(new DIO());
 	try {
 		navx.reset(new AHRS(SPI::Port::kMXP)); //instantiates the gyro
 	} catch (std::exception &ex) {
@@ -47,6 +49,7 @@ void Robot::RobotPeriodic() {
 	Cob::PushValue(COB_ROTATION,Robot::navx->GetYaw());
 
 	Cob::PushValue(COB_MAIN_ARM_ROTATION, arm->GetArmTalonData(TalonData::SENSOR_POSITION));
+	Cob::PushValue(COB_HATCH_PRESSED, dioReader->GetDIO());
 	SmartDashboard::PutNumber("Arm error", arm->GetArmTalonData(TalonData::ERROR));
 	Cob::PushValue(COB_WRIST_ROTATION, wrist->GetWristTalonData(TalonData::SENSOR_POSITION));
 	SmartDashboard::PutNumber("Wrist error", wrist->GetWristTalonData(TalonData::ERROR));

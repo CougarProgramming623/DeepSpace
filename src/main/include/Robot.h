@@ -18,6 +18,7 @@
 #include "subsystems/Climb.h"
 #include "AHRS.h"
 #include "OI.h"
+#include "subsystems/DIO.h"
 
 namespace frc2019 {
 
@@ -45,6 +46,7 @@ public: //pointers
 	static std::shared_ptr<Vacuum> vacuum;
 	static std::shared_ptr<Climb> climb;
 	static std::shared_ptr<Wrist> wrist;
+	static std::shared_ptr<DIO> dioReader;
 
 
 };
