@@ -6,6 +6,9 @@
 /*----------------------------------------------------------------------------*/
 
 #include "subsystems/Wrist.h"
+#include "GameEnums.h"
+
+#include "Robot.h"
 
 namespace frc2019 {
 Wrist::Wrist() : Subsystem("Wrist"), wristMC(WRIST_ID) {
@@ -16,7 +19,7 @@ Wrist::Wrist() : Subsystem("Wrist"), wristMC(WRIST_ID) {
 } //Wrist()
 
 void Wrist::InitDefaultCommand() {
-  
+
 } //InitDefaultCommand()
 
 void Wrist::SetP(double kP) {
@@ -28,7 +31,25 @@ void Wrist::SetSetpoint(int setpoint) {
 }
 
 void Wrist::SetVelocity(float velocity) {
+	wristMC.ConfigPeakOutputForward(.4, 30);
+	wristMC.ConfigPeakOutputReverse(-.6, 30);
 	wristMC.Set(ControlMode::PercentOutput, velocity);
+}
+
+	
+int Wrist::GetOffset() {
+	return Robot::arm->m_extra[WRIST_OFFSET_INDEX];
+}
+
+int Wrist::GetCargoPosition(DialPosition position) {
+	return Robot::arm->m_setpoints[ArmMechanismType::WRIST][CargoOrHatch::CARGO][(int) position] + GetOffset();
+}
+int Wrist::GetHatchPosition(DialPosition position) {
+	return Robot::arm->m_setpoints[ArmMechanismType::WRIST][CargoOrHatch::HATCH][(int) position] + GetOffset();
+}
+
+int Wrist::GetPosition(DialPosition position, CargoOrHatch cargo) {
+	return Robot::arm->m_setpoints[ArmMechanismType::WRIST][(int) cargo][(int) position] +  + GetOffset();
 }
 
 int Wrist::GetWristPosition() {
@@ -39,5 +60,4 @@ double Wrist::GetWristTalonData(TalonData data) {
 	using namespace talon;
 	return GetTalonData(&wristMC, data);
 }
-
 } //frc2019

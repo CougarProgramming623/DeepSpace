@@ -88,7 +88,8 @@ void Robot::TeleopPeriodic() {
 } //TeleopPeriodic
 
 void Robot::TestInit() {
-
+	arm->SetVelocity(0.0f);
+	wrist->SetVelocity(0.0f);
 } //TestInit()
 
 void Robot::TestPeriodic() {

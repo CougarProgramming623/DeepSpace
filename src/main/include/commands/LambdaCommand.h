@@ -7,25 +7,18 @@
 
 #pragma once
 
-#include <frc/commands/Subsystem.h>
-#include <frc/WPILib.h>
-#include <ctre/Phoenix.h>
-#include "GameEnums.h"
+#include <frc/commands/Command.h>
 
-namespace frc2019 {
-class HatchPickup : public frc::Subsystem {
-private:
-	// It's desirable that everything possible under private except
-	// for methods that implement subsystem capabilities
-	TalonSRX pickupMC;
-	int initialReading;
+#include <functional>
 
+class LambdaCommand : public frc::Command {
 public:
-	HatchPickup();
-	void InitDefaultCommand() override;
-	void SetSetpoint(int);
-	void SetVelocity(double);
-	int GetForkTalonData(TalonData);
+	LambdaCommand(std::function<void()> func);
+	void Initialize() override;
+	void Execute() override;
+	bool IsFinished() override;
+	void End() override;
+	void Interrupted() override;
+private:
+	std::function<void()> m_func;
 };
-
-}

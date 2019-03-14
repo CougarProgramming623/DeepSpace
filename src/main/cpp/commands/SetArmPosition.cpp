@@ -25,7 +25,7 @@ void SetArmPosition::Initialize() {
 	else
 		Robot::arm->SetP(DOWN_kP_ARM);
 	if (m_dialPosition != DialPosition::INVALID) {
-		m_setpoint = Robot::arm->GetArmPosition(m_dialPosition, Robot::oi->IsCargoMode());
+		m_setpoint = Robot::arm->GetPosition(m_dialPosition, Robot::oi->IsCargoMode());
 	}
 	//DriverStation::ReportError("Arm going to: " + std::to_string(m_setpoint));
 	Robot::arm->SetSetpoint(m_setpoint);

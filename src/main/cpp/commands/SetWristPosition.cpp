@@ -23,7 +23,7 @@ void SetWristPosition::Initialize() {
 	else
 		Robot::wrist->SetP(DOWN_kP_WRIST);
 	if (m_dialPosition != DialPosition::INVALID) {
-		m_setpoint = Robot::arm->GetWristPosition(m_dialPosition, Robot::oi->IsCargoMode());
+		m_setpoint = Robot::wrist->GetPosition(m_dialPosition, Robot::oi->IsCargoMode());
 	}
 	//DriverStation::ReportError("Wrist going to: " + std::to_string(m_setpoint));
 	Robot::wrist->SetSetpoint(m_setpoint);

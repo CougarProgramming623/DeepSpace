@@ -17,11 +17,16 @@
 #include "commands/TurnOnVacuum.h"
 #include "commands/StopVacuum.h"
 
+#include "commands/VisionDrive.h"
+
 #include "commands/SetManipulator.h"
+#include "commands/LambdaCommand.h"
 
 #include "GameEnums.h"
 #include "Constants.h"
 #include "RobotConstants.h"
+
+#include "commands/VisionDrive.h"
 
 #define ARM_AXIS 1
 #define FORK_AXIS 2
@@ -47,7 +52,8 @@ armOverride(&buttonBoard, ARM_OVERRIDE), forkOverride(&buttonBoard, FORK_OVERRID
 turnTo0(&buttonBoard, 13), turnTo45(&buttonBoard, 14), turnTo90(&buttonBoard, 15), turnTo135(&buttonBoard, 16), turnTo180(&buttonBoard, 9), turnTo225(&buttonBoard, 10), turnTo270(&buttonBoard, 11), turnTo315(&buttonBoard, 12), 
 toggleHatchCargo(&buttonBoard, CARGO_HATCH_TOGGLE),
 forkGround(&buttonBoard, 20), forkUp(&buttonBoard, 21), forkStow(&buttonBoard, 22), forkHerd(&buttonBoard, 23),
-allIn(&buttonBoard, 24), pickup(&buttonBoard, 25), low(&buttonBoard, 26), ship(&buttonBoard, 27), medium(&buttonBoard, 28), high(&buttonBoard, 29)
+allIn(&buttonBoard, 24), pickup(&buttonBoard, 25), low(&buttonBoard, 26), ship(&buttonBoard, 27), medium(&buttonBoard, 28), high(&buttonBoard, 29),
+fodToggle(&driverJoystick, 1)
 {
 	vacuumToggle.WhileHeld(new TurnOnVacuum());
 	vacuumToggle.WhenReleased(new StopVacuum());
@@ -55,9 +61,6 @@ allIn(&buttonBoard, 24), pickup(&buttonBoard, 25), low(&buttonBoard, 26), ship(&
 	climbDown.WhileHeld(new ClimbDown());
 	driveOverride.WhenPressed(new BooleanToggle(&driveWithPercentOutput, [](bool newValue) {
 		DriverStation::ReportError("Driving with percent output: " + newValue ? "true" : "false");
-	}));
-	forkOverride.WhenPressed(new BooleanToggle(&useForkSlider, [](bool newValue) {
-		DriverStation::ReportError("Using Fork Slider: " + newValue ? "true" : "false");
 	}));
 	turnTo0.WhenPressed(new Turn(0.0));
 	turnTo45.WhenPressed(new Turn(45));
@@ -71,36 +74,39 @@ allIn(&buttonBoard, 24), pickup(&buttonBoard, 25), low(&buttonBoard, 26), ship(&
 	forkStow.WhenPressed(new SetForkPosition(114));
 	forkUp.WhenPressed(new SetForkPosition(267));
 	forkGround.WhenPressed(new SetForkPosition(478));
-	/*allIn.WhenPressed(new SetManipulator(new SetArmWristPosition(RocketHeight::ALL_IN), new SetArmWristPosition(RocketHeight::ALL_IN)));
-	low.WhileHeld(new SetManipulator(new SetArmWristPosition(RocketHeight::LOW), new SetArmWristPosition(RocketHeight::LOW)));
-	medium.WhileHeld(new SetManipulator(new SetArmWristPosition(RocketHeight::MEDIUM), new SetArmWristPosition(RocketHeight::MEDIUM)));
-	high.WhileHeld(new SetManipulator(new SetArmWristPosition(RocketHeight::HIGH), new SetArmWristPosition(RocketHeight::HIGH)));
-	ship.WhileHeld(new SetManipulator(new SetArmWristPosition(RocketHeight::SHIP), new SetArmWristPosition(RocketHeight::SHIP)));*/
+
+	armOverride.WhenReleased(new LambdaCommand([]() {
+		Robot::arm->SetVelocity(0.0f);
+	}));
+	forkOverride.WhenReleased(new LambdaCommand([]() {
+		Robot::fork->SetVelocity(0.0f);
+	}));
+	wristOverride.WhenReleased(new LambdaCommand([]() {
+		Robot::wrist->SetVelocity(0.0f);
+	}));
 
 	//allIn.WhileHeld(new SetArmWristPositionSecure(DialPosition::ALL_IN));
-	allIn.WhileHeld(new SetArmWristPositionSecure(DialPosition::ALL_IN));
-	pickup.WhileHeld(new SetArmWristPosition(DialPosition::PICKUP));
-	low.WhileHeld(new SetArmWristPosition(DialPosition::LOW));
-	ship.WhileHeld(new SetArmWristPosition(DialPosition::SHIP));
-	medium.WhileHeld(new SetArmWristPosition(DialPosition::MEDIUM));
-	high.WhileHeld(new SetArmWristPosition(DialPosition::HIGH));
+	allIn.WhenPressed(new SetArmWristPositionSecure(DialPosition::ALL_IN));
+	pickup.WhenPressed(new SetArmWristPosition(DialPosition::PICKUP));
+	low.WhenPressed(new SetArmWristPosition(DialPosition::LOW));
+	ship.WhenPressed(new SetArmWristPosition(DialPosition::SHIP));
+	medium.WhenPressed(new SetArmWristPosition(DialPosition::MEDIUM));
+	high.WhenPressed(new SetArmWristPosition(DialPosition::HIGH));
 	fodToggle.WhenPressed(new VisionDrive());
 	DriverStation::ReportError("OI DOne");
 } //OI()
 
 static bool lastButton = false;
 
-
-
 void OI::Update() {
 	if (UsingArmSlider()) {
-		Robot::arm->SetVelocity(buttonBoard.GetRawAxis(-1));// The value is already [-1, 1]
+		Robot::arm->SetVelocity(buttonBoard.GetRawAxis(0));// The value is already [-1, 1]
 	}
 	if(UsingWristSlider()) {
-		Robot::wrist->SetVelocity(buttonBoard.GetRawAxis(-1));
+		Robot::wrist->SetVelocity(buttonBoard.GetRawAxis(1));
 	}
 	if(UsingForkSlider()) {
-		//TODO set fork velocity
+		Robot::fork->SetVelocity(buttonBoard.GetRawAxis(2));
 	}
 
 	bool currentButton = driverJoystick.GetRawButton(1);
@@ -115,6 +121,12 @@ void OI::Update() {
 			Cob::PushValue(COB_FIELD_ORIENTED, true);
 		}
 		lastButton = currentButton;
+	}
+
+	if(buttonBoard.GetRawButton(19)) {
+		Robot::vacuum->SetServoPosition(0.1);
+	} else {
+		Robot::vacuum->SetServoPosition(0.65);
 	}
 } //Update()
 
@@ -150,7 +162,8 @@ CargoOrHatch OI::IsCargoMode() {
 	return (buttonBoard.GetRawButton(CARGO_HATCH_TOGGLE) ? CargoOrHatch::HATCH : CargoOrHatch::CARGO);
 }
 
-bool OI::GetVision() {
+bool OI::IsVisionActive(){
 	return driverJoystick.GetRawButton(1);
 }
+
 }//frc2019
