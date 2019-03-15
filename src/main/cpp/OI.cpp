@@ -124,7 +124,7 @@ void OI::Update() {
 	lastButton = currentButton;
 
 	if(buttonBoard.GetRawButton(19)) {
-		Robot::vacuum->SetServoPosition(0.1);
+		Robot::vacuum->SetServoPosition(0);
 	} else {
 		Robot::vacuum->SetServoPosition(0.65);
 	}
