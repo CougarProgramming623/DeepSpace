@@ -125,7 +125,7 @@ void VisionDrive::Initialize() {
 
   xPID->SetSetpoint(0.0f);
   yPID->SetSetpoint(0.0f);
-  zPID->SetSetpoint(getClosestTargetAngle());
+  zPID->SetSetpoint(0.0f);
 
   xPID->SetContinuous(false);
   yPID->SetContinuous(false);
@@ -209,14 +209,27 @@ double VisionDrive::getWidth(){
 }
 
 double VisionDrive::getClosestTargetAngle(){
-  double targets[] = {0.0, 90.0, -90.0, 30.0, -30.0, 150.0, -150.0};
+  std::vector<double> defaultVal{0};
+  arrCenterX = visionTable->GetNumberArray("centerX", defaultVal);
+  double targets[7] = {0.0, 90.0, -90.0, 30.0, -30.0, 150.0, -150.0};
   int min = 0;
   double currentHeading = Robot::navx->GetYaw();
   double minError = abs(currentHeading - targets[0]);
-  for(int i = 1; i < 7; i++){
-    if(abs(currentHeading - targets[i]) < minError){
-      min = i;
-      minError = abs(currentHeading - targets[i]);
+
+  if(arrCenterX.size() < 3){
+    for(int i = 1; i < 7; i++){
+      if(abs(currentHeading - targets[i]) < minError){
+        min = i;  
+        minError = abs(currentHeading - targets[i]);
+      }
+    }
+  }
+  else{
+    for(int i = 1; i < 3; i++){
+      if(abs(currentHeading - targets[i]) < minError){
+        min = i;  
+        minError = abs(currentHeading - targets[i]);
+      }
     }
   }
   DriverStation::ReportError("Target Angle:" + std::to_string(targets[min]));
