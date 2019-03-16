@@ -26,6 +26,7 @@
 #include "RobotConstants.h"
 
 #include "commands/VisionDrive.h"
+#include "commands/CargoHatchModeSwitch.h"
 
 #define ARM_AXIS 1
 #define FORK_AXIS 2
@@ -54,8 +55,10 @@ forkGround(&buttonBoard, 20), forkUp(&buttonBoard, 21), forkStow(&buttonBoard, 2
 allIn(&buttonBoard, 24), pickup(&buttonBoard, 25), low(&buttonBoard, 26), ship(&buttonBoard, 27), medium(&buttonBoard, 28), high(&buttonBoard, 29),
 fodToggle(&driverJoystick, 1)
 {
-	vacuumToggle.WhileHeld(new TurnOnVacuum());
+	vacuumToggle.WhenPressed(new TurnOnVacuum());
 	vacuumToggle.WhenReleased(new StopVacuum());
+	toggleHatchCargo.WhenPressed(new CargoHatchModeSwitch(true));
+	toggleHatchCargo.WhenReleased(new CargoHatchModeSwitch(false));
 	climbUp.WhileHeld(new ClimbUp());
 	climbDown.WhileHeld(new ClimbDown());
 	driveOverride.WhenPressed(new BooleanToggle(&driveWithPercentOutput, [](bool newValue) {
@@ -92,6 +95,7 @@ fodToggle(&driverJoystick, 1)
 	medium.WhenPressed(new SetArmWristPosition(DialPosition::MEDIUM));
 	high.WhenPressed(new SetArmWristPosition(DialPosition::HIGH));
 	fodToggle.WhenPressed(new VisionDrive());
+	
 	DriverStation::ReportError("OI DOne");
 } //OI()
 
@@ -122,12 +126,13 @@ void OI::Update() {
 		}
 	}
 	lastButton = currentButton;
-
+	/*
 	if(buttonBoard.GetRawButton(19)) {
 		Robot::vacuum->SetServoPosition(0);
 	} else {
 		Robot::vacuum->SetServoPosition(0.65);
 	}
+	*/
 } //Update()
 
 SliderStatus OI::GetSliderMode() {
