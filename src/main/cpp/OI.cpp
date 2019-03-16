@@ -105,11 +105,13 @@ void OI::Update() {
 	if (UsingArmSlider()) {
 		Robot::arm->SetVelocity(buttonBoard.GetRawAxis(0));// The value is already [-1, 1]
 	}
-	if(UsingWristSlider()) {
-		Robot::wrist->SetVelocity(buttonBoard.GetRawAxis(1));
-	}
+
 	if(UsingForkSlider()) {
-		Robot::fork->SetVelocity(buttonBoard.GetRawAxis(2));
+		Robot::fork->SetVelocity(buttonBoard.GetRawAxis(1));
+	}
+	
+	if(UsingWristSlider()) {
+		Robot::wrist->SetVelocity(buttonBoard.GetRawAxis(2));
 	}
 
 	bool currentButton = driverJoystick.GetRawButton(1);
