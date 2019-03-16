@@ -64,14 +64,14 @@ fodToggle(&driverJoystick, 1)
 	driveOverride.WhenPressed(new BooleanToggle(&driveWithPercentOutput, [](bool newValue) {
 		DriverStation::ReportError("Driving with percent output: " + newValue ? "true" : "false");
 	}));
-	turnTo0.WhenPressed(new Turn(0.0));
-	turnTo45.WhenPressed(new Turn(45));
-	turnTo90.WhenPressed(new Turn(90));
-	turnTo135.WhenPressed(new Turn(135));
+	turnTo0.WhenPressed(new Turn(0.0f));
+	turnTo45.WhenPressed(new Turn(28.77f));
+	turnTo90.WhenPressed(new Turn(90.0f));
+	turnTo135.WhenPressed(new Turn(151.23f));
 	turnTo180.WhenPressed(new Turn(180));
-	turnTo225.WhenPressed(new Turn(-135));
-	turnTo270.WhenPressed(new Turn(-90));
-	turnTo315.WhenPressed(new Turn(-45));
+	turnTo225.WhenPressed(new Turn(-151.23f));
+	turnTo270.WhenPressed(new Turn(-90.0f));
+	turnTo315.WhenPressed(new Turn(-28.77f));
 
 	forkStow.WhenPressed(new SetForkPosition(114));
 	forkUp.WhenPressed(new SetForkPosition(267));
@@ -141,7 +141,10 @@ SliderStatus OI::GetSliderMode() {
 
 
 bool OI::CanClimb() {
-	return true;
+	bool isTeleop = frc::DriverStation::GetInstance().IsOperatorControl();
+	double time = frc::DriverStation::GetInstance().GetMatchTime();
+	bool endgameOverrideSwitch = endgameOverride.Get();
+	return (isTeleop && time < 35.0 && time > 0.0) || endgameOverrideSwitch;
 }
 bool OI::IsFOD() {
 	return fod;
