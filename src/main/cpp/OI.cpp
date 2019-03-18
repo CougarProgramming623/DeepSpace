@@ -111,7 +111,7 @@ void OI::Update() {
 	}
 	
 	if(UsingWristSlider()) {
-		Robot::wrist->SetVelocity(buttonBoard.GetRawAxis(2));
+		Robot::wrist->SetVelocity(-buttonBoard.GetRawAxis(2));
 	}
 
 	bool currentButton = driverJoystick.GetRawButton(1);
