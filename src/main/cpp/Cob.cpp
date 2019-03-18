@@ -8,7 +8,7 @@
 
 namespace frc2019 {
 std::shared_ptr<nt::NetworkTable> Cob::table;
-std::map<std::string,nt::NetworkTableEntry> Cob::map;
+std::map<std::string, nt::NetworkTableEntry> Cob::map;
 
 Cob::Cob() {
    //never contruct

@@ -24,6 +24,17 @@ Arm::Arm() : Subsystem("Arm"), armMC(ARM_TALON_ID) {
 	using namespace talon;
 	ConfigurePotentiometer(&armMC, 10, 0.0, 25, 0.75, -0.3);
 
+	for(int armI = 0; armI < ARM_MECHANISM_TYPE_COUNT; armI++) {
+		for(int cargoI = 0; cargoI < CARGO_OR_HATCH_COUNT; cargoI++) {
+			for(int positionI = 0; positionI < DIAL_POSITION_COUNT; positionI++) {
+				ArmMechanismType arm = static_cast<ArmMechanismType>(armI);
+				CargoOrHatch cargo = static_cast<CargoOrHatch>(cargoI);
+				DialPosition position = static_cast<DialPosition>(positionI);
+				m_CobNames[arm][cargo][position] = MakeCOBAddress(arm, cargo, position);
+			}
+		}
+	}
+
 	FILE* file = fopen(ARM_SETPOINT_FILE_NAME, "rb");
 	if(file == nullptr) {
 		frc::DriverStation::ReportError("Arm setpoint file doesn't exist! Make sure to se defaults using the COB");
@@ -40,7 +51,7 @@ Arm::Arm() : Subsystem("Arm"), armMC(ARM_TALON_ID) {
 				ArmMechanismType arm = static_cast<ArmMechanismType>(armI);
 				CargoOrHatch cargo = static_cast<CargoOrHatch>(cargoI);
 				DialPosition position = static_cast<DialPosition>(positionI);
-				Cob::PushValue(MakeCOBAddress(arm, cargo, position), m_setpoints[arm][cargo][position]);
+				Cob::PushValue(m_CobNames[arm][cargo][position], m_setpoints[arm][cargo][position]);
 			}
 		}
 	}
@@ -51,7 +62,7 @@ Arm::Arm() : Subsystem("Arm"), armMC(ARM_TALON_ID) {
 		std::string address = EXTRA_NAMES[i];
 		Cob::PushValue(address, m_extra[i]);
 	}
-	
+	 
 
 	frc::DriverStation::ReportError("Created inital network tables");
 
@@ -62,7 +73,7 @@ void Arm::PullSetpoints() {
 	for(int armI = 0; armI < ARM_MECHANISM_TYPE_COUNT; armI++) {
 		for(int cargoI = 0; cargoI < CARGO_OR_HATCH_COUNT; cargoI++) {
 			for(int positionI = 0; positionI < DIAL_POSITION_COUNT; positionI++) {
-				std::string address = MakeCOBAddress(static_cast<ArmMechanismType>(armI), static_cast<CargoOrHatch>(cargoI), static_cast<DialPosition>(positionI));
+				std::string address = m_CobNames[armI][cargoI][positionI]; 
 				int newValue = Cob::GetValue<int>(address);
 				DriverStation::ReportError("Setting address: " + address + " to " + std::to_string(newValue));
 				m_setpoints[armI][cargoI][positionI] = newValue;
@@ -123,11 +134,13 @@ void Arm::SetSetpoint(int setpoint) {
 }
 
 void Arm::SetVelocity(float velocity) {
+	armMC.ConfigPeakOutputForward(.75, 30);
+	armMC.ConfigPeakOutputReverse(-.3, 30);
 	armMC.Set(ControlMode::PercentOutput, velocity);
 }
 
 void Arm::SetP(double kP) {
-  armMC.Config_kP(0, kP, 30);
+	armMC.Config_kP(0, kP, 30);
 }
 
 

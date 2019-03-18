@@ -14,16 +14,18 @@
 
 namespace frc2019 {
 class HatchPickup : public frc::Subsystem {
- private:
-  // It's desirable that everything possible under private except
-  // for methods that implement subsystem capabilities
-  TalonSRX pickupMC;
-  int initialReading;
+private:
+	// It's desirable that everything possible under private except
+	// for methods that implement subsystem capabilities
+	TalonSRX pickupMC;
+	int initialReading;
 
- public:
-  HatchPickup();
-  void InitDefaultCommand() override;
-  void SetSetpoint(int);
-  int GetForkTalonData(TalonData);
+public:
+	HatchPickup();
+	void InitDefaultCommand() override;
+	void SetSetpoint(int);
+	void SetVelocity(double);
+	int GetForkTalonData(TalonData);
 };
+
 }

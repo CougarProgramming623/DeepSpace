@@ -7,6 +7,8 @@
 
 #include "subsystems/Vacuum.h"
 #include "RobotConstants.h"
+#include "Cob.h"
+#include "CobConstants.h"
 
 #define SUCK_SPEED 0.5
 
@@ -22,16 +24,26 @@ void Vacuum::InitDefaultCommand() {
 
 void Vacuum::Suck() {
   vacuumMC.Set(ControlMode::PercentOutput, 1.0);
+  Cob::PushValue(COB_VACUUM, true);
+  
 } //Suck()
 
 void Vacuum::Stop() {
   vacuumMC.Set(ControlMode::PercentOutput, 0.0);
+  Cob::PushValue(COB_VACUUM, false);
 }
+
 void Vacuum::SetServoPosition(double pos) {
   servo.SetPosition(pos);
+  if (pos == 0.0) {
+	  Cob::PushValue(COB_HATCH, true);
+  } else {
+	  Cob::PushValue(COB_HATCH, false);
+  }
 }
 
 double Vacuum::GetServoPosition() {
   return servo.GetPosition();
 }
+
 } //frc2019

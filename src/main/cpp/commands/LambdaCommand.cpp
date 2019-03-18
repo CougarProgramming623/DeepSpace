@@ -5,19 +5,18 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/SetArmWristPositionSecure.h"
-#include "commands/SetArmPosition.h"
-#include "commands/SetWristPosition.h"
-#include "Robot.h"
-#include "commands/WristWait.h"
+#include "commands/LambdaCommand.h"
 
-namespace frc2019 {
-	SetArmWristPositionSecure::SetArmWristPositionSecure(DialPosition position) {
-		Requires(Robot::arm.get());
-		Requires(Robot::wrist.get());
-		
-		AddSequential(new SetWristPosition(position));
-		AddSequential(new WristWait());
-		AddSequential(new SetArmPosition(position));
-	}
+LambdaCommand::LambdaCommand(std::function<void()> func) : m_func(func) {}
+
+void LambdaCommand::Initialize() {
+	m_func();
 }
+
+void LambdaCommand::Execute() {}
+
+bool LambdaCommand::IsFinished() { return true; }
+
+void LambdaCommand::End() {}
+
+void LambdaCommand::Interrupted() {}
