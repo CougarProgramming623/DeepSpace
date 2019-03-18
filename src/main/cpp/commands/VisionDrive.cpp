@@ -104,7 +104,7 @@ VisionDrive::VisionDrive() : frc::Command(), m_timer() {
 void VisionDrive::Initialize() {
   m_timer.Start();
   correctIndex = -1;  
-  targetWidth = 40;
+  targetWidth = 90;
 
   xPID = new frc::PIDController(xP, xI, xD, &xSource, &xOut);
   yPID = new frc::PIDController(yP, yI, yD, &ySource, &yOut);
@@ -143,11 +143,11 @@ void VisionDrive::Initialize() {
 
 //Drive the robot according to PID output
 void VisionDrive::Execute() {
-  if (m_timer.HasPeriodPassed(.1)) { 
+  if (m_timer.HasPeriodPassed(.2)) { 
     findLeftSignature();
-    DriverStation::ReportError("xPower:   " + std::to_string(xPower));
-    DriverStation::ReportError("   yPower:      " + std::to_string(yPower));
-    DriverStation::ReportError("      zPower:         " + std::to_string(zPower));
+    //DriverStation::ReportError("xPower:   " + std::to_string(xPower));
+    //DriverStation::ReportError("   yPower:      " + std::to_string(yPower));
+    //DriverStation::ReportError("      zPower:         " + std::to_string(zPower));
     Robot::driveTrain->CartesianDrive(yPower, zPower, xPower, 0);
   } 
 }
@@ -209,16 +209,28 @@ double VisionDrive::getWidth(){
 }
 
 double VisionDrive::getClosestTargetAngle(){
-  double targets[] = {0.0, 90.0, -90.0, 30.0, -30.0, 150.0, -150.0};
+  std::vector<double> defaultVal{0};
+  arrCenterX = visionTable->GetNumberArray("centerX", defaultVal);
+  double targets[7] = {90.0, -90.0, 0.0, 30.0, -30.0, 150.0, -150.0, 180};
   int min = 0;
   double currentHeading = Robot::navx->GetYaw();
   double minError = abs(currentHeading - targets[0]);
-  for(int i = 1; i < 7; i++){
-    if(abs(currentHeading - targets[i]) < minError){
-      min = i;
-      minError = abs(currentHeading - targets[i]);
+
+  if(arrCenterX.size() < 3){
+    for(int i = 1; i < 8; i++){
+      if(abs(currentHeading - targets[i]) < minError){
+        min = i;  
+        minError = abs(currentHeading - targets[i]);
+      }
     }
   }
+  else{
+     if(abs(currentHeading - targets[1]) < minError){
+        min = 1;  
+        minError = abs(currentHeading - targets[1]);
+      }
+  }
+  DriverStation::ReportError("Arr Size: " + std::to_string(arrAngle.size()));
   DriverStation::ReportError("Target Angle:" + std::to_string(targets[min]));
   return targets[min];
 }
