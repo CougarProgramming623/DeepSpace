@@ -47,3 +47,5 @@
 
 #define COB_ARM_OFFSET "arm-position/offset"
 #define COB_WRIST_OFFSET "wrist-position/offset"
+
+#define COB_IS_HOLDING "ak/is-pressed"
