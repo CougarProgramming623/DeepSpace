@@ -81,7 +81,7 @@ void Robot::AutonomousPeriodic() {
 } //AutonomousPeriodic()
 
 void Robot::TeleopInit() {
-
+	navx->ZeroYaw();
 } //TeleopInit()
 
 void Robot::TeleopPeriodic() {

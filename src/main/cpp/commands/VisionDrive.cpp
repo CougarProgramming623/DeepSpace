@@ -104,7 +104,7 @@ VisionDrive::VisionDrive() : frc::Command(), m_timer() {
 void VisionDrive::Initialize() {
   m_timer.Start();
   correctIndex = -1;  
-  targetWidth = 40;
+  targetWidth = 90;
 
   xPID = new frc::PIDController(xP, xI, xD, &xSource, &xOut);
   yPID = new frc::PIDController(yP, yI, yD, &ySource, &yOut);
@@ -125,7 +125,7 @@ void VisionDrive::Initialize() {
 
   xPID->SetSetpoint(0.0f);
   yPID->SetSetpoint(0.0f);
-  zPID->SetSetpoint(0.0f);
+  zPID->SetSetpoint(getClosestTargetAngle());
 
   xPID->SetContinuous(false);
   yPID->SetContinuous(false);
@@ -145,9 +145,9 @@ void VisionDrive::Initialize() {
 void VisionDrive::Execute() {
   if (m_timer.HasPeriodPassed(.1)) { 
     findLeftSignature();
-    DriverStation::ReportError("xPower:   " + std::to_string(xPower));
-    DriverStation::ReportError("   yPower:      " + std::to_string(yPower));
-    DriverStation::ReportError("      zPower:         " + std::to_string(zPower));
+    //DriverStation::ReportError("xPower:   " + std::to_string(xPower));
+    //DriverStation::ReportError("   yPower:      " + std::to_string(yPower));
+    //DriverStation::ReportError("      zPower:         " + std::to_string(zPower));
     Robot::driveTrain->CartesianDrive(yPower, zPower, xPower, 0);
   } 
 }
@@ -230,6 +230,7 @@ double VisionDrive::getClosestTargetAngle(){
         minError = abs(currentHeading - targets[1]);
       }
   }
+  DriverStation::ReportError("Arr Size: " + std::to_string(arrAngle.size()));
   DriverStation::ReportError("Target Angle:" + std::to_string(targets[min]));
   return targets[min];
 }
