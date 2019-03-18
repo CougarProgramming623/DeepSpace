@@ -36,7 +36,7 @@ void Wrist::SetVelocity(float velocity) {
 	wristMC.Set(ControlMode::PercentOutput, velocity);
 }
 
-	
+
 int Wrist::GetOffset() {
 	return Robot::arm->m_extra[WRIST_OFFSET_INDEX];
 }

@@ -27,6 +27,7 @@
 #include "RobotConstants.h"
 
 #include "commands/VisionDrive.h"
+#include "commands/CargoHatchModeSwitch.h"
 
 #define ARM_AXIS 1
 #define FORK_AXIS 2
@@ -55,21 +56,23 @@ forkGround(&buttonBoard, 20), forkUp(&buttonBoard, 21), forkStow(&buttonBoard, 2
 allIn(&buttonBoard, 24), pickup(&buttonBoard, 25), low(&buttonBoard, 26), ship(&buttonBoard, 27), medium(&buttonBoard, 28), high(&buttonBoard, 29),
 fodToggle(&driverJoystick, 1)
 {
-	vacuumToggle.WhileHeld(new TurnOnVacuum());
+	vacuumToggle.WhenPressed(new TurnOnVacuum());
 	vacuumToggle.WhenReleased(new StopVacuum());
+	toggleHatchCargo.WhenPressed(new CargoHatchModeSwitch(true));
+	toggleHatchCargo.WhenReleased(new CargoHatchModeSwitch(false));
 	climbUp.WhileHeld(new ClimbUp());
 	climbDown.WhileHeld(new ClimbDown());
 	driveOverride.WhenPressed(new BooleanToggle(&driveWithPercentOutput, [](bool newValue) {
 		DriverStation::ReportError("Driving with percent output: " + newValue ? "true" : "false");
 	}));
-	turnTo0.WhenPressed(new Turn(0.0));
-	turnTo45.WhenPressed(new Turn(45));
-	turnTo90.WhenPressed(new Turn(90));
-	turnTo135.WhenPressed(new Turn(135));
+	turnTo0.WhenPressed(new Turn(0.0f));
+	turnTo45.WhenPressed(new Turn(28.77f));
+	turnTo90.WhenPressed(new Turn(90.0f));
+	turnTo135.WhenPressed(new Turn(151.23f));
 	turnTo180.WhenPressed(new Turn(180));
-	turnTo225.WhenPressed(new Turn(-135));
-	turnTo270.WhenPressed(new Turn(-90));
-	turnTo315.WhenPressed(new Turn(-45));
+	turnTo225.WhenPressed(new Turn(-151.23f));
+	turnTo270.WhenPressed(new Turn(-90.0f));
+	turnTo315.WhenPressed(new Turn(-28.77f));
 
 	forkStow.WhenPressed(new SetForkPosition(114));
 	forkUp.WhenPressed(new SetForkPosition(267));
@@ -93,6 +96,7 @@ fodToggle(&driverJoystick, 1)
 	medium.WhenPressed(new SetArmWristPosition(DialPosition::MEDIUM));
 	high.WhenPressed(new SetArmWristPosition(DialPosition::HIGH));
 	fodToggle.WhenPressed(new VisionDrive());
+	
 	DriverStation::ReportError("OI DOne");
 } //OI()
 
@@ -102,14 +106,17 @@ void OI::Update() {
 	if (UsingArmSlider()) {
 		Robot::arm->SetVelocity(buttonBoard.GetRawAxis(0));// The value is already [-1, 1]
 	}
-	if(UsingWristSlider()) {
-		Robot::wrist->SetVelocity(buttonBoard.GetRawAxis(1));
-	}
+
 	if(UsingForkSlider()) {
-		Robot::fork->SetVelocity(buttonBoard.GetRawAxis(2));
+		Robot::fork->SetVelocity(buttonBoard.GetRawAxis(1));
+	}
+	
+	if(UsingWristSlider()) {
+		Robot::wrist->SetVelocity(buttonBoard.GetRawAxis(2));
 	}
 
 	bool currentButton = driverJoystick.GetRawButton(1);
+	//DriverStation::ReportError(std::string("c: ") + (currentButton ? "true" : "false") + " last " + (lastButton ? "true" : "false"));
 	if (currentButton && !lastButton) {
 		if(fod) {
 			fod = false;
@@ -120,14 +127,15 @@ void OI::Update() {
 			DriverStation::ReportError("FOD Drive On");
 			Cob::PushValue(COB_FIELD_ORIENTED, true);
 		}
-		lastButton = currentButton;
 	}
-
+	lastButton = currentButton;
+	/*
 	if(buttonBoard.GetRawButton(19)) {
-		Robot::vacuum->SetServoPosition(0.1);
+		Robot::vacuum->SetServoPosition(0);
 	} else {
 		Robot::vacuum->SetServoPosition(0.65);
 	}
+	*/
 } //Update()
 
 SliderStatus OI::GetSliderMode() {
@@ -136,7 +144,10 @@ SliderStatus OI::GetSliderMode() {
 
 
 bool OI::CanClimb() {
-	return true;
+	bool isTeleop = frc::DriverStation::GetInstance().IsOperatorControl();
+	double time = frc::DriverStation::GetInstance().GetMatchTime();
+	bool endgameOverrideSwitch = endgameOverride.Get();
+	return (isTeleop && time < 35.0 && time > 0.0) || endgameOverrideSwitch;
 }
 bool OI::IsFOD() {
 	return fod;
