@@ -143,7 +143,7 @@ void VisionDrive::Initialize() {
 
 //Drive the robot according to PID output
 void VisionDrive::Execute() {
-  if (m_timer.HasPeriodPassed(.1)) { 
+  if (m_timer.HasPeriodPassed(.2)) { 
     findLeftSignature();
     //DriverStation::ReportError("xPower:   " + std::to_string(xPower));
     //DriverStation::ReportError("   yPower:      " + std::to_string(yPower));
@@ -211,13 +211,13 @@ double VisionDrive::getWidth(){
 double VisionDrive::getClosestTargetAngle(){
   std::vector<double> defaultVal{0};
   arrCenterX = visionTable->GetNumberArray("centerX", defaultVal);
-  double targets[7] = {90.0, -90.0, 0.0, 30.0, -30.0, 150.0, -150.0};
+  double targets[7] = {90.0, -90.0, 0.0, 30.0, -30.0, 150.0, -150.0, 180};
   int min = 0;
   double currentHeading = Robot::navx->GetYaw();
   double minError = abs(currentHeading - targets[0]);
 
   if(arrCenterX.size() < 3){
-    for(int i = 1; i < 7; i++){
+    for(int i = 1; i < 8; i++){
       if(abs(currentHeading - targets[i]) < minError){
         min = i;  
         minError = abs(currentHeading - targets[i]);
