@@ -52,6 +52,9 @@ void Robot::RobotPeriodic() {
 	SmartDashboard::PutNumber("Wrist error", wrist->GetWristTalonData(TalonData::ERROR));
 	SmartDashboard::PutNumber("Servo Position", vacuum->GetServoPosition());
 
+	vacuum->Update();
+	DriverStation::ReportError("Index: " + std::to_string(oi->GetAnglePos()));
+
 	if(Cob::GetValue<bool>(COB_PULL_ARM_SETPOINTS)) {
 		arm->PullSetpoints();
 		Cob::PushValue(COB_PULL_ARM_SETPOINTS, false);

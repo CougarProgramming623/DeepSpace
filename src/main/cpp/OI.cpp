@@ -49,7 +49,7 @@ OI::OI() :
 vacuumToggle(&buttonBoard, 1),
 climbUp(&buttonBoard, 2), climbDown(&buttonBoard, 3), endgameOverride(&buttonBoard, 4), driveOverride(&buttonBoard, 5),
 armOverride(&buttonBoard, ARM_OVERRIDE), forkOverride(&buttonBoard, FORK_OVERRIDE), wristOverride(&buttonBoard, WRIST_OVERRIDE),
-turnTo0(&buttonBoard, 13), turnTo45(&buttonBoard, 14), turnTo90(&buttonBoard, 15), turnTo135(&buttonBoard, 16), turnTo180(&buttonBoard, 9), turnTo225(&buttonBoard, 10), turnTo270(&buttonBoard, 11), turnTo315(&buttonBoard, 12), 
+a0(&buttonBoard, 9), a1(&buttonBoard, 10), a2(&buttonBoard, 11), a3(&buttonBoard, 12), a4(&buttonBoard, 13), a5(&buttonBoard, 14), a6(&buttonBoard, 15), a7(&buttonBoard, 16), 
 toggleHatchCargo(&buttonBoard, CARGO_HATCH_TOGGLE),
 forkGround(&buttonBoard, 20), forkUp(&buttonBoard, 21), forkStow(&buttonBoard, 22), forkHerd(&buttonBoard, 23),
 allIn(&buttonBoard, 24), pickup(&buttonBoard, 25), low(&buttonBoard, 26), ship(&buttonBoard, 27), medium(&buttonBoard, 28), high(&buttonBoard, 29),
@@ -64,14 +64,14 @@ fodToggle(&driverJoystick, 1)
 	driveOverride.WhenPressed(new BooleanToggle(&driveWithPercentOutput, [](bool newValue) {
 		DriverStation::ReportError("Driving with percent output: " + newValue ? "true" : "false");
 	}));
-	turnTo0.WhenPressed(new Turn(0.0f));
-	turnTo45.WhenPressed(new Turn(28.77f));
-	turnTo90.WhenPressed(new Turn(90.0f));
-	turnTo135.WhenPressed(new Turn(151.23f));
-	turnTo180.WhenPressed(new Turn(180));
-	turnTo225.WhenPressed(new Turn(-151.23f));
-	turnTo270.WhenPressed(new Turn(-90.0f));
-	turnTo315.WhenPressed(new Turn(-28.77f));
+	a0.WhenPressed(new LambdaCommand([]() { Robot::oi->anglePos = 0; }));
+	a1.WhenPressed(new LambdaCommand([]() { Robot::oi->anglePos = 1; }));
+	a2.WhenPressed(new LambdaCommand([]() { Robot::oi->anglePos = 2; }));
+	a3.WhenPressed(new LambdaCommand([]() { Robot::oi->anglePos = 3; }));
+	a4.WhenPressed(new LambdaCommand([]() { Robot::oi->anglePos = 4; }));
+	a5.WhenPressed(new LambdaCommand([]() { Robot::oi->anglePos = 5; }));
+	a6.WhenPressed(new LambdaCommand([]() { Robot::oi->anglePos = 6; }));
+	a7.WhenPressed(new LambdaCommand([]() { Robot::oi->anglePos = 7; }));
 
 	forkStow.WhenPressed(new SetForkPosition(114));
 	forkUp.WhenPressed(new SetForkPosition(267));
@@ -111,7 +111,7 @@ void OI::Update() {
 	}
 	
 	if(UsingWristSlider()) {
-		Robot::wrist->SetVelocity(buttonBoard.GetRawAxis(2));
+		Robot::wrist->SetVelocity(-buttonBoard.GetRawAxis(2));
 	}
 
 	bool currentButton = driverJoystick.GetRawButton(1);

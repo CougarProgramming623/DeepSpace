@@ -26,5 +26,7 @@ class Vacuum : public frc::Subsystem {
   void SetServoPosition(double);
   void Stop();
   double GetServoPosition();
+  double GetCurrent();
+  void Update();
 };
 }

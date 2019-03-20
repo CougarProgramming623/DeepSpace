@@ -13,6 +13,7 @@ class OI {
 public:
 	static frc::Joystick driverJoystick;
 	static frc::Joystick buttonBoard;
+	int anglePos = 0;//For easy access in lambda command
 
 private:
 	SliderStatus sliderMode = SliderStatus::DIAL_CONTROL;
@@ -20,7 +21,7 @@ private:
 	frc::JoystickButton vacuumToggle;
 	frc::JoystickButton climbUp, climbDown, endgameOverride, driveOverride;
 	frc::JoystickButton armOverride, forkOverride, wristOverride;
-	frc::JoystickButton turnTo0, turnTo45, turnTo90, turnTo135, turnTo180, turnTo225, turnTo270, turnTo315;
+	frc::JoystickButton a0, a1, a2, a3, a4, a5, a6, a7;
 	frc::JoystickButton	toggleHatchCargo;
 	frc::JoystickButton forkGround, forkHerd, forkUp, forkStow;
 	frc::JoystickButton allIn, pickup, low, medium, high, ship;
@@ -30,6 +31,7 @@ private:
 	bool driveWithPercentOutput;
 	bool useArmSlider, useForkSlider, useWristSlider;
 	bool lastButtonVal = false;
+
 	/*
 	//Dial buttons
 	frc::JoystickButton low, medium, high, cargoHold, cargoGround;
@@ -59,6 +61,7 @@ public:
 	bool GetVision();
 	CargoOrHatch IsCargoMode();
 	bool IsVisionActive();
+	inline int GetAnglePos() { return anglePos; }
 };
 
 }//frc2019

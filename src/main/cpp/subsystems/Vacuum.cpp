@@ -14,7 +14,8 @@
 
 namespace frc2019 {
 Vacuum::Vacuum() : Subsystem("Vacuum"), vacuumMC(VACUUM_ID), servo(0) {
-
+	vacuumMC.ConfigContinuousCurrentLimit(30, 20);
+	vacuumMC.EnableCurrentLimit(true);
 } //Vacuum()
 
 void Vacuum::InitDefaultCommand() {
@@ -46,4 +47,12 @@ double Vacuum::GetServoPosition() {
   return servo.GetPosition();
 }
 
+double Vacuum::GetCurrent() {
+	return vacuumMC.GetOutputCurrent();
+}
+
+void Vacuum::Update() {
+	Cob::PushValue(COB_IS_HOLDING, vacuumMC.GetOutputCurrent() < 27 && vacuumMC.GetOutputCurrent() > 20);
+	DriverStation::ReportError(std::to_string(vacuumMC.GetOutputCurrent()));
+}
 } //frc2019
