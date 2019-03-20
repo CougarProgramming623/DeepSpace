@@ -53,6 +53,7 @@ void Robot::RobotPeriodic() {
 	SmartDashboard::PutNumber("Servo Position", vacuum->GetServoPosition());
 
 	vacuum->Update();
+	DriverStation::ReportError("Index: " + std::to_string(oi->GetAnglePos()));
 
 	if(Cob::GetValue<bool>(COB_PULL_ARM_SETPOINTS)) {
 		arm->PullSetpoints();

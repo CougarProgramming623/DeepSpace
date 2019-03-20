@@ -1,6 +1,6 @@
 
-//#define BOT_SAMUS
-#define BOT_HAMBONE
+#define BOT_SAMUS
+//#define BOT_HAMBONE
 //#define BOT_RAFIKI
 
 #define SAMUS_LEFT_FRONT_ID  15
