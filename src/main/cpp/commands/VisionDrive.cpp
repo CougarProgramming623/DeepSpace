@@ -211,7 +211,7 @@ double VisionDrive::getWidth(){
 double VisionDrive::getClosestTargetAngle(){
   std::vector<double> defaultVal{0};
   arrCenterX = visionTable->GetNumberArray("centerX", defaultVal);
-  double targets[7] = {90.0, -90.0, 0.0, 30.0, -30.0, 150.0, -150.0, 180};
+  double targets[8] = {90.0, -90.0, 0.0, 30.0, -30.0, 150.0, -150.0, 180.0};
   int min = 0;
   double currentHeading = Robot::navx->GetYaw();
   double minError = abs(currentHeading - targets[0]);
