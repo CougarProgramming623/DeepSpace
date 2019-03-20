@@ -175,5 +175,4 @@ CargoOrHatch OI::IsCargoMode() {
 bool OI::IsVisionActive(){
 	return driverJoystick.GetRawButton(1);
 }
-
 }//frc2019

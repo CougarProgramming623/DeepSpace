@@ -63,6 +63,7 @@ private:
   static width_Source ySource;
   
   double getClosestTargetAngle();
+  double getAngle();
 
   static xOutput xOut;
   static yOutput yOut;
