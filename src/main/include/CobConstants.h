@@ -12,6 +12,7 @@
 #define COB_HATCH "arm/wrist/is-hatch"
 #define COB_SANDSTORM "robot/is-sandstorm"
 #define COB_TELEOP "robot/is-teleop"
+#define COB_ENDGAME "robot/is-endgame"
 #define COB_ENABLED "robot/is-enabled"
 #define COB_ALLIANCE_COLOR "robot/alliance-color"
 #define COB_FIELD_ORIENTED "robot/is-field-oriented"
@@ -49,3 +50,5 @@
 #define COB_WRIST_OFFSET "wrist-position/offset"
 
 #define COB_IS_HOLDING "ak/is-pressed"
+
+#define COB_SHUTDOWN_BEAGLEBONE "beaglebone/is-shutdown"

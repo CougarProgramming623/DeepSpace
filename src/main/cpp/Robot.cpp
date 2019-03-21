@@ -35,7 +35,8 @@ void Robot::RobotInit() {
 	navx->ZeroYaw(); //makes it so whatever start position the robot is facing is 0 degrees
 	std::string color = frc::DriverStation::GetInstance().GetAlliance() == frc::DriverStation::Alliance::kRed ? "red" : "blue"; //determine alliance color as a string
 	Cob::PushValue(COB_ALLIANCE_COLOR, color); //push the alliance color as a string
-	//vacuum->SetServoPosition(1.0);
+	Cob::PushValue(COB_SHUTDOWN_BEAGLEBONE, false);
+	Cob::PushValue(COB_ENDGAME, false);
 	DriverStation::ReportError("Finished RobotInit()");
 } //RobotInit()
 
@@ -76,6 +77,7 @@ void Robot::AutonomousInit() {
 	if(autonomousCommand)
 		autonomousCommand->Start();
 		*/
+	Cob::PushValue(COB_ENDGAME, false);
 } //AutonomousInit()
 
 void Robot::AutonomousPeriodic() {
@@ -83,12 +85,25 @@ void Robot::AutonomousPeriodic() {
 } //AutonomousPeriodic()
 
 void Robot::TeleopInit() {
+	isTeleop = true && DriverStation::GetInstance().GetMatchTime() > -1.0;
 	navx->ZeroYaw();
 } //TeleopInit()
 
 void Robot::TeleopPeriodic() {
+	/*
+	double time = DriverStation::GetInstance().GetMatchTime();
+	if(time >= 0.0 && time <= 30)
+		Cob::PushValue(COB_ENDGAME, true);
+	*/
 	frc::Scheduler::GetInstance()->Run();
 } //TeleopPeriodic
+
+void Robot::DisabledInit() {
+	if(isTeleop) {
+		Cob::PushValue(COB_SHUTDOWN_BEAGLEBONE, true);
+		isTeleop = false;
+	}
+}
 
 void Robot::TestInit() {
 	arm->SetVelocity(0.0f);

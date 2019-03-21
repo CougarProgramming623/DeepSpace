@@ -32,6 +32,8 @@ public: //methods
 	void TeleopInit() override;
 	void TeleopPeriodic() override;
 
+	void DisabledInit() override;
+	
 	void TestInit() override;
 	void TestPeriodic() override;
 
@@ -45,7 +47,8 @@ public: //pointers
 	static std::shared_ptr<Vacuum> vacuum;
 	static std::shared_ptr<Climb> climb;
 	static std::shared_ptr<Wrist> wrist;
-
+private:
+	bool isTeleop = false;
 
 };
 }//frc2019
