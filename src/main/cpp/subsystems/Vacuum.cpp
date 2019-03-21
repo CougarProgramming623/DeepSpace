@@ -55,4 +55,8 @@ void Vacuum::Update() {
 	Cob::PushValue(COB_IS_HOLDING, vacuumMC.GetOutputCurrent() < 27 && vacuumMC.GetOutputCurrent() > 20);
 	DriverStation::ReportError(std::to_string(vacuumMC.GetOutputCurrent()));
 }
+
+bool Vacuum::IsSucking() {
+	return vacuumMC.GetMotorOutputPercent() > 0.75f;
+}
 } //frc2019

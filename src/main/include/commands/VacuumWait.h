@@ -7,17 +7,19 @@
 
 #pragma once
 
-#include <frc/commands/CommandGroup.h>
+#include <frc/commands/Command.h>
 #include <frc/WPILib.h>
-#include "commands/StopVacuum.h"
-#include "commands/TurnOnVacuum.h"
-#include "commands/SetServo.h"
-#include "commands/VacuumWait.h"
 
-namespace frc2019{
-
-class CargoHatchModeSwitch : public frc::CommandGroup {
- public:
-  CargoHatchModeSwitch(bool);
+namespace frc2019 {
+class VacuumWait : public frc::Command {
+public:
+	VacuumWait();
+	void Initialize() override;
+  	void Execute() override;
+  	bool IsFinished() override;
+  	void End() override;
+  	void Interrupted() override;
+private:
+	frc::Timer m_timer;
 };
 }

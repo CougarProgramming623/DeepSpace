@@ -28,5 +28,7 @@ class Vacuum : public frc::Subsystem {
   double GetServoPosition();
   double GetCurrent();
   void Update();
+
+  bool IsSucking();
 };
 }
