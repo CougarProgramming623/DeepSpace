@@ -79,15 +79,15 @@ VisionDrive::VisionDrive() : frc::Command(), m_timer() {
 
   //Preferences Table + x, y, z PID default values
   prefs = Preferences::GetInstance();
-  xP = prefs->GetDouble("xP", .7);
+  xP = prefs->GetDouble("xP", .4);
   xI = prefs->GetDouble("xI", 0.0);
-  xD = prefs->GetDouble("xD", .4);
-  yP = prefs->GetDouble("yP", .8); 
+  xD = prefs->GetDouble("xD", .55);
+  yP = prefs->GetDouble("yP", .15); 
   yI = prefs->GetDouble("yI", 0.0); 
-  yD = prefs->GetDouble("yD", .4); 
-  zP = prefs->GetDouble("zP", 0.02);
-  zI = prefs->GetDouble("zI", 0.0);
-  zD = prefs->GetDouble("zD", 0.0175);
+  yD = prefs->GetDouble("yD", .2); 
+  zP = prefs->GetDouble("zP", 0.015);
+  zI = prefs->GetDouble("zI", 0.0001);
+  zD = prefs->GetDouble("zD", 0.015);
 
   prefs->PutDouble("xP", xP);
   prefs->PutDouble("xI", xI);
@@ -104,7 +104,8 @@ VisionDrive::VisionDrive() : frc::Command(), m_timer() {
 void VisionDrive::Initialize() {
   m_timer.Start();
   correctIndex = -1;  
-  targetWidth = 90;
+  targetWidth = 75;
+  previousCenter = 480;
 
   xPID = new frc::PIDController(xP, xI, xD, &xSource, &xOut);
   yPID = new frc::PIDController(yP, yI, yD, &ySource, &yOut);
@@ -119,13 +120,13 @@ void VisionDrive::Initialize() {
   yPID->SetOutputRange(-1.0, 1.0);
   zPID->SetOutputRange(-1.0, 1.0);
 
-  xPID->SetPercentTolerance(2.0f);
-  yPID->SetPercentTolerance(1.5f);
-  zPID->SetAbsoluteTolerance(1.0f);
+  xPID->SetPercentTolerance(3.0);
+  yPID->SetPercentTolerance(3.0);
+  zPID->SetAbsoluteTolerance(3.0f);
 
   xPID->SetSetpoint(0.0f);
   yPID->SetSetpoint(0.0f);
-  zPID->SetSetpoint(getAngle());
+  zPID->SetSetpoint(getClosestTargetAngle());
 
   xPID->SetContinuous(false);
   yPID->SetContinuous(false);
@@ -154,7 +155,7 @@ void VisionDrive::Execute() {
 //Finish if all 3 PIDs are on target, if no target found, or if robot reaches timeout
 bool VisionDrive::IsFinished() { 
   return correctIndex == -1 || 
-  (xPID->OnTarget() && yPID->OnTarget() && zPID->OnTarget()) ||
+  (xPID->OnTarget() && zPID->OnTarget()) ||
   IsTimedOut() ||
   !frc2019::Robot::oi->IsVisionActive();
 }
@@ -180,15 +181,17 @@ void VisionDrive::findLeftSignature(){
   std::vector<double> defaultVal{0};
   arrAngle = visionTable->GetNumberArray("angle", defaultVal); //array of angles
   arrCenterX = visionTable->GetNumberArray("centerX", defaultVal); //array of the center X positions of contours
-  double pixelsToCenter = 480.0; //reference point to X
+  double minDiff = 960; //reference point to X
   for(int i = 0; i < arrAngle.size(); i++){ //cycle through all contours
-    if(arrAngle[i] < -50.0 && abs(arrCenterX[i] - 480.0) < pixelsToCenter){ //if contour is a left contour and is closest left target to robot
+    if(arrAngle[i] < -50.0 && abs(arrCenterX[i] - previousCenter) < minDiff){ //if contour is a left contour and is closest left target to robot
       //set new best values for indexing and center distance
       correctIndex = i;
-      pixelsToCenter = abs(arrCenterX[i] - 480.0);
+      minDiff = abs(arrCenterX[i] - previousCenter);
     }
   }
-  DriverStation::ReportError("correctIndex: " + std::to_string(correctIndex));
+  if(correctIndex != -1)
+    previousCenter = arrCenterX[correctIndex];
+  DriverStation::ReportError("target: " + std::to_string(previousCenter));
   //found no targets
   if(correctIndex == -1)
     DriverStation::ReportError("No left targets found");
@@ -207,31 +210,20 @@ double VisionDrive::getWidth(){
   arrWidth = visionTable->GetNumberArray("width", defaultVal); 
   return arrWidth[VisionDrive::correctIndex];
 }
-double VisionDrive::getAngle(){
-  double targets[] = {90.0, -90.0, 0.0, 30.0, -30.0, 150.0, -150.0, 180.0};
-  return targets[Robot::oi->GetAnglePos()];
-}
+
 double VisionDrive::getClosestTargetAngle(){
   std::vector<double> defaultVal{0};
   arrCenterX = visionTable->GetNumberArray("centerX", defaultVal);
-  double targets[] = {90.0, -90.0, 0.0, 30.0, -30.0, 150.0, -150.0, 180.0};
+  double targets[] = {90.0, -90.0, 0.0, 30.0, -30.0, 150.0, -150.0, 180.0, -180.0};
   int min = 0;
   double currentHeading = Robot::navx->GetYaw();
   double minError = abs(currentHeading - targets[0]);
 
-  if(arrCenterX.size() < 3){
-    for(int i = 1; i < 8; i++){
-      if(abs(currentHeading - targets[i]) < minError){
-        min = i;  
-        minError = abs(currentHeading - targets[i]);
-      }
+  for(int i = 1; i < 9; i++){
+    if(abs(currentHeading - targets[i]) < minError){
+      min = i;  
+      minError = abs(currentHeading - targets[i]);     
     }
-  }
-  else{
-     if(abs(currentHeading - targets[1]) < minError){
-        min = 1;  
-        minError = abs(currentHeading - targets[1]);
-      }
   }
   DriverStation::ReportError("Arr Size: " + std::to_string(arrAngle.size()));
   DriverStation::ReportError("Target Angle:" + std::to_string(targets[min]));
