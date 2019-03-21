@@ -90,11 +90,9 @@ void Robot::TeleopInit() {
 } //TeleopInit()
 
 void Robot::TeleopPeriodic() {
-	/*
 	double time = DriverStation::GetInstance().GetMatchTime();
 	if(time >= 0.0 && time <= 30)
 		Cob::PushValue(COB_ENDGAME, true);
-	*/
 	frc::Scheduler::GetInstance()->Run();
 } //TeleopPeriodic
 
