@@ -13,7 +13,7 @@
 #define SUCK_SPEED 0.5
 
 namespace frc2019 {
-Vacuum::Vacuum() : Subsystem("Vacuum"), vacuumMC(VACUUM_ID), servo(0) {
+Vacuum::Vacuum() : Subsystem("Vacuum"), vacuumMC(VACUUM_ID), servo(CARGO_HATCH_SERVO_ID) {
 	vacuumMC.ConfigContinuousCurrentLimit(30, 20);
 	vacuumMC.EnableCurrentLimit(true);
 } //Vacuum()
