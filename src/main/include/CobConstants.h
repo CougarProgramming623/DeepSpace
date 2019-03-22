@@ -43,11 +43,21 @@
 #define COB_WRIST_SECURE "wrist-position/secure"
 #define COB_WRIST_ALLEYOOP "wrist-position/alley-oop"
 
+#define COB_FORK_PICKUP "fork/setpoints/floor-pickup"
+#define COB_FORK_SCOOP "fork/setpoints/scoop"
+#define COB_FORK_CARGO_HOLD "fork/setpoints/cargo-hold"
+#define COB_FORK_VERTICAL "fork/setpoints/vertical"
+#define COB_FORK_STOW "fork/setpoints/stow"
+
 #define COB_PULL_ARM_SETPOINTS "pull-setpoints"
 #define COB_SAVE_ARM_SETPOINTS "save-setpoints"
 
+#define COB_PULL_FORK_SETPOINTS "fork/pull-setpoints"
+#define COB_SAVE_FORK_SETPOINTS "fork/save-setpoints"
+
 #define COB_ARM_OFFSET "arm-position/offset"
 #define COB_WRIST_OFFSET "wrist-position/offset"
+#define COB_FORK_OFFSET "fork/offset"
 
 #define COB_IS_HOLDING "ak/is-pressed"
 

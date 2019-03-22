@@ -1,5 +1,5 @@
 
-//define BOT_SAMUS
+//#define BOT_SAMUS
 #define BOT_HAMBONE
 //#define BOT_RAFIKI
 

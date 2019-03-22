@@ -12,6 +12,7 @@
 #include <ctre/Phoenix.h>
 #include "GameEnums.h"
 
+#define FORK_SETPOINT_FILE_NAME "/home/lvuser/ForkSetpoints.bin" 
 namespace frc2019 {
 class HatchPickup : public frc::Subsystem {
 private:
@@ -19,13 +20,21 @@ private:
 	// for methods that implement subsystem capabilities
 	TalonSRX pickupMC;
 	int initialReading;
-
+	std::string m_CobNames[FORK_SETPOINT_COUNT];
+	int m_fork_setpoints[FORK_SETPOINT_COUNT] {};//Main Arm vs Wrist, Cargo vs Hatch, arm positions
+	int forkOffset[1] {};
+private:
+	std::string MakeCOBAddress(int setpoint);
 public:
 	HatchPickup();
 	void InitDefaultCommand() override;
 	void SetSetpoint(int);
 	void SetVelocity(double);
 	int GetForkTalonData(TalonData);
+	int GetSetpoint(ForkSetpoints setpoint);
+	void PullSetpoints();
+	void SaveSetpoints();
+	inline int GetOffset() { return forkOffset[0]; }
 };
 
 }

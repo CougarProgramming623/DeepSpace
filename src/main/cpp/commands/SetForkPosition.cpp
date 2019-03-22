@@ -17,6 +17,10 @@ SetForkPosition::SetForkPosition(int setpoint) {
   m_setpoint = setpoint;
 } //SetForkPosition()
 
+SetForkPosition::SetForkPosition(ForkSetpoints setpoint) {
+	m_setpoint = Robot::fork->GetSetpoint(setpoint);
+}
+
 // Called just before this Command runs the first time
 void SetForkPosition::Initialize() {
     DriverStation::ReportError("setting fork: " + std::to_string(m_setpoint));

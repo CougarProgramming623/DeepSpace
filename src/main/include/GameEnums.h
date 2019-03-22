@@ -24,6 +24,14 @@ enum DialPosition {
 
 const constexpr char * const DIAL_POSITION_NAMES[] = {"all-in", "pickup", "low", "cargo-ship", "medium", "high"};
 
+
+#define FORK_SETPOINT_COUNT 5
+enum ForkSetpoints {
+	FLOOR_PICKUP, SCOOP, CARGO_HOLD, VERTICAL, STOW, DEFAULT
+};
+
+const constexpr char * const FORK_SETPOINT_NAMES[] = {"floor-pickup", "scoop", "cargo-hold", "vertical", "stow"};
+
 //Represents the what the sliders control
 
 }//namespace

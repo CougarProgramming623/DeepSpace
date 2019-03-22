@@ -8,17 +8,20 @@
 #pragma once
 
 #include <frc/commands/Command.h>
+#include "GameEnums.h"
 
 namespace frc2019 {
 class SetForkPosition : public frc::Command {
  public:
   SetForkPosition(int);
+  SetForkPosition(ForkSetpoints setpoint);
   void Initialize() override;
   void Execute() override;
   bool IsFinished() override;
   void End() override;
   void Interrupted() override;
 private:
-  int m_setpoint;
+	int m_setpoint;
+	ForkSetpoints m_forksetpoint;
 };
 }

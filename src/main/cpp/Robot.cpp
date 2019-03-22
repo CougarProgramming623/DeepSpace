@@ -48,10 +48,7 @@ void Robot::RobotPeriodic() {
 	Cob::PushValue(COB_ROTATION,Robot::navx->GetYaw());
 
 	Cob::PushValue(COB_MAIN_ARM_ROTATION, arm->GetArmTalonData(TalonData::SENSOR_POSITION));
-	SmartDashboard::PutNumber("Arm error", arm->GetArmTalonData(TalonData::ERROR));
 	Cob::PushValue(COB_WRIST_ROTATION, wrist->GetWristTalonData(TalonData::SENSOR_POSITION));
-	SmartDashboard::PutNumber("Wrist error", wrist->GetWristTalonData(TalonData::ERROR));
-	SmartDashboard::PutNumber("Servo Position", vacuum->GetServoPosition());
 
 
 	if(Cob::GetValue<bool>(COB_PULL_ARM_SETPOINTS)) {
@@ -62,6 +59,16 @@ void Robot::RobotPeriodic() {
 	if(Cob::GetValue<bool>(COB_SAVE_ARM_SETPOINTS)) {
 		arm->SaveSetpoints();
 		Cob::PushValue(COB_SAVE_ARM_SETPOINTS, false);
+	}
+
+	if(Cob::GetValue<bool>(COB_PULL_FORK_SETPOINTS)) {
+		fork->PullSetpoints();
+		Cob::PushValue(COB_PULL_FORK_SETPOINTS, false);
+	}
+
+	if(Cob::GetValue<bool>(COB_SAVE_FORK_SETPOINTS)) {
+		fork->SaveSetpoints();
+		Cob::PushValue(COB_SAVE_FORK_SETPOINTS, false);
 	}
 	//Cob::PushValue(COB_MAIN_ARM_ROTATION,Robot::arm->GetPotData());
 	//vacuum->SetServoPosition(1.0);

@@ -73,9 +73,11 @@ fodToggle(&driverJoystick, 1)
 	a6.WhenPressed(new LambdaCommand([]() { Robot::oi->anglePos = 6; }));
 	a7.WhenPressed(new LambdaCommand([]() { Robot::oi->anglePos = 7; }));
 
+
 	forkStow.WhenPressed(new SetForkPosition(114));
 	forkUp.WhenPressed(new SetForkPosition(267));
 	forkGround.WhenPressed(new SetForkPosition(478));
+	
 
 	armOverride.WhenReleased(new LambdaCommand([]() {
 		Robot::arm->SetVelocity(0.0f);
