@@ -23,7 +23,7 @@ private:
 	frc::JoystickButton armOverride, forkOverride, wristOverride;
 	frc::JoystickButton a0, a1, a2, a3, a4, a5, a6, a7;
 	frc::JoystickButton	toggleHatchCargo;
-	frc::JoystickButton forkGround, forkHerd, forkUp, forkStow;
+	frc::JoystickButton forkGround, forkScoop, forkCargo, forkVertical;
 	frc::JoystickButton allIn, pickup, low, medium, high, ship;
 	frc::JoystickButton fodToggle;
 

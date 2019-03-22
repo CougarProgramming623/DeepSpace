@@ -22,7 +22,7 @@ private:
 	int initialReading;
 	std::string m_CobNames[FORK_SETPOINT_COUNT];
 	int m_fork_setpoints[FORK_SETPOINT_COUNT] {};//Main Arm vs Wrist, Cargo vs Hatch, arm positions
-	int forkOffset[1] {};
+	int forkOffset;
 private:
 	std::string MakeCOBAddress(int setpoint);
 public:
@@ -34,7 +34,7 @@ public:
 	int GetSetpoint(ForkSetpoints setpoint);
 	void PullSetpoints();
 	void SaveSetpoints();
-	inline int GetOffset() { return forkOffset[0]; }
+	inline int GetOffset() { return forkOffset; }
 };
 
 }

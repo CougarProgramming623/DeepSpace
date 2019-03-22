@@ -27,7 +27,7 @@ const constexpr char * const DIAL_POSITION_NAMES[] = {"all-in", "pickup", "low",
 
 #define FORK_SETPOINT_COUNT 5
 enum ForkSetpoints {
-	FLOOR_PICKUP, SCOOP, CARGO_HOLD, VERTICAL, STOW, DEFAULT
+	FLOOR_PICKUP = 0, SCOOP, CARGO_HOLD, VERTICAL, STOW, DEFAULT
 };
 
 const constexpr char * const FORK_SETPOINT_NAMES[] = {"floor-pickup", "scoop", "cargo-hold", "vertical", "stow"};

@@ -18,7 +18,10 @@ SetForkPosition::SetForkPosition(int setpoint) {
 } //SetForkPosition()
 
 SetForkPosition::SetForkPosition(ForkSetpoints setpoint) {
+  Requires(Robot::fork.get());
+  DriverStation::ReportError("Required fork");
 	m_setpoint = Robot::fork->GetSetpoint(setpoint);
+  DriverStation::ReportError("Calculated setpoint");
 }
 
 // Called just before this Command runs the first time

@@ -37,11 +37,11 @@ HatchPickup::HatchPickup() : Subsystem("ExampleSubsystem"), pickupMC(FORK_ID) {
 	FILE* file = fopen(FORK_SETPOINT_FILE_NAME, "rb");
 	if(file == nullptr) {
 		frc::DriverStation::ReportError("Fork setpoint file doesn't exist! Make sure to se defaults using the COB");
-		memset(forkOffset, sizeof(forkOffset), 0x00);
+		memset(&forkOffset, sizeof(forkOffset), 0x00);
 	} else {
 		frc::DriverStation::ReportError("Fork setpoint file found!");
 		fread(m_fork_setpoints, sizeof(m_fork_setpoints), 1, file);
-		fread(forkOffset, sizeof(forkOffset), 1, file);
+		fread(&forkOffset, sizeof(forkOffset), 1, file);
 		fclose(file);
 	}
 
@@ -51,7 +51,7 @@ HatchPickup::HatchPickup() : Subsystem("ExampleSubsystem"), pickupMC(FORK_ID) {
 
 	Cob::PushValue(COB_SAVE_FORK_SETPOINTS, false);
 	Cob::PushValue(COB_PULL_FORK_SETPOINTS, false);
-	Cob::PushValue(COB_FORK_OFFSET, forkOffset[0]);
+	Cob::PushValue(COB_FORK_OFFSET, forkOffset);
 	frc::DriverStation::ReportError("Created fork network tables");
 
 
@@ -68,7 +68,8 @@ int HatchPickup::GetForkTalonData(TalonData data) {
 } //GetForkTalonData()
 
 int HatchPickup::GetSetpoint(ForkSetpoints setpoint) {
-	return m_fork_setpoints[setpoint];
+	DriverStation::ReportError(std::to_string(setpoint));
+	return m_fork_setpoints[(int) setpoint] + forkOffset;
 }
 void HatchPickup::SetVelocity(double velocity) {
 	pickupMC.Set(ControlMode::PercentOutput, velocity);
@@ -92,7 +93,7 @@ void HatchPickup::PullSetpoints() {
 		m_fork_setpoints[i] = newValue;
 	}
 
-	forkOffset[0] = Cob::GetValue<int>(COB_FORK_OFFSET);
+	forkOffset = Cob::GetValue<int>(COB_FORK_OFFSET);
 }
 
 void HatchPickup::SaveSetpoints() {
@@ -102,7 +103,7 @@ void HatchPickup::SaveSetpoints() {
 		frc::DriverStation::ReportError("Error creating fork setpoints file: " FORK_SETPOINT_FILE_NAME);
 	} else {
 		fwrite(m_fork_setpoints, sizeof(m_fork_setpoints), 1, file);
-		fwrite(forkOffset, sizeof(forkOffset), 1, file);
+		fwrite(&forkOffset, sizeof(forkOffset), 1, file);
 		fclose(file);
 		frc::DriverStation::ReportError("Saved fork setpoints successfully!");
 	}

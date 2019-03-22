@@ -49,9 +49,10 @@ OI::OI() :
 vacuumToggle(&buttonBoard, 1),
 climbUp(&buttonBoard, 2), climbDown(&buttonBoard, 3), endgameOverride(&buttonBoard, 4), driveOverride(&buttonBoard, 5),
 armOverride(&buttonBoard, ARM_OVERRIDE), forkOverride(&buttonBoard, FORK_OVERRIDE), wristOverride(&buttonBoard, WRIST_OVERRIDE),
+forkGround(&buttonBoard, 20), forkScoop(&buttonBoard, 21), forkCargo(&buttonBoard, 22), forkVertical(&buttonBoard, 23),
 a0(&buttonBoard, 9), a1(&buttonBoard, 10), a2(&buttonBoard, 11), a3(&buttonBoard, 12), a4(&buttonBoard, 13), a5(&buttonBoard, 14), a6(&buttonBoard, 15), a7(&buttonBoard, 16), 
 toggleHatchCargo(&buttonBoard, CARGO_HATCH_TOGGLE),
-forkGround(&buttonBoard, 20), forkUp(&buttonBoard, 21), forkStow(&buttonBoard, 22), forkHerd(&buttonBoard, 23),
+
 allIn(&buttonBoard, 24), pickup(&buttonBoard, 25), low(&buttonBoard, 26), ship(&buttonBoard, 27), medium(&buttonBoard, 28), high(&buttonBoard, 29),
 fodToggle(&driverJoystick, 1)
 {
@@ -73,11 +74,13 @@ fodToggle(&driverJoystick, 1)
 	a6.WhenPressed(new LambdaCommand([]() { Robot::oi->anglePos = 6; }));
 	a7.WhenPressed(new LambdaCommand([]() { Robot::oi->anglePos = 7; }));
 
-
-	forkStow.WhenPressed(new SetForkPosition(114));
-	forkUp.WhenPressed(new SetForkPosition(267));
-	forkGround.WhenPressed(new SetForkPosition(478));
-	
+	DriverStation::ReportError("Assinging fork buttons");
+	forkGround.WhenPressed(new SetForkPosition(356)); //ForkSetpoints::FLOOR_PICKUP));
+	forkScoop.WhenPressed(new SetForkPosition(325)); //ForkSetpoints::SCOOP));
+	forkCargo.WhenPressed(new SetForkPosition(256));//ForkSetpoints::CARGO_HOLD));
+	forkVertical.WhenPressed(new SetForkPosition(9));//ForkSetpoints::VERTICAL));
+	// fork vertical = 152
+	// fork stowed = 9	
 
 	armOverride.WhenReleased(new LambdaCommand([]() {
 		Robot::arm->SetVelocity(0.0f);
