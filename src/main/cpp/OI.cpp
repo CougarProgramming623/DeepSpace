@@ -153,7 +153,7 @@ bool OI::IsFOD() {
 } //IsFOD()
 
 bool OI::IsPercentOutputMode() {
-	return driveWithPercentOutput;
+	return buttonBoard.GetRawButton(5);
 }
 
 bool OI::UsingArmSlider() {

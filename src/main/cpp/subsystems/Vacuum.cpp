@@ -52,8 +52,7 @@ double Vacuum::GetCurrent() {
 }
 
 void Vacuum::Update() {
-	Cob::PushValue(COB_IS_HOLDING, vacuumMC.GetOutputCurrent() < 27 && vacuumMC.GetOutputCurrent() > 20);
-	DriverStation::ReportError(std::to_string(vacuumMC.GetOutputCurrent()));
+	Cob::PushValue(COB_IS_HOLDING, vacuumMC.GetOutputCurrent() < 24 && vacuumMC.GetOutputCurrent() > 21);
 }
 
 bool Vacuum::IsSucking() {

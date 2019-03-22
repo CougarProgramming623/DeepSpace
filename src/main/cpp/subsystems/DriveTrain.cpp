@@ -83,7 +83,6 @@ void DriveTrain::CartesianDrive(double y, double x, double rotation, double angl
 		m_RightFrontMC.Set(ControlMode::PercentOutput, wheelSpeeds[kFRONT_RIGHT]);
 		m_RightRearMC.Set(ControlMode::PercentOutput, wheelSpeeds[kREAR_RIGHT]);
 	} else {
-
 		m_LeftFrontMC.Set(ControlMode::Velocity, wheelSpeeds[kFRONT_LEFT] * kMAX_VELOCITY);
 		m_LeftRearMC.Set(ControlMode::Velocity,wheelSpeeds[kREAR_LEFT] * kMAX_VELOCITY);
 		m_RightFrontMC.Set(ControlMode::Velocity, wheelSpeeds[kFRONT_RIGHT] * kMAX_VELOCITY);
