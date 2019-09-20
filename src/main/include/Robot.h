@@ -11,10 +11,8 @@
 #include <frc/WPILib.h>
 #include "subsystems/DriveTrain.h"
 #include "subsystems/Arm.h"
-#include "subsystems/HatchPickup.h"
 #include "subsystems/Vacuum.h"
 #include "subsystems/Wrist.h"
-#include "subsystems/HatchPickup.h"
 #include "subsystems/Climb.h"
 #include "AHRS.h"
 #include "OI.h"
@@ -41,7 +39,6 @@ public: //pointers
 	std::unique_ptr<Command> autonomousCommand;
 	static std::shared_ptr<DriveTrain> driveTrain;
 	static std::shared_ptr<Arm> arm;
-	static std::shared_ptr<HatchPickup> fork;
 	static std::shared_ptr<AHRS> navx;
 	static std::shared_ptr<OI> oi;
 	static std::shared_ptr<Vacuum> vacuum;

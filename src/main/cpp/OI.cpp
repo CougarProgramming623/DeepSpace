@@ -2,7 +2,6 @@
 #include "OI.h"
 #include <frc/DriverStation.h>
 #include "Cob.h"
-#include "commands/SetForkPosition.h"
 #include "commands/Turn.h"
 #include "commands/ModeSwitch.h"
 
@@ -75,19 +74,17 @@ fodToggle(&driverJoystick, 1)
 	a7.WhenPressed(new LambdaCommand([]() { Robot::oi->anglePos = 7; }));
 
 	DriverStation::ReportError("Assinging fork buttons");
-	forkGround.WhenPressed(new SetForkPosition(356)); //ForkSetpoints::FLOOR_PICKUP));
-	forkScoop.WhenPressed(new SetForkPosition(325)); //ForkSetpoints::SCOOP));
-	forkCargo.WhenPressed(new SetForkPosition(256));//ForkSetpoints::CARGO_HOLD));
-	forkVertical.WhenPressed(new SetForkPosition(9));//ForkSetpoints::VERTICAL));
+	// forkGround.WhenPressed(new SetForkPosition(356)); //ForkSetpoints::FLOOR_PICKUP));
+	// forkScoop.WhenPressed(new SetForkPosition(325)); //ForkSetpoints::SCOOP));
+	// forkCargo.WhenPressed(new SetForkPosition(256));//ForkSetpoints::CARGO_HOLD));
+	// forkVertical.WhenPressed(new SetForkPosition(9));//ForkSetpoints::VERTICAL));
 	// fork vertical = 152
 	// fork stowed = 9	
 
 	armOverride.WhenReleased(new LambdaCommand([]() {
 		Robot::arm->SetVelocity(0.0f);
 	}));
-	forkOverride.WhenReleased(new LambdaCommand([]() {
-		Robot::fork->SetVelocity(0.0f);
-	}));
+	
 	wristOverride.WhenReleased(new LambdaCommand([]() {
 		Robot::wrist->SetVelocity(0.0f);
 	}));
@@ -111,10 +108,6 @@ void OI::Update() {
 		Robot::arm->SetVelocity(buttonBoard.GetRawAxis(0));// The value is already [-1, 1]
 	}
 
-	if(UsingForkSlider()) {
-		Robot::fork->SetVelocity(buttonBoard.GetRawAxis(1));
-	}
-	
 	if(UsingWristSlider()) {
 		Robot::wrist->SetVelocity(-buttonBoard.GetRawAxis(2));
 	}
