@@ -3,7 +3,7 @@
 This is the 2019 repository for the FRC game DeepSpace.
 
   ### Coding Standards
-  [Rules](Wiki/Rules)
+  [Coding Guidelines](https://github.com/CougarProgramming623/DeepSpace/wiki/Rules)
 
 
   
