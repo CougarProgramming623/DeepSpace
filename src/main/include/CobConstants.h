@@ -1,3 +1,4 @@
+#pragma once
 
 #define COB_X "location/x"
 #define COB_Y "location/y"
@@ -62,3 +63,8 @@
 #define COB_IS_HOLDING "ak/is-pressed"
 
 #define COB_SHUTDOWN_BEAGLEBONE "beaglebone/is-shutdown"
+
+
+const std::string COB_DRIVE_P = "drive/p";
+const std::string COB_DRIVE_I = "drive/i";
+const std::string COB_DRIVE_D = "drive/d";

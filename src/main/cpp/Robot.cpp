@@ -11,6 +11,7 @@ std::shared_ptr<AHRS> Robot::navx;
 std::shared_ptr<OI> Robot::oi(nullptr);
 std::shared_ptr<Arm> Robot::arm;
 std::shared_ptr<Vacuum> Robot::vacuum;
+std::shared_ptr<HatchPickup> Robot::fork;
 std::shared_ptr<Wrist> Robot::wrist;
 std::shared_ptr<Climb> Robot::climb;
 
@@ -21,6 +22,7 @@ void Robot::RobotInit() {
 	wrist.reset(new Wrist());
 	vacuum.reset(new Vacuum());
 	oi.reset(new OI());
+	fork.reset(new HatchPickup());
 	climb.reset(new Climb());
 	try {
 		navx.reset(new AHRS(SPI::Port::kMXP)); //instantiates the gyro
@@ -59,6 +61,15 @@ void Robot::RobotPeriodic() {
 		Cob::PushValue(COB_SAVE_ARM_SETPOINTS, false);
 	}
 
+	if(Cob::GetValue<bool>(COB_PULL_FORK_SETPOINTS)) {
+		fork->PullSetpoints();
+		Cob::PushValue(COB_PULL_FORK_SETPOINTS, false);
+	}
+
+	if(Cob::GetValue<bool>(COB_SAVE_FORK_SETPOINTS)) {
+		fork->SaveSetpoints();
+		Cob::PushValue(COB_SAVE_FORK_SETPOINTS, false);
+	}
 	//Cob::PushValue(COB_MAIN_ARM_ROTATION,Robot::arm->GetPotData());
 	//vacuum->SetServoPosition(1.0);
 	oi->Update();

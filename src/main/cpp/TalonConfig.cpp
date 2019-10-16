@@ -6,7 +6,7 @@
 namespace talon {
 double GetTalonData(TalonSRX* talonMC, TalonData data){
     //based on the value of the data parameter, the corresponding data value is returned
-    switch(data){
+    switch(data) {
         case TalonData::SENSOR_POSITION:
             return talonMC->GetSelectedSensorPosition(); //encoder or potentiometer reading
         case TalonData::SENSOR_VELOCITY:

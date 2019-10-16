@@ -2,6 +2,7 @@
 #include "OI.h"
 #include <frc/DriverStation.h>
 #include "Cob.h"
+#include "commands/SetForkPosition.h"
 #include "commands/Turn.h"
 #include "commands/ModeSwitch.h"
 
@@ -31,8 +32,8 @@
 #define FORK_AXIS 2
 #define WRIST_AXIS 3
 
-
-namespace frc2019 {
+namespace frc2019
+{
 
 //Instantiate the Joystick and Button Board
 frc::Joystick OI::driverJoystick = frc::Joystick(0);
@@ -44,16 +45,15 @@ frc::Joystick OI::buttonBoard = frc::Joystick(1);
 
 #define CARGO_HATCH_TOGGLE 19
 
-OI::OI() : 
-vacuumToggle(&buttonBoard, 1),
-climbUp(&buttonBoard, 2), climbDown(&buttonBoard, 3), endgameOverride(&buttonBoard, 4), driveOverride(&buttonBoard, 5),
-armOverride(&buttonBoard, ARM_OVERRIDE), forkOverride(&buttonBoard, FORK_OVERRIDE), wristOverride(&buttonBoard, WRIST_OVERRIDE),
-forkGround(&buttonBoard, 20), forkScoop(&buttonBoard, 21), forkCargo(&buttonBoard, 22), forkVertical(&buttonBoard, 23),
-a0(&buttonBoard, 9), a1(&buttonBoard, 10), a2(&buttonBoard, 11), a3(&buttonBoard, 12), a4(&buttonBoard, 13), a5(&buttonBoard, 14), a6(&buttonBoard, 15), a7(&buttonBoard, 16), 
-toggleHatchCargo(&buttonBoard, CARGO_HATCH_TOGGLE),
+OI::OI() : vacuumToggle(&buttonBoard, 1),
+		   climbUp(&buttonBoard, 2), climbDown(&buttonBoard, 3), endgameOverride(&buttonBoard, 4), driveOverride(&buttonBoard, 5),
+		   armOverride(&buttonBoard, ARM_OVERRIDE), forkOverride(&buttonBoard, FORK_OVERRIDE), wristOverride(&buttonBoard, WRIST_OVERRIDE),
+		   forkGround(&buttonBoard, 20), forkScoop(&buttonBoard, 21), forkCargo(&buttonBoard, 22), forkVertical(&buttonBoard, 23),
+		   a0(&buttonBoard, 9), a1(&buttonBoard, 10), a2(&buttonBoard, 11), a3(&buttonBoard, 12), a4(&buttonBoard, 13), a5(&buttonBoard, 14), a6(&buttonBoard, 15), a7(&buttonBoard, 16),
+		   toggleHatchCargo(&buttonBoard, CARGO_HATCH_TOGGLE),
 
-allIn(&buttonBoard, 24), pickup(&buttonBoard, 25), low(&buttonBoard, 26), ship(&buttonBoard, 27), medium(&buttonBoard, 28), high(&buttonBoard, 29),
-fodToggle(&driverJoystick, 1)
+		   allIn(&buttonBoard, 24), pickup(&buttonBoard, 25), low(&buttonBoard, 26), ship(&buttonBoard, 27), medium(&buttonBoard, 28), high(&buttonBoard, 29),
+		   fodToggle(&driverJoystick, 1)
 {
 	vacuumToggle.WhenPressed(new TurnOnVacuum());
 	vacuumToggle.WhenReleased(new StopVacuum());
@@ -74,17 +74,19 @@ fodToggle(&driverJoystick, 1)
 	a7.WhenPressed(new LambdaCommand([]() { Robot::oi->anglePos = 7; }));
 
 	DriverStation::ReportError("Assinging fork buttons");
-	// forkGround.WhenPressed(new SetForkPosition(356)); //ForkSetpoints::FLOOR_PICKUP));
-	// forkScoop.WhenPressed(new SetForkPosition(325)); //ForkSetpoints::SCOOP));
-	// forkCargo.WhenPressed(new SetForkPosition(256));//ForkSetpoints::CARGO_HOLD));
-	// forkVertical.WhenPressed(new SetForkPosition(9));//ForkSetpoints::VERTICAL));
+	forkGround.WhenPressed(new SetForkPosition(356)); //ForkSetpoints::FLOOR_PICKUP));
+	forkScoop.WhenPressed(new SetForkPosition(325));  //ForkSetpoints::SCOOP));
+	forkCargo.WhenPressed(new SetForkPosition(256));  //ForkSetpoints::CARGO_HOLD));
+	forkVertical.WhenPressed(new SetForkPosition(9)); //ForkSetpoints::VERTICAL));
 	// fork vertical = 152
-	// fork stowed = 9	
+	// fork stowed = 9
 
 	armOverride.WhenReleased(new LambdaCommand([]() {
 		Robot::arm->SetVelocity(0.0f);
 	}));
-	
+	forkOverride.WhenReleased(new LambdaCommand([]() {
+		Robot::fork->SetVelocity(0.0f);
+	}));
 	wristOverride.WhenReleased(new LambdaCommand([]() {
 		Robot::wrist->SetVelocity(0.0f);
 	}));
@@ -97,29 +99,41 @@ fodToggle(&driverJoystick, 1)
 	medium.WhenPressed(new SetArmWristPosition(DialPosition::MEDIUM));
 	high.WhenPressed(new SetArmWristPosition(DialPosition::HIGH));
 	fodToggle.WhenPressed(new VisionDrive());
-	
+
 	DriverStation::ReportError("OI DOne");
 } //OI()
 
 static bool lastButton = false;
 
-void OI::Update() {
-	if (UsingArmSlider()) {
-		Robot::arm->SetVelocity(buttonBoard.GetRawAxis(0));// The value is already [-1, 1]
+void OI::Update()
+{
+	if (UsingArmSlider())
+	{
+		Robot::arm->SetVelocity(buttonBoard.GetRawAxis(0)); // The value is already [-1, 1]
 	}
 
-	if(UsingWristSlider()) {
+	if (UsingForkSlider())
+	{
+		Robot::fork->SetVelocity(buttonBoard.GetRawAxis(1));
+	}
+
+	if (UsingWristSlider())
+	{
 		Robot::wrist->SetVelocity(-buttonBoard.GetRawAxis(2));
 	}
 
 	bool currentButton = driverJoystick.GetRawButton(1);
 	//DriverStation::ReportError(std::string("c: ") + (currentButton ? "true" : "false") + " last " + (lastButton ? "true" : "false"));
-	if (currentButton && !lastButton) {
-		if(fod) {
+	if (currentButton && !lastButton)
+	{
+		if (fod)
+		{
 			fod = false;
 			DriverStation::ReportError("FOD Drive Off");
 			Cob::PushValue(COB_FIELD_ORIENTED, false);
-		} else {
+		}
+		else
+		{
 			fod = true;
 			DriverStation::ReportError("FOD Drive On");
 			Cob::PushValue(COB_FIELD_ORIENTED, true);
@@ -135,42 +149,50 @@ void OI::Update() {
 	*/
 } //Update()
 
-SliderStatus OI::GetSliderMode() {
+SliderStatus OI::GetSliderMode()
+{
 	return sliderMode;
 } //GetSliderMode()
 
-
-bool OI::CanClimb() {
+bool OI::CanClimb()
+{
 	bool isTeleop = frc::DriverStation::GetInstance().IsOperatorControl();
 	double time = frc::DriverStation::GetInstance().GetMatchTime();
 	bool endgameOverrideSwitch = endgameOverride.Get();
 	return (isTeleop && time < 35.0 && time > 0.0) || endgameOverrideSwitch;
 }
-bool OI::IsFOD() {
+bool OI::IsFOD()
+{
 	return fod;
 } //IsFOD()
 
-bool OI::IsPercentOutputMode() {
+bool OI::IsPercentOutputMode()
+{
 	return buttonBoard.GetRawButton(5);
 }
 
-bool OI::UsingArmSlider() {
+bool OI::UsingArmSlider()
+{
 	return buttonBoard.GetRawButton(ARM_OVERRIDE);
 }
 
-bool OI::UsingForkSlider() {
+bool OI::UsingForkSlider()
+{
 	return buttonBoard.GetRawButton(FORK_OVERRIDE);
 }
 
-bool OI::UsingWristSlider() {
+bool OI::UsingWristSlider()
+{
 	return buttonBoard.GetRawButton(WRIST_OVERRIDE);
 }
 
-CargoOrHatch OI::IsCargoMode() {
+CargoOrHatch OI::IsCargoMode()
+{
 	return (buttonBoard.GetRawButton(CARGO_HATCH_TOGGLE) ? CargoOrHatch::HATCH : CargoOrHatch::CARGO);
 }
 
-bool OI::IsVisionActive(){
+bool OI::IsVisionActive()
+{
 	return driverJoystick.GetRawButton(1);
 }
-}//frc2019
+} // namespace frc2019

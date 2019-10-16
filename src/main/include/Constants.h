@@ -1,8 +1,8 @@
 
 
-#define FOOT 12.0
-#define SQRT_2 1.41421356237
-#define PI 3.14159265359
+const double FOOT = 12.0;
+const double SQRT_2 = 1.41421356237;
+const double PI = 3.14159265359;
 
 #include <wpi/ArrayRef.h>
 

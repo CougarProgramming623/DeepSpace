@@ -100,18 +100,18 @@ void DriveTrain::CartesianDrive(double y, double x, double rotation, double angl
 } //CartesianDrive()
 
 void DriveTrain::Normalize(wpi::MutableArrayRef<double> wheelSpeeds) {
-  double maxMagnitude = std::abs(wheelSpeeds[0]);
-  for (size_t i = 1; i < wheelSpeeds.size(); i++) {
-    double temp = std::abs(wheelSpeeds[i]);
-    if (maxMagnitude < temp) {
-      maxMagnitude = temp;
-    }
-  }
-  if (maxMagnitude > 1) {
-    for (size_t i = 0; i < wheelSpeeds.size(); i++) {
-      wheelSpeeds[i] = wheelSpeeds[i] / maxMagnitude;
-    }
-  }
+	double maxMagnitude = std::abs(wheelSpeeds[0]);
+	for (size_t i = 1; i < wheelSpeeds.size(); i++) {
+		double temp = std::abs(wheelSpeeds[i]);
+		if (maxMagnitude < temp) {
+			maxMagnitude = temp;
+		}
+	}
+	if (maxMagnitude > 1) {
+		for (size_t i = 0; i < wheelSpeeds.size(); i++) {
+			wheelSpeeds[i] = wheelSpeeds[i] / maxMagnitude;
+		}
+	}
 } //Normalize()
 
 double DriveTrain::GetDriveTalonData(DriveTalon driveTalon, TalonData data) {

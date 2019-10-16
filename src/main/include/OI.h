@@ -1,6 +1,7 @@
 #pragma once
 #include <frc/WPILib.h>
 #include "commands/BooleanToggle.h"
+#include "commands/SetForkPosition.h"
 #include "GameEnums.h"
 #include "RobotConstants.h"
 #include "OIConstants.h"
