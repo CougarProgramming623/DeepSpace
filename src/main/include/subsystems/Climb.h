@@ -28,6 +28,7 @@ public:
 private:
 	bool m_HitLimit = false;//TODO set this when we detect the limit switch has been triggered
 	WPI_TalonSRX m_ClimbMotor;
+	WPI_TalonSRX m_ClimbAssistMotor;
 	double m_ClimbTime = 0.0;//The number of seconds the climb motor has been running forward for
 
 };
