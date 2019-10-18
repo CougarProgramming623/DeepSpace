@@ -19,16 +19,16 @@ private:
 
 	frc::JoystickButton vacuumToggle;
 	frc::JoystickButton climbUp, climbDown, endgameOverride, driveOverride;
-	frc::JoystickButton armOverride, forkOverride, wristOverride;
+	frc::JoystickButton armOverride, spoonOverride, wristOverride;
 	frc::JoystickButton a0, a1, a2, a3, a4, a5, a6, a7;
 	frc::JoystickButton	toggleHatchCargo;
-	frc::JoystickButton forkGround, forkScoop, forkCargo, forkVertical;
+	frc::JoystickButton spoonGround, spoonScoop, spoonCargo, spoonVertical;
 	frc::JoystickButton allIn, pickup, low, medium, high, ship;
 	frc::JoystickButton fodToggle;
 
 	bool fod;
 	bool driveWithPercentOutput;
-	bool useArmSlider, useForkSlider, useWristSlider;
+	bool useArmSlider, useSpoonSlider, useWristSlider;
 	bool lastButtonVal = false;
 
 	/*
@@ -55,7 +55,7 @@ public:
 	bool IsFOD();
 	bool IsPercentOutputMode();
 	bool UsingArmSlider();
-	bool UsingForkSlider();
+	bool UsingSpoonSlider();
 	bool UsingWristSlider();
 	bool GetVision();
 	CargoOrHatch IsCargoMode();

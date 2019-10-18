@@ -28,7 +28,7 @@
 #include "commands/CargoHatchModeSwitch.h"
 
 #define ARM_AXIS 1
-#define FORK_AXIS 2
+#define spoon_AXIS 2
 #define WRIST_AXIS 3
 
 
@@ -39,7 +39,7 @@ frc::Joystick OI::driverJoystick = frc::Joystick(0);
 frc::Joystick OI::buttonBoard = frc::Joystick(1);
 
 #define ARM_OVERRIDE 6
-#define FORK_OVERRIDE 7
+#define SPOON_OVERRIDE 7
 #define WRIST_OVERRIDE 8
 
 #define CARGO_HATCH_TOGGLE 19
@@ -47,8 +47,8 @@ frc::Joystick OI::buttonBoard = frc::Joystick(1);
 OI::OI() : 
 vacuumToggle(&buttonBoard, 1),
 climbUp(&buttonBoard, 2), climbDown(&buttonBoard, 3), endgameOverride(&buttonBoard, 4), driveOverride(&buttonBoard, 5),
-armOverride(&buttonBoard, ARM_OVERRIDE), forkOverride(&buttonBoard, FORK_OVERRIDE), wristOverride(&buttonBoard, WRIST_OVERRIDE),
-forkGround(&buttonBoard, 20), forkScoop(&buttonBoard, 21), forkCargo(&buttonBoard, 22), forkVertical(&buttonBoard, 23),
+armOverride(&buttonBoard, ARM_OVERRIDE), spoonOverride(&buttonBoard, SPOON_OVERRIDE), wristOverride(&buttonBoard, WRIST_OVERRIDE),
+spoonGround(&buttonBoard, 20), spoonScoop(&buttonBoard, 21), spoonCargo(&buttonBoard, 22), spoonVertical(&buttonBoard, 23),
 a0(&buttonBoard, 9), a1(&buttonBoard, 10), a2(&buttonBoard, 11), a3(&buttonBoard, 12), a4(&buttonBoard, 13), a5(&buttonBoard, 14), a6(&buttonBoard, 15), a7(&buttonBoard, 16), 
 toggleHatchCargo(&buttonBoard, CARGO_HATCH_TOGGLE),
 
@@ -73,13 +73,13 @@ fodToggle(&driverJoystick, 1)
 	a6.WhenPressed(new LambdaCommand([]() { Robot::oi->anglePos = 6; }));
 	a7.WhenPressed(new LambdaCommand([]() { Robot::oi->anglePos = 7; }));
 
-	DriverStation::ReportError("Assinging fork buttons");
-	// forkGround.WhenPressed(new SetForkPosition(356)); //ForkSetpoints::FLOOR_PICKUP));
-	// forkScoop.WhenPressed(new SetForkPosition(325)); //ForkSetpoints::SCOOP));
-	// forkCargo.WhenPressed(new SetForkPosition(256));//ForkSetpoints::CARGO_HOLD));
-	// forkVertical.WhenPressed(new SetForkPosition(9));//ForkSetpoints::VERTICAL));
-	// fork vertical = 152
-	// fork stowed = 9	
+	DriverStation::ReportError("Assinging spoon buttons");
+	// spoonGround.WhenPressed(new SetspoonPosition(356)); //spoonSetpoints::FLOOR_PICKUP));
+	// spoonScoop.WhenPressed(new SetspoonPosition(325)); //spoonSetpoints::SCOOP));
+	// spoonCargo.WhenPressed(new SetspoonPosition(256));//spoonSetpoints::CARGO_HOLD));
+	// spoonVertical.WhenPressed(new SetspoonPosition(9));//spoonSetpoints::VERTICAL));
+	// spoon vertical = 152
+	// spoon stowed = 9	
 
 	armOverride.WhenReleased(new LambdaCommand([]() {
 		Robot::arm->SetVelocity(0.0f);
@@ -158,8 +158,8 @@ bool OI::UsingArmSlider() {
 	return buttonBoard.GetRawButton(ARM_OVERRIDE);
 }
 
-bool OI::UsingForkSlider() {
-	return buttonBoard.GetRawButton(FORK_OVERRIDE);
+bool OI::UsingSpoonSlider() {
+	return buttonBoard.GetRawButton(SPOON_OVERRIDE);
 }
 
 bool OI::UsingWristSlider() {
