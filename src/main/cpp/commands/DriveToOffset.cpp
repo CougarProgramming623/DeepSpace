@@ -10,30 +10,40 @@
 namespace frc2019 {
 
 	void DriveToOffset::Initialize() {
-		double p = Cob::GetValue<double>(COB_DRIVE_P);
-		double i = Cob::GetValue<double>(COB_DRIVE_I);
-		double d = Cob::GetValue<double>(COB_DRIVE_D);
+		Requires(Robot::driveTrain.get()); //dependent on the Drivetrain subsystem
+		double p = Cob::GetValue<double>(COB_TURN_P);
+		double i = Cob::GetValue<double>(COB_TURN_I);
+		double d = Cob::GetValue<double>(COB_TURN_D);
 
-		if (p == -1 || i == -1 || d == -1) {
-			DriverStation::ReportError("Unable to find all PID values! Make sure /cob/drive/* are defined!");
-		} else {
-			m_Controller.reset(new OHSPIDController(p, i, d, 0.0, 1.0));
-		}
-		//Robot::driveTrain->CartesianDrive();
+		m_TurnController.reset(new PIDController(p, i, d, Robot::navx.get(), this)); //initializes a PIDController with a kP, kI, kD, PIDSource, and PIDOuput
+		m_TurnController->SetInputRange(-180.0f, 180.0f); //sets input range to an angle
+		m_TurnController->SetOutputRange(-1.0, 1.0); //sets output range to a motor power
+		m_TurnController->SetAbsoluteTolerance(2.0f); //makes it so the robot ends at most 2 degrees of its target angle
+		m_TurnController->SetSetpoint(m_Target.z + Robot::navx.get()->GetYaw()); //sets target angle
+		m_TurnController->SetContinuous(true);
+		m_TurnController->Enable();
+		DriverStation::ReportError("Starting DriveToOffset");
 	}
 	
 	void DriveToOffset::Execute() {
-		//Robot::driveTrain->ConfigureEncoders()
+		m_Position.z = Robot::navx.get()->GetYaw();
+		if (m_Status == VisionStatus::ROTATE) {
+			frc::DriverStation::ReportError("Current angle: " + std::to_string(m_Position.z));
 
-		double power = m_Controller->GetOutput();
-		frc::DriverStation::ReportError("DTO power x: " + std::to_string(x) + ", y: " + std::to_string(y) + ", z: " + std::to_string(z));
-		Robot::driveTrain->CartesianDrive(x, y, 0, z);
+			Robot::driveTrain->CartesianDrive(0, 0, m_PIDOut, Robot::navx.get()->GetYaw());
+			
+			double error = GetDriveError().z;
+			DriverStation::ReportError("Turn error: " + std::to_string(error));
+			if (abs(error) < 2)
+				m_Status = VisionStatus::STRAFE;
+		} else if (m_Status == VisionStatus::STRAFE) {
+			m_Status = VisionStatus::APPROACH;
+			DriverStation::ReportError("Done with turn");
+		}
 	}
 
 	bool DriveToOffset::IsFinished() {
-		Vec3 error = (m_Target - m_Position);
-		frc::DriverStation::ReportError("DTO: error " + std::to_string(error.Length()) + "ft " + std::to_string(error));
-		return error.Length() < (4 / FOOT);//Stop when the error is less than 4 inches
+		return m_Status == VisionStatus::APPROACH;
 	}
 
 
@@ -45,6 +55,9 @@ namespace frc2019 {
 
 	}
 
+	void DriveToOffset::PIDWrite(double output) {
+		m_PIDOut = output;
+	}
 
 }
 

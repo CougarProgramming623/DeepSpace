@@ -3,7 +3,12 @@
 This is the 2019 repository for the FRC game DeepSpace.
 
   ### Coding Standards
-  [Coding Guidelines](https://github.com/CougarProgramming623/DeepSpace/wiki/Rules)
+
+  Coding standards can be found in the [OHS FRC Coding Standards.txt](OHS FRC Coding Standards.txt) file.
+  Most notably, we require the use of tabs in all files.
+  To abide by this regulation, either
+  - Open the project up as a workspace using the [DeepSpace.code-workspace](DeepSpace.code-workspace)
+  - Configure VSCode to use tabs as the default in all cases
 
 
   

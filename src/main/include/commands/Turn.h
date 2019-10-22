@@ -14,7 +14,7 @@
 namespace frc2019 {
 class Turn : public frc::Command, public frc::PIDOutput {
  public:
-    Turn(double);
+    Turn(double angle, bool relative = false);
     void Initialize() override;
     void Execute() override;
     bool IsFinished() override;

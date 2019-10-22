@@ -65,6 +65,10 @@
 #define COB_SHUTDOWN_BEAGLEBONE "beaglebone/is-shutdown"
 
 
-const std::string COB_DRIVE_P = "drive/p";
-const std::string COB_DRIVE_I = "drive/i";
-const std::string COB_DRIVE_D = "drive/d";
+const std::string COB_TURN_P = "turn/p";
+const std::string COB_TURN_I = "turn/i";
+const std::string COB_TURN_D = "turn/d";
+
+const std::string COB_VISION_DISTANCE = "vision/distance";
+const std::string COB_VISION_TARGET_ANGLE = "vision/target-angle";
+const std::string COB_VISION_ROBOT_ANGLE = "vision/robot-angle";

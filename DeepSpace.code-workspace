@@ -15,7 +15,8 @@
 			"memory": "cpp",
 			"cstdlib": "cpp",
 			"xstring": "cpp",
-			"functional": "cpp"
+			"functional": "cpp",
+			"string": "cpp"
 		},
 	}
 	

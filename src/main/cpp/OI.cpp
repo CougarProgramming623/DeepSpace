@@ -17,6 +17,7 @@
 #include "commands/StopVacuum.h"
 
 #include "commands/VisionDrive.h"
+#include "commands/DriveToOffset.h"
 
 #include "commands/SetManipulator.h"
 #include "commands/LambdaCommand.h"
