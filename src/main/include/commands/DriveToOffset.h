@@ -38,6 +38,7 @@ private:
 	Vec3 m_Target = {0, 0, 30};
 	Vec3 m_Position = {0, 0, 0};
 	std::unique_ptr<frc::PIDController> m_TurnController;
+	std::unique_ptr<frc::PIDController> m_StrafeController;
 	double m_PIDOut = 0.0;
 	VisionStatus m_Status = ROTATE;
 };

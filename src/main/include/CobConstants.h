@@ -69,6 +69,10 @@ const std::string COB_TURN_P = "turn/p";
 const std::string COB_TURN_I = "turn/i";
 const std::string COB_TURN_D = "turn/d";
 
+const std::string COB_STRAFE_P = "strafe/p";
+const std::string COB_STRAFE_I = "strafe/i";
+const std::string COB_STRAFE_D = "strafe/d";
+
 const std::string COB_VISION_DISTANCE = "vision/distance";
 const std::string COB_VISION_TARGET_ANGLE = "vision/target-angle";
 const std::string COB_VISION_ROBOT_ANGLE = "vision/robot-angle";

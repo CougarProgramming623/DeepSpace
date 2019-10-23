@@ -22,6 +22,19 @@ namespace frc2019 {
 		m_TurnController->SetSetpoint(m_Target.z + Robot::navx.get()->GetYaw()); //sets target angle
 		m_TurnController->SetContinuous(true);
 		m_TurnController->Enable();
+
+		double strafeP = Cob::GetValue<double>(COB_STRAFE_P);
+		double strafeI = Cob::GetValue<double>(COB_STRAFE_I);
+		double strafeD = Cob::GetValue<double>(COB_STRAFE_D);
+
+		m_StrafeController.reset(new PIDController(strafeP, strafeI, strafeD, Robot::navx.get(), this)); //initializes a PIDController with a kP, kI, kD, PIDSource, and PIDOuput
+		m_StrafeController->SetInputRange(-180.0f, 180.0f); //sets input range to an angle
+		m_StrafeController->SetOutputRange(-1.0, 1.0); //sets output range to a motor power
+		m_StrafeController->SetAbsoluteTolerance(2.0f); //makes it so the robot ends at most 2 degrees of its target angle
+		m_StrafeController->SetSetpoint(m_Target.x + Robot::navx.get()->GetYaw()); //sets target angle
+		m_StrafeController->SetContinuous(true);
+		m_StrafeController->Enable();
+
 		DriverStation::ReportError("Starting DriveToOffset");
 	}
 	
@@ -37,7 +50,9 @@ namespace frc2019 {
 			if (abs(error) < 2)
 				m_Status = VisionStatus::STRAFE;
 		} else if (m_Status == VisionStatus::STRAFE) {
-			m_Status = VisionStatus::APPROACH;
+
+			Robot::driveTrain->CartesianDrive(0, m_PIDOut, 0, 0);
+
 			DriverStation::ReportError("Done with turn");
 		}
 	}
