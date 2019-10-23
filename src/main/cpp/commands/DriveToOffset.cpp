@@ -28,12 +28,11 @@ namespace frc2019 {
 		double strafeD = Cob::GetValue<double>(COB_STRAFE_D);
 
 		m_StrafeController.reset(new PIDController(strafeP, strafeI, strafeD, Robot::navx.get(), this)); //initializes a PIDController with a kP, kI, kD, PIDSource, and PIDOuput
-		m_StrafeController->SetInputRange(-180.0f, 180.0f); //sets input range to an angle
+		m_StrafeController->SetInputRange(0, 0);//FIXME calculate ticks
 		m_StrafeController->SetOutputRange(-1.0, 1.0); //sets output range to a motor power
-		m_StrafeController->SetAbsoluteTolerance(2.0f); //makes it so the robot ends at most 2 degrees of its target angle
-		m_StrafeController->SetSetpoint(m_Target.x + Robot::navx.get()->GetYaw()); //sets target angle
+		m_StrafeController->SetAbsoluteTolerance(2.0f); //makes it so the robot ends at 2 encoder ticks off
+		m_StrafeController->SetSetpoint(0); //Calculate actual value in ticks
 		m_StrafeController->SetContinuous(true);
-		m_StrafeController->Enable();
 
 		DriverStation::ReportError("Starting DriveToOffset");
 	}
@@ -47,13 +46,16 @@ namespace frc2019 {
 			
 			double error = GetDriveError().z;
 			DriverStation::ReportError("Turn error: " + std::to_string(error));
-			if (abs(error) < 2)
+			if (abs(error) < 2) {
 				m_Status = VisionStatus::STRAFE;
+				m_TurnController->Disable();
+				m_StrafeController->Enable();
+			}
 		} else if (m_Status == VisionStatus::STRAFE) {
 
 			Robot::driveTrain->CartesianDrive(0, m_PIDOut, 0, 0);
 
-			DriverStation::ReportError("Done with turn");
+			DriverStation::ReportError("Strafing");
 		}
 	}
 
