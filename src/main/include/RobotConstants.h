@@ -128,7 +128,7 @@
 #define kREAR_RIGHT 3
 
 #define UP_kP_ARM 30
-#define DOWN_kP_ARM 10
+#define DOWN_kP_ARM 20
 
 #define DOWN_kP_WRIST 5
 #define UP_kP_WRIST 20
