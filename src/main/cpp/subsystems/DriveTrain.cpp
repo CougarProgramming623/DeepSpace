@@ -55,13 +55,13 @@ void DriveTrain::ConfigureEncoders() {
 	m_LeftRearMC.Config_kP(0, 2.58, 30);
 	m_LeftRearMC.Config_kI(0, 0.0, 30);
 	m_LeftRearMC.Config_kD(0, 40.0, 30);
-		
+	
 	m_RightRearMC.Config_kP(0, 2.58, 30);
 	m_RightRearMC.Config_kI(0, 0.0, 30);
 	m_RightRearMC.Config_kD(0, 40.0, 30);
 } //ConfigureEncoders()
 
-void DriveTrain::CartesianDrive(double y, double x, double rotation, double angle) {
+void DriveTrain::CartesianDrive(double y, double x, double rotation, double angle, bool velocity) {
 	//source: WPILib
 	//same code found in CartesianDrive in the WPI Library but adapted for being used in Velocity Mode
 	Vector2d input{x, y};
@@ -77,7 +77,7 @@ void DriveTrain::CartesianDrive(double y, double x, double rotation, double angl
 
 	#ifdef BOT_HAMBONE //use velocity mode if using real bot, if samus use percent output
 
-	if(Robot::oi->IsPercentOutputMode()) {
+	if(velocity) {
 		m_LeftFrontMC.Set(ControlMode::PercentOutput, wheelSpeeds[kFRONT_LEFT]);
 		m_LeftRearMC.Set(ControlMode::PercentOutput,wheelSpeeds[kREAR_LEFT]);
 		m_RightFrontMC.Set(ControlMode::PercentOutput, wheelSpeeds[kFRONT_RIGHT]);

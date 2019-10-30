@@ -27,16 +27,17 @@ void Drive::Execute() {
 	y = abs(y) <= 0.075f ? 0 : y;
 	x = abs(x) <= 0.075f ? 0 : x;
 	rot = abs(rot) <= 0.05f ? 0 : rot; //0.05 deadband on the z axis
-
-	if (Robot::oi->IsFOD()) {
-		//Robot::driveTrain->FODDrive(y, x, rot, gyro);
-		Robot::driveTrain->CartesianDrive(y, x, rot/2, gyro); //field oriented drive
-	} else {// Is alignment
-		// Disabled for now - dims down the effect of x and rot
-		//x = ReduceValue(x, 3.0);
-		//rot = ReduceValue(rot, 2.0);
-		//Robot::driveTrain->FODDrive(y, x, rot, 0.0);
-		Robot::driveTrain->CartesianDrive(y, x, rot/2, 0.0); //robot oriented drive
+	if (Robot::driverHasControl) {
+		if (Robot::oi->IsFOD()) {
+			//Robot::driveTrain->FODDrive(y, x, rot, gyro);
+			Robot::driveTrain->CartesianDrive(y, x, rot/2, gyro, !Robot::oi->IsPercentOutputMode()); //field oriented drive
+		} else {// Is alignment
+			// Disabled for now - dims down the effect of x and rot
+			//x = ReduceValue(x, 3.0);
+			//rot = ReduceValue(rot, 2.0);
+			//Robot::driveTrain->FODDrive(y, x, rot, 0.0);
+			Robot::driveTrain->CartesianDrive(y, x, rot/2, 0.0, !Robot::oi->IsPercentOutputMode()); //robot oriented drive
+		}
 	}
 } //Execute()
 

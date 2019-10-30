@@ -14,6 +14,7 @@ std::shared_ptr<Vacuum> Robot::vacuum;
 std::shared_ptr<HatchPickup> Robot::fork;
 std::shared_ptr<Wrist> Robot::wrist;
 std::shared_ptr<Climb> Robot::climb;
+bool Robot::driverHasControl = true;
 
 void Robot::RobotInit() {
 	Cob::InitBoard();

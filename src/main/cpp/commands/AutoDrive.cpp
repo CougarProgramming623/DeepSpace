@@ -9,34 +9,32 @@
 #include "Robot.h"
 #include "RobotConstants.h"
 
+const double TPS_STRAFE = 10.0;
+
 namespace frc2019 {
-AutoDrive::AutoDrive(double distance, bool strafe) {
+AutoDrive::AutoDrive(double distance) {
 	Requires(Robot::driveTrain.get()); //requires the Drivetrain subsystem to function
-	initialTicks = abs(Robot::driveTrain->GetDriveTalonData(DriveTalon::LEFT_REAR, TalonData::SENSOR_POSITION)); // saves the inital tick count because it does not reset
-	m_distance = distance;
-	isStrafing = strafe;
-	maxTicks = m_distance * (strafe ? S_TICKS_PER_INCH : TICKS_PER_INCH);
+	m_Distance = distance;
+	m_MaxTicks = distance;
 } //AutoDrive()
 
 void AutoDrive::Initialize() {
-	
+	m_InitialTicks = Robot::driveTrain->GetDriveTalonData(DriveTalon::LEFT_REAR, TalonData::SENSOR_POSITION); // saves the inital tick count because it does not reset
+	Robot::driverHasControl = false;
 } //Initialize()
 
 void AutoDrive::Execute() {
-	if (isStrafing) {
-		Robot::driveTrain->CartesianDrive(0.0, 0.5, 0.0, Robot::navx->GetYaw()); //input power to the x parameter
-	}
-	else {
-		Robot::driveTrain->CartesianDrive(0.5, 0.0, 0.0, Robot::navx->GetYaw()); //input power to the y parameter
-	}
+	Robot::driveTrain->CartesianDrive(0.0, 0.4, 0.0, 0.0, true); //input power to the x parameter
 } //Execute()
 
 bool AutoDrive::IsFinished() { 
-	int ticks = abs(Robot::driveTrain->GetDriveTalonData(DriveTalon::LEFT_REAR, TalonData::SENSOR_POSITION) - initialTicks);
-	return ticks >= maxTicks; //finish command if ticks driven is greater than max ticks
+	int ticks = abs(Robot::driveTrain->GetDriveTalonData(DriveTalon::LEFT_REAR, TalonData::SENSOR_POSITION) - m_InitialTicks);
+	DriverStation::ReportError("Current tick: " + std::to_string(ticks) + " target: " + std::to_string(m_MaxTicks));
+	return ticks >= m_MaxTicks; //finish command if ticks driven is greater than max ticks
 } //IsFinished()
 
 void AutoDrive::End() {
+	Robot::driverHasControl = true;
 } //End()
 
 void AutoDrive::Interrupted() {

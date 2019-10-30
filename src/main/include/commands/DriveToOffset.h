@@ -15,6 +15,11 @@ enum VisionStatus {
 	ROTATE, STRAFE, APPROACH
 };
 
+
+class LeftWheelEncoderSource : public frc::PIDSource {
+	double PIDGet();
+};
+
 class DriveToOffset : public frc::Command, public frc::PIDOutput {
 public:
 	DriveToOffset() {}

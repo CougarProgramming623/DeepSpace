@@ -37,7 +37,7 @@ void Turn::Initialize() {
 
 void Turn::Execute() {
 	frc::DriverStation::ReportError(std::to_string(Robot::navx->GetYaw()));
-	Robot::driveTrain->CartesianDrive(0, 0, rotateToAngleRate / 2, Robot::navx.get()->GetYaw()); //rotate the robot
+	Robot::driveTrain->CartesianDrive(0, 0, rotateToAngleRate / 2, Robot::navx.get()->GetYaw(), false); //rotate the robot
 } //Execute()
 
 bool Turn::IsFinished() { 

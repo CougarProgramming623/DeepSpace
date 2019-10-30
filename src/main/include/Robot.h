@@ -47,6 +47,8 @@ public: //pointers
 	static std::shared_ptr<Vacuum> vacuum;
 	static std::shared_ptr<Climb> climb;
 	static std::shared_ptr<Wrist> wrist;
+
+	static bool driverHasControl;
 private:
 	bool isTeleop = false;
 

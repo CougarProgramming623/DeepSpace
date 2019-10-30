@@ -20,8 +20,9 @@ public:
 	DriveTrain();
 	void InitDefaultCommand() override;
 	void ConfigureEncoders();
-	void CartesianDrive(double y, double x, double rotation, double angle);
+	void CartesianDrive(double y, double x, double rotation, double angle, bool velocity = false);
 	void Normalize(wpi::MutableArrayRef<double> wheelSpeeds);
 	double GetDriveTalonData(DriveTalon driveTalon, TalonData data);
 };
 }//frc2019
+
