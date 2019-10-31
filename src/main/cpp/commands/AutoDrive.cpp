@@ -24,6 +24,14 @@ void AutoDrive::Initialize() {
 } //Initialize()
 
 void AutoDrive::Execute() {
+	std::stringstream ss;
+	double bl = Robot::driveTrain->GetDriveTalonData(DriveTalon::LEFT_REAR, TalonData::SENSOR_VELOCITY);
+	double br = Robot::driveTrain->GetDriveTalonData(DriveTalon::RIGHT_REAR, TalonData::SENSOR_VELOCITY);
+	double fl = Robot::driveTrain->GetDriveTalonData(DriveTalon::LEFT_FRONT, TalonData::SENSOR_VELOCITY);
+	double fr = Robot::driveTrain->GetDriveTalonData(DriveTalon::RIGHT_FRONT, TalonData::SENSOR_VELOCITY);
+	ss << "Wheel velocity bl " << bl << " br " << br << " fl " << fl << " fr " << fr;
+
+	DriverStation::ReportError(ss.str());
 	Robot::driveTrain->CartesianDrive(0.0, 0.4, 0.0, 0.0, true); //input power to the x parameter
 } //Execute()
 

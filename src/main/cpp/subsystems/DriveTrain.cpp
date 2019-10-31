@@ -74,29 +74,23 @@ void DriveTrain::CartesianDrive(double y, double x, double rotation, double angl
 	wheelSpeeds[kREAR_RIGHT] = input.y + input.x  - rotation;
 
 	Normalize(wheelSpeeds);
+	//std::stringstream ss;
 
-	#ifdef BOT_HAMBONE //use velocity mode if using real bot, if samus use percent output
+	//ss << "Desired wheel velocities rl " << wheelSpeeds[kREAR_LEFT] << " br " << wheelSpeeds[kREAR_RIGHT] << " fl " << wheelSpeeds[kFRONT_LEFT] << " fr " << wheelSpeeds[kFRONT_RIGHT];
+	//DriverStation::ReportError(ss.str());
 
 	if(velocity) {
-		m_LeftFrontMC.Set(ControlMode::PercentOutput, wheelSpeeds[kFRONT_LEFT]);
-		m_LeftRearMC.Set(ControlMode::PercentOutput,wheelSpeeds[kREAR_LEFT]);
-		m_RightFrontMC.Set(ControlMode::PercentOutput, wheelSpeeds[kFRONT_RIGHT]);
-		m_RightRearMC.Set(ControlMode::PercentOutput, wheelSpeeds[kREAR_RIGHT]);
-	} else {
 		m_LeftFrontMC.Set(ControlMode::Velocity, wheelSpeeds[kFRONT_LEFT] * kMAX_VELOCITY);
 		m_LeftRearMC.Set(ControlMode::Velocity,wheelSpeeds[kREAR_LEFT] * kMAX_VELOCITY);
 		m_RightFrontMC.Set(ControlMode::Velocity, wheelSpeeds[kFRONT_RIGHT] * kMAX_VELOCITY);
 		m_RightRearMC.Set(ControlMode::Velocity, wheelSpeeds[kREAR_RIGHT] * kMAX_VELOCITY);
+	} else {
+		m_LeftFrontMC.Set(ControlMode::PercentOutput, wheelSpeeds[kFRONT_LEFT]);
+		m_LeftRearMC.Set(ControlMode::PercentOutput,wheelSpeeds[kREAR_LEFT]);
+		m_RightFrontMC.Set(ControlMode::PercentOutput, wheelSpeeds[kFRONT_RIGHT]);
+		m_RightRearMC.Set(ControlMode::PercentOutput, wheelSpeeds[kREAR_RIGHT]);
 	}
 
-	#else
-
-	m_LeftFrontMC.Set(ControlMode::PercentOutput, wheelSpeeds[kFRONT_LEFT]);
-	m_LeftRearMC.Set(ControlMode::PercentOutput,wheelSpeeds[kREAR_LEFT]);
-	m_RightFrontMC.Set(ControlMode::PercentOutput, wheelSpeeds[kFRONT_RIGHT]);
-	m_RightRearMC.Set(ControlMode::PercentOutput, wheelSpeeds[kREAR_RIGHT]);
-	
-	#endif
 } //CartesianDrive()
 
 void DriveTrain::Normalize(wpi::MutableArrayRef<double> wheelSpeeds) {
