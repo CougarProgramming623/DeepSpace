@@ -100,7 +100,7 @@ OI::OI() : vacuumToggle(&buttonBoard, 1),
 	ship.WhenPressed(new SetArmWristPosition(DialPosition::SHIP));
 	medium.WhenPressed(new SetArmWristPosition(DialPosition::MEDIUM));
 	high.WhenPressed(new SetArmWristPosition(DialPosition::HIGH));
-	fodToggle.WhenPressed(new AutoDrive(1000));
+	fodToggle.WhenPressed(new AutoDrive(25));
 
 	DriverStation::ReportError("OI DOne");
 } //OI()

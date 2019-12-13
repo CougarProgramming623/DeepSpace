@@ -18,13 +18,6 @@ bool Robot::driverHasControl = true;
 
 void Robot::RobotInit() {
 	Cob::InitBoard();
-	driveTrain.reset(new DriveTrain());
-	arm.reset(new Arm());
-	wrist.reset(new Wrist());
-	vacuum.reset(new Vacuum());
-	oi.reset(new OI());
-	fork.reset(new HatchPickup());
-	climb.reset(new Climb());
 	try {
 		navx.reset(new AHRS(SPI::Port::kMXP)); //instantiates the gyro
 	} catch (std::exception &ex) {
@@ -33,6 +26,14 @@ void Robot::RobotInit() {
 		DriverStation::ReportError(err.c_str());
 	}
   
+	driveTrain.reset(new DriveTrain());
+	arm.reset(new Arm());
+	wrist.reset(new Wrist());
+	vacuum.reset(new Vacuum());
+	oi.reset(new OI());
+	fork.reset(new HatchPickup());
+	climb.reset(new Climb());
+
 	navx->ZeroYaw(); //makes it so whatever start position the robot is facing is 0 degrees
 	std::string color = frc::DriverStation::GetInstance().GetAlliance() == frc::DriverStation::Alliance::kRed ? "red" : "blue"; //determine alliance color as a string
 	Cob::PushValue(COB_ALLIANCE_COLOR, color); //push the alliance color as a string
